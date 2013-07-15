@@ -1,0 +1,23 @@
+KVideo (Kaltura Video)
+=====
+
+We start of by ensuring we can actually instantiate our content classes.
+
+  >>> from Products.Kaltura.content.video import KalturaVideo
+  >>> foo = KalturaVideo('foo')
+  >>> foo
+  <KVideo ...>
+  
+  
+
+Make sure the KVideo class implements our IKalturaVideo interface and an instance
+provides the IATAudio interface.
+
+  >>> from Products.Kaltura.interfaces import IKalturaVideo
+  >>> IKalturaVideo.implementedBy(KalturaVideo)
+  True
+
+  >>> IKalturaVideo.providedBy(foo)
+  True
+
+
