@@ -21,3 +21,12 @@ provides the IATAudio interface.
   True
 
 
+Make sure the view provides a url to the resource on Kaltura
+
+  >>> from Products.Kaltura.browser import KalturaVideoView
+  >>> view = KalturaVideoView(None, None)
+  >>> view.getUrl()
+  'Some String TBD'
+  
+
+
