@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="rfa.kaltura">
+
+  <include package="plone.app.contentmenu" />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+  <browser:page
+    name="kaltura_video_form"
+    for="*"
+    permission="zope2.View"
+    class=".kaltura_video_form.KalturaVideoFormView"
+    />
+
+</configure>
