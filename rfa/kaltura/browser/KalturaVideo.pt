@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="context/main_template/macros/master"
+      >
+
+    <metal:block fill-slot="content-core">
+        <div tal:define="info view/info">
+            <h1>your info:</h1>
+            something: <span tal:content="info/something">this gets replaced</span><br/>
+            another: <span tal:content="info/another">this gets replaced</span><br/>
+            are we just testing? <span tal:content="info/testing">this gets replaced</span><br/>
+        </div>
+    </metal:block>
+
+</html>

@@ -7,11 +7,23 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+  <!-- FORMS -->
   <browser:page
     name="kaltura_video_form"
     for="*"
     permission="zope2.View"
     class=".kaltura_video_form.KalturaVideoFormView"
     />
+    
+    
+  <!-- VIEWS -->
+  <browser:page
+    name="kaltura_video_view"
+    for="*"
+    permission="zope2.View"
+    class=".kaltura_video_view.KalturaVideoView"
+    />
+    
+  
 
 </configure>
