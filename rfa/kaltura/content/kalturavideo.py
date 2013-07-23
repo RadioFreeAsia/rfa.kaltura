@@ -42,7 +42,7 @@ KalturaVideoSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                      required=True,
                      ),
      
-     atapi.ComputedField('url',
+     atapi.ComputedField('playbackUrl',
                  searchable=1,
                  ),
                  
