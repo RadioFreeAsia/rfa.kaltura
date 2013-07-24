@@ -23,13 +23,5 @@
     permission="zope2.View"
     class=".kaltura_video_view.KalturaVideoView"
     />
-    
-
-  <!-- Events -->
-  <subscriber
-  for=".interfaces.IKalturaVideo
-       zope.lifecycleevent.IObjectCreatedEvent"
-  handler=".events.addVideo"
-  />
 
 </configure>

@@ -1,8 +1,13 @@
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from Products.CMFCore.utils import getToolByName
 
-from kalturaapi.KalturaClient import *
-from kalturaapi.KalturaMetadataClientPlugin import *
+from rfa.kaltura.kalturaapi.KalturaClient import *
+#kaltura mucks around with sys.path when KalturaClient is imported
+# putting the plugins folder as a root package... yuck
+#from rfa.kaltura.kalturaapi.plugins.KalturaMetadataClientPlugin import *
+
+from KalturaMetadataClientPlugin import *
+
 
 from rfa.kaltura.config import PARTNER_ID, SECRET, ADMIN_SECRET, SERVICE_URL, USER_NAME
 
