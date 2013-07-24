@@ -3,8 +3,8 @@
     i18n_domain="rfa.kaltura">
     
    <subscriber
-     for=".interfaces.IKalturaVideo
-           zope.lifecycleevent.IObjectCreatedEvent"
+     for="rfa.kaltura.interfaces.IKalturaVideo
+          zope.lifecycleevent.IObjectCreatedEvent"
      handler=".events.addVideo"
    />
 
