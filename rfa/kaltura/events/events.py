@@ -19,11 +19,24 @@ class KalturaLogger(IKalturaLogger):
 def addVideo(context, event):
     """take video data from context and ship it to Kaltura"""
     
+    print "addVideo Event!"
+        
+
+def modifyVideo(context, event):
+    
+    print "modifyVideo Event!"
+
+    
+    
+def kupload(data):
+    
     #XXX Configure Temporary Directory and name better
-    #XXX Turn into a file stream from context.get_data to avoid write to file...
+    #XXX Turn into a file stream from context.get_data to avoid write to file...    
+    
     tempfh = open('/tmp/tempfile', 'wr')
     tempfh.write(context.get_data())
-    tempfh.close()
+    tempfh.close()    
+    
     
     config = KalturaConfiguration(PARTNER_ID)
     config.serviceUrl = SERVICE_URL
@@ -47,11 +60,6 @@ def addVideo(context, event):
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     
     #grab the playback url
-    context.playbackUrl = mediaEntry.dataUrl
-    
-    context.commit()  #XXX do we need to?  I think so.
-    
-    
-    
-    
+    return mediaEntry.dataUrl
+
     

@@ -7,12 +7,17 @@ from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
 
+from Products.ATContentTypes.interface.file import IATFile
+from Products.ATContentTypes.interface.file import IFileContent
+from plone.app.blob.content import ATBlob
+from plone.app.blob.interfaces import IATBlobFile
+
 # -*- Message Factory Imported Here -*-
 
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.config import PROJECTNAME
 
-KalturaVideoSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
+KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
 
      atapi.StringField('title',
                        searchable=1,
@@ -37,9 +42,10 @@ KalturaVideoSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
                                                  i18n_domain="kaltura_video"),
                        ),
      
-     atapi.FileField('Video File',
+     atapi.FileField('VideoFile',
                      searchable=0,
                      required=True,
+                     mutator='setVideoFile',
                      ),
      
      atapi.ComputedField('playbackUrl',
@@ -62,9 +68,9 @@ KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
 
-class KalturaVideo(base.ATCTContent):
+class KalturaVideo(ATBlob):
     """Kaltura Video Content Type - stores the video file on your Kaltura account"""
-    implements(IKalturaVideo)
+    implements(IKalturaVideo, IATBlobFile, IATFile, IFileContent)
 
     meta_type = "KalturaVideo"
     schema = KalturaVideoSchema
@@ -73,5 +79,7 @@ class KalturaVideo(base.ATCTContent):
     description = atapi.ATFieldProperty('description')
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
+        
+        
 
 atapi.registerType(KalturaVideo, PROJECTNAME)

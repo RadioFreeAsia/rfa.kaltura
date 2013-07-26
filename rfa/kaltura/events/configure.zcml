@@ -4,8 +4,14 @@
     
    <subscriber
      for="rfa.kaltura.interfaces.IKalturaVideo
-          zope.lifecycleevent.IObjectCreatedEvent"
+          zope.lifecycleevent.IObjectAddedEvent"
      handler=".events.addVideo"
+   />
+   
+   <subscriber
+     for="rfa.kaltura.interfaces.IKalturaVideo
+          zope.lifecycleevent.IObjectModifiedEvent"
+     handler=".events.modifyVideo"
    />
 
 </configure>
