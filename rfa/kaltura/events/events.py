@@ -16,31 +16,40 @@ class KalturaLogger(IKalturaLogger):
     def log(self, msg):
         logging.info(msg) 
 
-def addVideo(context, event):
-    """take video data from context and ship it to Kaltura"""
-    
-    print "addVideo Event!"
-        
-
 def modifyVideo(context, event):
     
     print "modifyVideo Event!"
-
     
+    url = kupload(context)
+    print "uploaded.  URL is %s" % (url,)
     
-def kupload(data):
+    context.setplaybackUrl(url)
+    
+def kupload(FileObject):
+    """Provide an ATCTFileContent based object
+       Upload attached contents to Kaltura
+       Currently Treats all objects as 'videos' - this should change
+    """
+    
+    import pdb; pdb.set_trace()
+    #this check can be done better
+    if not hasattr(FileObject, 'get_data'):
+        print "nothing to upload to kaltura from object %s" % (str(FileObject),)
+        return 1;
     
     #XXX Configure Temporary Directory and name better
-    #XXX Turn into a file stream from context.get_data to avoid write to file...    
-    
+    #XXX Turn into a file stream from context.get_data to avoid write to file...        
     tempfh = open('/tmp/tempfile', 'wr')
-    tempfh.write(context.get_data())
+    tempfh.write(FileObject.get_data())
     tempfh.close()    
     
+    name = FileObject.Title()
+    ProviderId = FileObject.UID()
     
     config = KalturaConfiguration(PARTNER_ID)
     config.serviceUrl = SERVICE_URL
     config.setLogger(KalturaLogger())
+    
     client = KalturaClient(config)
 
     # start new session (client session is enough when we do operations in a users scope)
@@ -49,9 +58,9 @@ def kupload(data):
         
     #create an entry
     mediaEntry = KalturaMediaEntry()
-    mediaEntry.setName(context.Title())
+    mediaEntry.setName(name)
     mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
-    mediaEntry.searchProviderId = context.UID()
+    mediaEntry.searchProviderId = ProviderId
 
     
     #do the upload

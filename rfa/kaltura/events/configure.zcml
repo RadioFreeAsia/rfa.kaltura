@@ -1,12 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     i18n_domain="rfa.kaltura">
-    
-   <subscriber
-     for="rfa.kaltura.interfaces.IKalturaVideo
-          zope.lifecycleevent.IObjectAddedEvent"
-     handler=".events.addVideo"
-   />
    
    <subscriber
      for="rfa.kaltura.interfaces.IKalturaVideo

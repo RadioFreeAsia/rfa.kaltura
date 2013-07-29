@@ -42,15 +42,12 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                  i18n_domain="kaltura_video"),
                        ),
      
-     atapi.FileField('VideoFile',
-                     searchable=0,
-                     required=True,
-                     mutator='setVideoFile',
-                     ),
-     
-     atapi.ComputedField('playbackUrl',
-                 searchable=1,
-                 ),
+     atapi.StringField('playbackUrl',
+                       searchable=1,
+                       widget=atapi.StringWidget(label="Kaltura Url",
+                                                 visible={"edit" : "invisible"},
+                                                 i18n_domain="kaltura_video")
+                       ), 
                  
      
      
