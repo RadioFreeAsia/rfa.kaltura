@@ -1,3 +1,18 @@
+Kaltura Python Native Client Library
+
+Master is at API_VERSION = '3.1.6'  (June 30 2013)
+
+I (or anyone please!) will keep master updated with Kaltura's latest releases.
+
+http://www.kaltura.com/api_v3/testme/client-libs.php
+
+Docs:
+
+http://www.kaltura.com/api_v3/testmeDoc/index.php
+
+Twitter:
+follow @Kaltura_API for updates
+
 This source contains:
  - The Kaltura client library (KalturaClient.py & KalturaClientBase.py)
  - Auto generated core APIs (KalturaCoreClient.py)
