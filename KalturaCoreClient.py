@@ -34,7 +34,7 @@ API_VERSION = '3.1.6'
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaAppearInListType:
+class KalturaAppearInListType(object):
     PARTNER_ONLY = 1
     CATEGORY_MEMBERS_ONLY = 3
 
@@ -46,7 +46,7 @@ class KalturaAppearInListType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetParamsDeletePolicy:
+class KalturaAssetParamsDeletePolicy(object):
     KEEP = 0
     DELETE = 1
 
@@ -58,7 +58,7 @@ class KalturaAssetParamsDeletePolicy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetParamsOrigin:
+class KalturaAssetParamsOrigin(object):
     CONVERT = 0
     INGEST = 1
     CONVERT_WHEN_MISSING = 2
@@ -71,7 +71,7 @@ class KalturaAssetParamsOrigin:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetStatus:
+class KalturaAssetStatus(object):
     ERROR = -1
     QUEUED = 0
     READY = 2
@@ -87,7 +87,7 @@ class KalturaAssetStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBatchJobErrorTypes:
+class KalturaBatchJobErrorTypes(object):
     APP = 0
     RUNTIME = 1
     HTTP = 2
@@ -103,7 +103,7 @@ class KalturaBatchJobErrorTypes:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBatchJobStatus:
+class KalturaBatchJobStatus(object):
     PENDING = 0
     QUEUED = 1
     PROCESSING = 2
@@ -126,7 +126,7 @@ class KalturaBatchJobStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBitRateMode:
+class KalturaBitRateMode(object):
     CBR = 1
     VBR = 2
 
@@ -138,7 +138,7 @@ class KalturaBitRateMode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryEntryStatus:
+class KalturaCategoryEntryStatus(object):
     PENDING = 1
     ACTIVE = 2
     DELETED = 3
@@ -152,7 +152,7 @@ class KalturaCategoryEntryStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryStatus:
+class KalturaCategoryStatus(object):
     UPDATING = 1
     ACTIVE = 2
     DELETED = 3
@@ -166,7 +166,7 @@ class KalturaCategoryStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryUserPermissionLevel:
+class KalturaCategoryUserPermissionLevel(object):
     MANAGER = 0
     MODERATOR = 1
     CONTRIBUTOR = 2
@@ -181,7 +181,7 @@ class KalturaCategoryUserPermissionLevel:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryUserStatus:
+class KalturaCategoryUserStatus(object):
     ACTIVE = 1
     PENDING = 2
     NOT_ACTIVE = 3
@@ -194,7 +194,7 @@ class KalturaCategoryUserStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCommercialUseType:
+class KalturaCommercialUseType(object):
     NON_COMMERCIAL_USE = 0
     COMMERCIAL_USE = 1
 
@@ -206,7 +206,7 @@ class KalturaCommercialUseType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaContributionPolicyType:
+class KalturaContributionPolicyType(object):
     ALL = 1
     MEMBERS_WITH_CONTRIBUTION_PERMISSION = 2
 
@@ -218,7 +218,7 @@ class KalturaContributionPolicyType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaControlPanelCommandStatus:
+class KalturaControlPanelCommandStatus(object):
     PENDING = 1
     HANDLED = 2
     DONE = 3
@@ -232,7 +232,7 @@ class KalturaControlPanelCommandStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaControlPanelCommandTargetType:
+class KalturaControlPanelCommandTargetType(object):
     DATA_CENTER = 1
     SCHEDULER = 2
     JOB_TYPE = 3
@@ -247,7 +247,7 @@ class KalturaControlPanelCommandTargetType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaControlPanelCommandType:
+class KalturaControlPanelCommandType(object):
     KILL = 4
 
     def __init__(self, value):
@@ -258,7 +258,7 @@ class KalturaControlPanelCommandType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCountryRestrictionType:
+class KalturaCountryRestrictionType(object):
     RESTRICT_COUNTRY_LIST = 0
     ALLOW_COUNTRY_LIST = 1
 
@@ -270,7 +270,7 @@ class KalturaCountryRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDVRStatus:
+class KalturaDVRStatus(object):
     DISABLED = 0
     ENABLED = 1
 
@@ -282,7 +282,7 @@ class KalturaDVRStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDirectoryRestrictionType:
+class KalturaDirectoryRestrictionType(object):
     DONT_DISPLAY = 0
     DISPLAY_WITH_LINK = 1
 
@@ -294,7 +294,7 @@ class KalturaDirectoryRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEditorType:
+class KalturaEditorType(object):
     SIMPLE = 1
     ADVANCED = 2
 
@@ -306,7 +306,7 @@ class KalturaEditorType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEmailIngestionProfileStatus:
+class KalturaEmailIngestionProfileStatus(object):
     INACTIVE = 0
     ACTIVE = 1
 
@@ -318,7 +318,7 @@ class KalturaEmailIngestionProfileStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEntryModerationStatus:
+class KalturaEntryModerationStatus(object):
     PENDING_MODERATION = 1
     APPROVED = 2
     REJECTED = 3
@@ -333,7 +333,7 @@ class KalturaEntryModerationStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFeatureStatusType:
+class KalturaFeatureStatusType(object):
     LOCK_CATEGORY = 1
     CATEGORY = 2
     CATEGORY_ENTRY = 3
@@ -349,7 +349,7 @@ class KalturaFeatureStatusType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFlavorAssetStatus:
+class KalturaFlavorAssetStatus(object):
     ERROR = -1
     QUEUED = 0
     CONVERTING = 1
@@ -370,7 +370,7 @@ class KalturaFlavorAssetStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFlavorReadyBehaviorType:
+class KalturaFlavorReadyBehaviorType(object):
     NO_IMPACT = 0
     INHERIT_FLAVOR_PARAMS = 0
     REQUIRED = 1
@@ -384,7 +384,7 @@ class KalturaFlavorReadyBehaviorType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGender:
+class KalturaGender(object):
     UNKNOWN = 0
     MALE = 1
     FEMALE = 2
@@ -397,7 +397,7 @@ class KalturaGender:
 
 # @package External
 # @subpackage Kaltura
-class KalturaInheritanceType:
+class KalturaInheritanceType(object):
     INHERIT = 1
     MANUAL = 2
 
@@ -409,7 +409,7 @@ class KalturaInheritanceType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaIpAddressRestrictionType:
+class KalturaIpAddressRestrictionType(object):
     RESTRICT_LIST = 0
     ALLOW_LIST = 1
 
@@ -421,7 +421,7 @@ class KalturaIpAddressRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLicenseType:
+class KalturaLicenseType(object):
     UNKNOWN = -1
     NONE = 0
     COPYRIGHTED = 1
@@ -448,7 +448,7 @@ class KalturaLicenseType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLimitFlavorsRestrictionType:
+class KalturaLimitFlavorsRestrictionType(object):
     RESTRICT_LIST = 0
     ALLOW_LIST = 1
 
@@ -460,7 +460,7 @@ class KalturaLimitFlavorsRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMailJobStatus:
+class KalturaMailJobStatus(object):
     PENDING = 1
     SENT = 2
     ERROR = 3
@@ -474,7 +474,7 @@ class KalturaMailJobStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaType:
+class KalturaMediaType(object):
     VIDEO = 1
     IMAGE = 2
     AUDIO = 5
@@ -491,7 +491,7 @@ class KalturaMediaType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaModerationFlagType:
+class KalturaModerationFlagType(object):
     SEXUAL_CONTENT = 1
     VIOLENT_REPULSIVE = 2
     HARMFUL_DANGEROUS = 3
@@ -507,7 +507,7 @@ class KalturaModerationFlagType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMrssExtensionMode:
+class KalturaMrssExtensionMode(object):
     APPEND = 1
     REPLACE = 2
 
@@ -519,7 +519,7 @@ class KalturaMrssExtensionMode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaNotificationObjectType:
+class KalturaNotificationObjectType(object):
     ENTRY = 1
     KSHOW = 2
     USER = 3
@@ -533,7 +533,7 @@ class KalturaNotificationObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaNotificationStatus:
+class KalturaNotificationStatus(object):
     PENDING = 1
     SENT = 2
     ERROR = 3
@@ -550,7 +550,7 @@ class KalturaNotificationStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaNotificationType:
+class KalturaNotificationType(object):
     ENTRY_ADD = 1
     ENTR_UPDATE_PERMISSIONS = 2
     ENTRY_DELETE = 3
@@ -569,7 +569,7 @@ class KalturaNotificationType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaNullableBoolean:
+class KalturaNullableBoolean(object):
     NULL_VALUE = -1
     FALSE_VALUE = 0
     TRUE_VALUE = 1
@@ -582,7 +582,7 @@ class KalturaNullableBoolean:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPartnerGroupType:
+class KalturaPartnerGroupType(object):
     PUBLISHER = 1
     VAR_GROUP = 2
     GROUP = 3
@@ -596,7 +596,7 @@ class KalturaPartnerGroupType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPartnerStatus:
+class KalturaPartnerStatus(object):
     ACTIVE = 1
     BLOCKED = 2
     FULL_BLOCK = 3
@@ -609,7 +609,7 @@ class KalturaPartnerStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPartnerType:
+class KalturaPartnerType(object):
     KMC = 1
     WIKI = 100
     WORDPRESS = 101
@@ -630,7 +630,7 @@ class KalturaPartnerType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPermissionStatus:
+class KalturaPermissionStatus(object):
     ACTIVE = 1
     BLOCKED = 2
     DELETED = 3
@@ -643,7 +643,7 @@ class KalturaPermissionStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPermissionType:
+class KalturaPermissionType(object):
     NORMAL = 1
     SPECIAL_FEATURE = 2
     PLUGIN = 3
@@ -657,7 +657,7 @@ class KalturaPermissionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPlaylistType:
+class KalturaPlaylistType(object):
     STATIC_LIST = 3
     DYNAMIC = 10
     EXTERNAL = 101
@@ -670,7 +670,7 @@ class KalturaPlaylistType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPrivacyType:
+class KalturaPrivacyType(object):
     ALL = 1
     AUTHENTICATED_USERS = 2
     MEMBERS_ONLY = 3
@@ -683,7 +683,7 @@ class KalturaPrivacyType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaReportType:
+class KalturaReportType(object):
     TOP_CONTENT = 1
     CONTENT_DROPOFF = 2
     CONTENT_INTERACTIONS = 3
@@ -714,7 +714,7 @@ class KalturaReportType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSearchOperatorType:
+class KalturaSearchOperatorType(object):
     SEARCH_AND = 1
     SEARCH_OR = 2
 
@@ -726,7 +726,7 @@ class KalturaSearchOperatorType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSearchProviderType:
+class KalturaSearchProviderType(object):
     FLICKR = 3
     YOUTUBE = 4
     MYSPACE = 7
@@ -752,7 +752,7 @@ class KalturaSearchProviderType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSessionType:
+class KalturaSessionType(object):
     USER = 0
     ADMIN = 2
 
@@ -764,7 +764,7 @@ class KalturaSessionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSiteRestrictionType:
+class KalturaSiteRestrictionType(object):
     RESTRICT_SITE_LIST = 0
     ALLOW_SITE_LIST = 1
 
@@ -776,7 +776,7 @@ class KalturaSiteRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStatsEventType:
+class KalturaStatsEventType(object):
     WIDGET_LOADED = 1
     MEDIA_LOADED = 2
     PLAY = 3
@@ -826,7 +826,7 @@ class KalturaStatsEventType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStatsFeatureType:
+class KalturaStatsFeatureType(object):
     NONE = 0
     RELATED = 1
 
@@ -838,7 +838,7 @@ class KalturaStatsFeatureType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStatsKmcEventType:
+class KalturaStatsKmcEventType(object):
     CONTENT_PAGE_VIEW = 1001
     CONTENT_ADD_PLAYLIST = 1010
     CONTENT_EDIT_PLAYLIST = 1011
@@ -912,7 +912,7 @@ class KalturaStatsKmcEventType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStorageProfileDeliveryStatus:
+class KalturaStorageProfileDeliveryStatus(object):
     ACTIVE = 1
     BLOCKED = 2
 
@@ -924,7 +924,7 @@ class KalturaStorageProfileDeliveryStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStorageProfileProtocol:
+class KalturaStorageProfileProtocol(object):
     KALTURA_DC = 0
     FTP = 1
     SCP = 2
@@ -939,7 +939,7 @@ class KalturaStorageProfileProtocol:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStorageProfileReadyBehavior:
+class KalturaStorageProfileReadyBehavior(object):
     NO_IMPACT = 0
     REQUIRED = 1
 
@@ -951,7 +951,7 @@ class KalturaStorageProfileReadyBehavior:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStorageProfileStatus:
+class KalturaStorageProfileStatus(object):
     DISABLED = 1
     AUTOMATIC = 2
     MANUAL = 3
@@ -964,7 +964,7 @@ class KalturaStorageProfileStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSyndicationFeedStatus:
+class KalturaSyndicationFeedStatus(object):
     DELETED = -1
     ACTIVE = 1
 
@@ -976,7 +976,7 @@ class KalturaSyndicationFeedStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSyndicationFeedType:
+class KalturaSyndicationFeedType(object):
     GOOGLE_VIDEO = 1
     YAHOO = 2
     ITUNES = 3
@@ -992,7 +992,7 @@ class KalturaSyndicationFeedType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaThumbAssetStatus:
+class KalturaThumbAssetStatus(object):
     ERROR = -1
     QUEUED = 0
     CAPTURING = 1
@@ -1009,7 +1009,7 @@ class KalturaThumbAssetStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaThumbCropType:
+class KalturaThumbCropType(object):
     RESIZE = 1
     RESIZE_WITH_PADDING = 2
     CROP = 3
@@ -1024,7 +1024,7 @@ class KalturaThumbCropType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUiConfCreationMode:
+class KalturaUiConfCreationMode(object):
     WIZARD = 2
     ADVANCED = 3
 
@@ -1036,7 +1036,7 @@ class KalturaUiConfCreationMode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUiConfObjType:
+class KalturaUiConfObjType(object):
     PLAYER = 1
     CONTRIBUTION_WIZARD = 2
     SIMPLE_EDITOR = 3
@@ -1067,7 +1067,7 @@ class KalturaUiConfObjType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUpdateMethodType:
+class KalturaUpdateMethodType(object):
     MANUAL = 0
     AUTOMATIC = 1
 
@@ -1079,7 +1079,7 @@ class KalturaUpdateMethodType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUploadErrorCode:
+class KalturaUploadErrorCode(object):
     NO_ERROR = 0
     GENERAL_ERROR = 1
     PARTIAL_UPLOAD = 2
@@ -1092,7 +1092,7 @@ class KalturaUploadErrorCode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUploadTokenStatus:
+class KalturaUploadTokenStatus(object):
     PENDING = 0
     PARTIAL_UPLOAD = 1
     FULL_UPLOAD = 2
@@ -1108,7 +1108,7 @@ class KalturaUploadTokenStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserAgentRestrictionType:
+class KalturaUserAgentRestrictionType(object):
     RESTRICT_LIST = 0
     ALLOW_LIST = 1
 
@@ -1120,7 +1120,7 @@ class KalturaUserAgentRestrictionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserJoinPolicyType:
+class KalturaUserJoinPolicyType(object):
     AUTO_JOIN = 1
     REQUEST_TO_JOIN = 2
     NOT_ALLOWED = 3
@@ -1133,7 +1133,7 @@ class KalturaUserJoinPolicyType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserRoleStatus:
+class KalturaUserRoleStatus(object):
     ACTIVE = 1
     BLOCKED = 2
     DELETED = 3
@@ -1146,7 +1146,7 @@ class KalturaUserRoleStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserStatus:
+class KalturaUserStatus(object):
     BLOCKED = 0
     ACTIVE = 1
     DELETED = 2
@@ -1159,7 +1159,7 @@ class KalturaUserStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaWidgetSecurityType:
+class KalturaWidgetSecurityType(object):
     NONE = 1
     TIMEHASH = 2
 
@@ -1171,7 +1171,7 @@ class KalturaWidgetSecurityType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAccessControlActionType:
+class KalturaAccessControlActionType(object):
     BLOCK = "1"
     PREVIEW = "2"
     LIMIT_FLAVORS = "3"
@@ -1184,7 +1184,7 @@ class KalturaAccessControlActionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAccessControlContextType:
+class KalturaAccessControlContextType(object):
     PLAY = "1"
     DOWNLOAD = "2"
     THUMBNAIL = "3"
@@ -1198,7 +1198,7 @@ class KalturaAccessControlContextType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAccessControlOrderBy:
+class KalturaAccessControlOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -1210,7 +1210,7 @@ class KalturaAccessControlOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAccessControlProfileOrderBy:
+class KalturaAccessControlProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -1224,7 +1224,7 @@ class KalturaAccessControlProfileOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAdminUserOrderBy:
+class KalturaAdminUserOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     CREATED_AT_DESC = "-createdAt"
@@ -1238,7 +1238,7 @@ class KalturaAdminUserOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAkamaiUniversalStreamType:
+class KalturaAkamaiUniversalStreamType(object):
     HD_IPHONE_IPAD_LIVE = "HD iPhone/iPad Live"
     UNIVERSAL_STREAMING_LIVE = "Universal Streaming Live"
 
@@ -1250,7 +1250,7 @@ class KalturaAkamaiUniversalStreamType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAmazonS3StorageProfileFilesPermissionLevel:
+class KalturaAmazonS3StorageProfileFilesPermissionLevel(object):
     ACL_AUTHENTICATED_READ = "authenticated-read"
     ACL_PRIVATE = "private"
     ACL_PUBLIC_READ = "public-read"
@@ -1264,7 +1264,7 @@ class KalturaAmazonS3StorageProfileFilesPermissionLevel:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAmazonS3StorageProfileOrderBy:
+class KalturaAmazonS3StorageProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -1278,7 +1278,7 @@ class KalturaAmazonS3StorageProfileOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaApiActionPermissionItemOrderBy:
+class KalturaApiActionPermissionItemOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"
@@ -1294,7 +1294,7 @@ class KalturaApiActionPermissionItemOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaApiParameterPermissionItemAction:
+class KalturaApiParameterPermissionItemAction(object):
     USAGE = "all"
     INSERT = "insert"
     READ = "read"
@@ -1308,7 +1308,7 @@ class KalturaApiParameterPermissionItemAction:
 
 # @package External
 # @subpackage Kaltura
-class KalturaApiParameterPermissionItemOrderBy:
+class KalturaApiParameterPermissionItemOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"
@@ -1324,7 +1324,7 @@ class KalturaApiParameterPermissionItemOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetOrderBy:
+class KalturaAssetOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DELETED_AT_ASC = "+deletedAt"
     SIZE_ASC = "+size"
@@ -1342,7 +1342,7 @@ class KalturaAssetOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetParamsOrderBy:
+class KalturaAssetParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1352,7 +1352,7 @@ class KalturaAssetParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetParamsOutputOrderBy:
+class KalturaAssetParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1362,7 +1362,7 @@ class KalturaAssetParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAssetType:
+class KalturaAssetType(object):
     ATTACHMENT = "attachment.Attachment"
     CAPTION = "caption.Caption"
     DOCUMENT = "document.Document"
@@ -1381,7 +1381,7 @@ class KalturaAssetType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAudioCodec:
+class KalturaAudioCodec(object):
     NONE = ""
     AAC = "aac"
     AACHE = "aache"
@@ -1403,7 +1403,7 @@ class KalturaAudioCodec:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBaseEntryOrderBy:
+class KalturaBaseEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     END_DATE_ASC = "+endDate"
     MODERATION_COUNT_ASC = "+moderationCount"
@@ -1435,7 +1435,7 @@ class KalturaBaseEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBaseSyndicationFeedOrderBy:
+class KalturaBaseSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -1455,7 +1455,7 @@ class KalturaBaseSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBatchJobOrderBy:
+class KalturaBatchJobOrderBy(object):
     CHECK_AGAIN_TIMEOUT_ASC = "+checkAgainTimeout"
     CREATED_AT_ASC = "+createdAt"
     ESTIMATED_EFFORT_ASC = "+estimatedEffort"
@@ -1487,7 +1487,7 @@ class KalturaBatchJobOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBatchJobType:
+class KalturaBatchJobType(object):
     PARSE_CAPTION_ASSET = "captionSearch.parseCaptionAsset"
     DISTRIBUTION_DELETE = "contentDistribution.DistributionDelete"
     DISTRIBUTION_DISABLE = "contentDistribution.DistributionDisable"
@@ -1543,7 +1543,7 @@ class KalturaBatchJobType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadAction:
+class KalturaBulkUploadAction(object):
     ADD = "1"
     UPDATE = "2"
     DELETE = "3"
@@ -1559,7 +1559,7 @@ class KalturaBulkUploadAction:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadObjectType:
+class KalturaBulkUploadObjectType(object):
     ENTRY = "1"
     CATEGORY = "2"
     USER = "3"
@@ -1573,7 +1573,7 @@ class KalturaBulkUploadObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadOrderBy:
+class KalturaBulkUploadOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1583,7 +1583,7 @@ class KalturaBulkUploadOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadResultObjectType:
+class KalturaBulkUploadResultObjectType(object):
     ENTRY = "1"
     CATEGORY = "2"
     USER = "3"
@@ -1597,7 +1597,7 @@ class KalturaBulkUploadResultObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadResultStatus:
+class KalturaBulkUploadResultStatus(object):
     ERROR = "1"
     OK = "2"
     IN_PROGRESS = "3"
@@ -1610,7 +1610,7 @@ class KalturaBulkUploadResultStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadType:
+class KalturaBulkUploadType(object):
     CSV = "bulkUploadCsv.CSV"
     XML = "bulkUploadXml.XML"
     DROP_FOLDER_XML = "dropFolderXmlBulkUpload.DROP_FOLDER_XML"
@@ -1623,7 +1623,7 @@ class KalturaBulkUploadType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryEntryOrderBy:
+class KalturaCategoryEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -1635,7 +1635,7 @@ class KalturaCategoryEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryIdentifierField:
+class KalturaCategoryIdentifierField(object):
     FULL_NAME = "fullName"
     ID = "id"
     REFERENCE_ID = "referenceId"
@@ -1648,7 +1648,7 @@ class KalturaCategoryIdentifierField:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryOrderBy:
+class KalturaCategoryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DEPTH_ASC = "+depth"
     DIRECT_ENTRIES_COUNT_ASC = "+directEntriesCount"
@@ -1678,7 +1678,7 @@ class KalturaCategoryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCategoryUserOrderBy:
+class KalturaCategoryUserOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -1692,7 +1692,7 @@ class KalturaCategoryUserOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaConditionType:
+class KalturaConditionType(object):
     ABC_WATERMARK = "abcScreenersWatermarkAccessControl.abcWatermark"
     METADATA_FIELD_COMPARE = "metadata.FieldCompare"
     METADATA_FIELD_MATCH = "metadata.FieldMatch"
@@ -1713,7 +1713,7 @@ class KalturaConditionType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaContainerFormat:
+class KalturaContainerFormat(object):
     _3GP = "3gp"
     APPLEHTTP = "applehttp"
     AVI = "avi"
@@ -1747,7 +1747,7 @@ class KalturaContainerFormat:
 
 # @package External
 # @subpackage Kaltura
-class KalturaControlPanelCommandOrderBy:
+class KalturaControlPanelCommandOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -1761,7 +1761,7 @@ class KalturaControlPanelCommandOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaConversionProfileAssetParamsOrderBy:
+class KalturaConversionProfileAssetParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1771,7 +1771,7 @@ class KalturaConversionProfileAssetParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaConversionProfileOrderBy:
+class KalturaConversionProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -1783,7 +1783,7 @@ class KalturaConversionProfileOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaConversionProfileStatus:
+class KalturaConversionProfileStatus(object):
     DISABLED = "1"
     ENABLED = "2"
     DELETED = "3"
@@ -1796,7 +1796,7 @@ class KalturaConversionProfileStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDataEntryOrderBy:
+class KalturaDataEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     END_DATE_ASC = "+endDate"
     MODERATION_COUNT_ASC = "+moderationCount"
@@ -1828,7 +1828,7 @@ class KalturaDataEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDurationType:
+class KalturaDurationType(object):
     LONG = "long"
     MEDIUM = "medium"
     NOT_AVAILABLE = "notavailable"
@@ -1842,7 +1842,7 @@ class KalturaDurationType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDynamicEnum:
+class KalturaDynamicEnum(object):
 
     def __init__(self, value):
         self.value = value
@@ -1852,7 +1852,7 @@ class KalturaDynamicEnum:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEntryIdentifierField:
+class KalturaEntryIdentifierField(object):
     ID = "id"
     REFERENCE_ID = "referenceId"
 
@@ -1864,7 +1864,7 @@ class KalturaEntryIdentifierField:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEntryReplacementStatus:
+class KalturaEntryReplacementStatus(object):
     NONE = "0"
     APPROVED_BUT_NOT_READY = "1"
     READY_BUT_NOT_APPROVED = "2"
@@ -1878,7 +1878,7 @@ class KalturaEntryReplacementStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEntryStatus:
+class KalturaEntryStatus(object):
     ERROR_IMPORTING = "-2"
     ERROR_CONVERTING = "-1"
     SCAN_FAILURE = "virusScan.ScanFailure"
@@ -1900,7 +1900,7 @@ class KalturaEntryStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEntryType:
+class KalturaEntryType(object):
     AUTOMATIC = "-1"
     EXTERNAL_MEDIA = "externalMedia.externalMedia"
     MEDIA_CLIP = "1"
@@ -1918,7 +1918,7 @@ class KalturaEntryType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFileSyncObjectType:
+class KalturaFileSyncObjectType(object):
     DISTRIBUTION_PROFILE = "contentDistribution.DistributionProfile"
     ENTRY_DISTRIBUTION = "contentDistribution.EntryDistribution"
     GENERIC_DISTRIBUTION_ACTION = "contentDistribution.GenericDistributionAction"
@@ -1941,7 +1941,7 @@ class KalturaFileSyncObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFlavorAssetOrderBy:
+class KalturaFlavorAssetOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DELETED_AT_ASC = "+deletedAt"
     SIZE_ASC = "+size"
@@ -1959,7 +1959,7 @@ class KalturaFlavorAssetOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFlavorParamsOrderBy:
+class KalturaFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1969,7 +1969,7 @@ class KalturaFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFlavorParamsOutputOrderBy:
+class KalturaFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -1979,7 +1979,7 @@ class KalturaFlavorParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGenericSyndicationFeedOrderBy:
+class KalturaGenericSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -1999,7 +1999,7 @@ class KalturaGenericSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGenericXsltSyndicationFeedOrderBy:
+class KalturaGenericXsltSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -2019,7 +2019,7 @@ class KalturaGenericXsltSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGeoCoderType:
+class KalturaGeoCoderType(object):
     KALTURA = "1"
 
     def __init__(self, value):
@@ -2030,7 +2030,7 @@ class KalturaGeoCoderType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGoogleSyndicationFeedAdultValues:
+class KalturaGoogleSyndicationFeedAdultValues(object):
     NO = "No"
     YES = "Yes"
 
@@ -2042,7 +2042,7 @@ class KalturaGoogleSyndicationFeedAdultValues:
 
 # @package External
 # @subpackage Kaltura
-class KalturaGoogleVideoSyndicationFeedOrderBy:
+class KalturaGoogleVideoSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -2062,7 +2062,7 @@ class KalturaGoogleVideoSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaITunesSyndicationFeedAdultValues:
+class KalturaITunesSyndicationFeedAdultValues(object):
     CLEAN = "clean"
     NO = "no"
     YES = "yes"
@@ -2075,7 +2075,7 @@ class KalturaITunesSyndicationFeedAdultValues:
 
 # @package External
 # @subpackage Kaltura
-class KalturaITunesSyndicationFeedCategories:
+class KalturaITunesSyndicationFeedCategories(object):
     ARTS = "Arts"
     ARTS_DESIGN = "Arts/Design"
     ARTS_FASHION_BEAUTY = "Arts/Fashion &amp; Beauty"
@@ -2152,7 +2152,7 @@ class KalturaITunesSyndicationFeedCategories:
 
 # @package External
 # @subpackage Kaltura
-class KalturaITunesSyndicationFeedOrderBy:
+class KalturaITunesSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -2172,7 +2172,7 @@ class KalturaITunesSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLanguage:
+class KalturaLanguage(object):
     AB = "Abkhazian"
     AA = "Afar"
     AF = "Afrikaans"
@@ -2325,7 +2325,7 @@ class KalturaLanguage:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLanguageCode:
+class KalturaLanguageCode(object):
     AA = "aa"
     AB = "ab"
     AF = "af"
@@ -2478,7 +2478,7 @@ class KalturaLanguageCode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLiveStreamAdminEntryOrderBy:
+class KalturaLiveStreamAdminEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
@@ -2518,7 +2518,7 @@ class KalturaLiveStreamAdminEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaLiveStreamEntryOrderBy:
+class KalturaLiveStreamEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
@@ -2558,7 +2558,7 @@ class KalturaLiveStreamEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMailType:
+class KalturaMailType(object):
     MAIL_TYPE_KALTURA_NEWSLETTER = "10"
     MAIL_TYPE_ADDED_TO_FAVORITES = "11"
     MAIL_TYPE_ADDED_TO_CLIP_FAVORITES = "12"
@@ -2607,7 +2607,7 @@ class KalturaMailType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaEntryOrderBy:
+class KalturaMediaEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
@@ -2647,7 +2647,7 @@ class KalturaMediaEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaFlavorParamsOrderBy:
+class KalturaMediaFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -2657,7 +2657,7 @@ class KalturaMediaFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaFlavorParamsOutputOrderBy:
+class KalturaMediaFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -2667,7 +2667,7 @@ class KalturaMediaFlavorParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaInfoOrderBy:
+class KalturaMediaInfoOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -2677,7 +2677,7 @@ class KalturaMediaInfoOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMediaParserType:
+class KalturaMediaParserType(object):
     MEDIAINFO = "0"
     REMOTE_MEDIAINFO = "remoteMediaInfo.RemoteMediaInfo"
     FFMPEG = "1"
@@ -2690,7 +2690,7 @@ class KalturaMediaParserType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaMixEntryOrderBy:
+class KalturaMixEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
@@ -2728,7 +2728,7 @@ class KalturaMixEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaModerationFlagStatus:
+class KalturaModerationFlagStatus(object):
     PENDING = "1"
     MODERATED = "2"
 
@@ -2740,7 +2740,7 @@ class KalturaModerationFlagStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaModerationObjectType:
+class KalturaModerationObjectType(object):
     ENTRY = "2"
     USER = "3"
 
@@ -2752,7 +2752,7 @@ class KalturaModerationObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPartnerOrderBy:
+class KalturaPartnerOrderBy(object):
     ADMIN_EMAIL_ASC = "+adminEmail"
     ADMIN_NAME_ASC = "+adminName"
     CREATED_AT_ASC = "+createdAt"
@@ -2776,7 +2776,7 @@ class KalturaPartnerOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPermissionItemOrderBy:
+class KalturaPermissionItemOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"
@@ -2792,7 +2792,7 @@ class KalturaPermissionItemOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPermissionItemType:
+class KalturaPermissionItemType(object):
     API_ACTION_ITEM = "kApiActionPermissionItem"
     API_PARAMETER_ITEM = "kApiParameterPermissionItem"
 
@@ -2804,7 +2804,7 @@ class KalturaPermissionItemType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPermissionOrderBy:
+class KalturaPermissionOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -2822,7 +2822,7 @@ class KalturaPermissionOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPlayableEntryOrderBy:
+class KalturaPlayableEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
@@ -2860,7 +2860,7 @@ class KalturaPlayableEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPlaybackProtocol:
+class KalturaPlaybackProtocol(object):
     APPLE_HTTP = "applehttp"
     AUTO = "auto"
     AKAMAI_HD = "hdnetwork"
@@ -2880,7 +2880,7 @@ class KalturaPlaybackProtocol:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPlaylistOrderBy:
+class KalturaPlaylistOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     END_DATE_ASC = "+endDate"
     MODERATION_COUNT_ASC = "+moderationCount"
@@ -2912,7 +2912,7 @@ class KalturaPlaylistOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaReportInterval:
+class KalturaReportInterval(object):
     DAYS = "days"
     MONTHS = "months"
 
@@ -2924,7 +2924,7 @@ class KalturaReportInterval:
 
 # @package External
 # @subpackage Kaltura
-class KalturaReportOrderBy:
+class KalturaReportOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -2936,7 +2936,7 @@ class KalturaReportOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSchemaType:
+class KalturaSchemaType(object):
     BULK_UPLOAD_RESULT_XML = "bulkUploadXml.bulkUploadResultXML"
     BULK_UPLOAD_XML = "bulkUploadXml.bulkUploadXML"
     INGEST_API = "cuePoint.ingestAPI"
@@ -2952,7 +2952,7 @@ class KalturaSchemaType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSearchConditionComparison:
+class KalturaSearchConditionComparison(object):
     EQUAL = "1"
     GREATER_THAN = "2"
     GREATER_THAN_OR_EQUAL = "3"
@@ -2967,7 +2967,7 @@ class KalturaSearchConditionComparison:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSourceType:
+class KalturaSourceType(object):
     LIMELIGHT_LIVE = "limeLight.LIVE_STREAM"
     FILE = "1"
     WEBCAM = "2"
@@ -2985,7 +2985,7 @@ class KalturaSourceType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaStorageProfileOrderBy:
+class KalturaStorageProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -2999,7 +2999,7 @@ class KalturaStorageProfileOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSyndicationFeedEntriesOrderBy:
+class KalturaSyndicationFeedEntriesOrderBy(object):
     CREATED_AT_DESC = "-createdAt"
     RECENT = "recent"
 
@@ -3011,7 +3011,7 @@ class KalturaSyndicationFeedEntriesOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaTaggedObjectType:
+class KalturaTaggedObjectType(object):
     ENTRY = "1"
     CATEGORY = "2"
 
@@ -3023,7 +3023,7 @@ class KalturaTaggedObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaThumbAssetOrderBy:
+class KalturaThumbAssetOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DELETED_AT_ASC = "+deletedAt"
     SIZE_ASC = "+size"
@@ -3041,7 +3041,7 @@ class KalturaThumbAssetOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaThumbParamsOrderBy:
+class KalturaThumbParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -3051,7 +3051,7 @@ class KalturaThumbParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaThumbParamsOutputOrderBy:
+class KalturaThumbParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -3061,7 +3061,7 @@ class KalturaThumbParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaTubeMogulSyndicationFeedCategories:
+class KalturaTubeMogulSyndicationFeedCategories(object):
     ANIMALS_AND_PETS = "Animals &amp; Pets"
     ARTS_AND_ANIMATION = "Arts &amp; Animation"
     AUTOS = "Autos"
@@ -3086,7 +3086,7 @@ class KalturaTubeMogulSyndicationFeedCategories:
 
 # @package External
 # @subpackage Kaltura
-class KalturaTubeMogulSyndicationFeedOrderBy:
+class KalturaTubeMogulSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
@@ -3106,7 +3106,7 @@ class KalturaTubeMogulSyndicationFeedOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUiConfOrderBy:
+class KalturaUiConfOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -3120,7 +3120,7 @@ class KalturaUiConfOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUploadTokenOrderBy:
+class KalturaUploadTokenOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -3132,7 +3132,7 @@ class KalturaUploadTokenOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserLoginDataOrderBy:
+class KalturaUserLoginDataOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -3142,7 +3142,7 @@ class KalturaUserLoginDataOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserOrderBy:
+class KalturaUserOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     CREATED_AT_DESC = "-createdAt"
@@ -3156,7 +3156,7 @@ class KalturaUserOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaUserRoleOrderBy:
+class KalturaUserRoleOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -3174,7 +3174,7 @@ class KalturaUserRoleOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaVideoCodec:
+class KalturaVideoCodec(object):
     NONE = ""
     APCH = "apch"
     APCN = "apcn"
@@ -3206,7 +3206,7 @@ class KalturaVideoCodec:
 
 # @package External
 # @subpackage Kaltura
-class KalturaWidgetOrderBy:
+class KalturaWidgetOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     CREATED_AT_DESC = "-createdAt"
 
@@ -3218,7 +3218,7 @@ class KalturaWidgetOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaYahooSyndicationFeedAdultValues:
+class KalturaYahooSyndicationFeedAdultValues(object):
     ADULT = "adult"
     NON_ADULT = "nonadult"
 
@@ -3230,7 +3230,7 @@ class KalturaYahooSyndicationFeedAdultValues:
 
 # @package External
 # @subpackage Kaltura
-class KalturaYahooSyndicationFeedCategories:
+class KalturaYahooSyndicationFeedCategories(object):
     ACTION = "Action"
     ANIMALS = "Animals"
     ART_AND_ANIMATION = "Art &amp; Animation"
@@ -3260,7 +3260,7 @@ class KalturaYahooSyndicationFeedCategories:
 
 # @package External
 # @subpackage Kaltura
-class KalturaYahooSyndicationFeedOrderBy:
+class KalturaYahooSyndicationFeedOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     NAME_ASC = "+name"
     PLAYLIST_ID_ASC = "+playlistId"
