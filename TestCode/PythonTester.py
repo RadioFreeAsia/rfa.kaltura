@@ -28,10 +28,29 @@
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+oldpath = sys.path
 
-from KalturaClient import *
-from KalturaMetadataClientPlugin import *
+codeDir = os.path.dirname(os.getcwd())
+
+sys.path.append(codeDir)
+
+from KalturaClient import KalturaClient
+from KalturaClientBase import IKalturaLogger
+from KalturaClientBase import KalturaConfiguration
+from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+
+from KalturaCoreClient import KalturaSessionType
+from KalturaCoreClient import KalturaMediaEntry, KalturaMediaEntryFilter, KalturaMediaEntryOrderBy
+from KalturaCoreClient import KalturaMediaType
+from KalturaCoreClient import KalturaDataEntry
+from KalturaCoreClient import KalturaException
+from KalturaCoreClient import KalturaFilterPager
+
+from KalturaCoreClient import API_VERSION
+testString = "API Test ver %s" % (API_VERSION,)
+
+sys.path = oldpath
+
 import logging
 import urllib
 import time
@@ -40,7 +59,6 @@ import re
 logging.basicConfig(level = logging.DEBUG,
                     format = '%(asctime)s %(levelname)s %(message)s',
                     stream = sys.stdout)
-
 # UPDATE THIS
 PARTNER_ID = 54321
 SECRET = "YOUR_USER_SECRET"
@@ -69,7 +87,20 @@ def SampleMetadataOperations():
     xsdFile = "MetadataSchema.xsd"
 
     client = KalturaClient(GetConfig())
-
+    
+    ###NOW, 3.1.6-flip the plugins are loaded only after Client instantiation,
+    ###        but not into global scope
+    ### Here, we bring them into global scope (preserving test code below)
+    ###     by going too deep into the API, IMHO.
+    ###
+    ### TODO: make this easier, but don't pollute namespaces above here
+    ### (eg, don't just append to sys.path)
+    KalturaMetadataProfile = KalturaObjectFactory.objectFactories['KalturaMetadataProfile']
+    KalturaMetadataObjectType = KalturaEnumsFactory.enumFactories['KalturaMetadataObjectType']    
+    KalturaMetadataProfileFilter = KalturaObjectFactory.objectFactories['KalturaMetadataProfileFilter']
+    KalturaMetadataFilter = KalturaObjectFactory.objectFactories['KalturaMetadataFilter']
+    KalturaMixEntry = KalturaObjectFactory.objectFactories['KalturaMixEntry']
+    
     # start new session (client session is enough when we do operations in a users scope)
     ks = client.generateSession(ADMIN_SECRET, USER_NAME, KalturaSessionType.ADMIN, PARTNER_ID, 86400, "")
     client.setKs(ks)
@@ -88,9 +119,11 @@ def SampleMetadataOperations():
     entries = client.media.list(search, pager).objects
 
     # make sure we have a metadata profile
-    profile = KalturaMetadataProfile()
-    profile.setName('TestProfile')
-    profile.setMetadataObjectType(KalturaMetadataObjectType.ENTRY)
+    profile = KalturaMetadataProfile() 
+    profile.setName('TestProfile %s' % (testString,))
+    MetadataObjectType = KalturaMetadataObjectType.ENTRY
+    
+    profile.setMetadataObjectType(MetadataObjectType)
     viewsData = ""
 
     newProfile = client.metadata.metadataProfile.add(profile, file(xsdFile, 'rb').read(), viewsData)
@@ -109,7 +142,7 @@ def SampleMetadataOperations():
 
     # Add a custom data entry in the KMC  (Settings -> Custom Data)
     profile = KalturaMetadataProfile()
-    profile.setName('TestProfile')
+    profile.setName('TestProfile %s' % (testString,))
     profile.setMetadataObjectType(KalturaMetadataObjectType.ENTRY)
     viewsData = ""
 
@@ -155,7 +188,10 @@ def SampleMetadataOperations():
 # copied from C# tester
 def AdvancedMultiRequestExample():
     client = KalturaClient(GetConfig())
-
+    KalturaMixEntry = KalturaObjectFactory.objectFactories['KalturaMixEntry']
+    KalturaEditorType = KalturaEnumsFactory.enumFactories['KalturaEditorType']
+    
+    
     client.startMultiRequest()
 
     # Request 1
@@ -163,7 +199,7 @@ def AdvancedMultiRequestExample():
     client.setKs(ks) # for the current multi request, the result of the first call will be used as the ks for next calls
 
     mixEntry = KalturaMixEntry()
-    mixEntry.setName(".Net Mix")
+    mixEntry.setName(".Net Mix %s" % (testString,))
     mixEntry.setEditorType(KalturaEditorType.SIMPLE)
 
     # Request 2
@@ -173,7 +209,7 @@ def AdvancedMultiRequestExample():
     uploadTokenId = client.media.upload(file('DemoVideo.flv', 'rb'))
 
     mediaEntry = KalturaMediaEntry()
-    mediaEntry.setName("Media Entry For Mix")
+    mediaEntry.setName("Media Entry For Mix %s" % (testString,))
     mediaEntry.setMediaType(KalturaMediaType.VIDEO)
 
     # Request 4
@@ -204,7 +240,7 @@ client.setKs(ks)
 uploadTokenId = client.media.upload(file('DemoVideo.flv', 'rb'))
 
 mediaEntry = KalturaMediaEntry()
-mediaEntry.setName("Media Entry Using Python Client")
+mediaEntry.setName("Media Entry Using Python Client ver %s" % (API_VERSION,))
 mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
 mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
 

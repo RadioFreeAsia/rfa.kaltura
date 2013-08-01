@@ -29,7 +29,7 @@
 # @subpackage Kaltura
 from KalturaClientBase import *
 
-API_VERSION = '3.1.6'
+API_VERSION = '3.1.6-flipmcf'
 
 ########## enums ##########
 # @package External
