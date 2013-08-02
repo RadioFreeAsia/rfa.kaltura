@@ -1,27 +1,29 @@
+import logging
+
 from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura.kalturaapi.KalturaClient import *
-#kaltura mucks around with sys.path when KalturaClient is imported
-# putting the plugins folder as a root package... yuck
-#from rfa.kaltura.kalturaapi.plugins.KalturaMetadataClientPlugin import *
-
-from KalturaMetadataClientPlugin import *
-
 
 from rfa.kaltura.config import PARTNER_ID, SECRET, ADMIN_SECRET, SERVICE_URL, USER_NAME
 
-#XXX Make plone logger, setlevel, etc
+logger = logging.getLogger("rfa.kaltura")
+
 class KalturaLogger(IKalturaLogger):
-    def log(self, msg):
-        logging.info(msg) 
+    def log(self, msg, summary='', level=logging.INFO):
+        logger.log(level, '%s \n%s', summary, msg)    
+    
+    
+LoggerInstance = KalturaLogger()
 
 def modifyVideo(context, event):
     
-    print "modifyVideo Event!"
+    LoggerInstance.log("modifyVideo Event!",
+                       summary="events.modifyVideo")
     
     url = kupload(context)
-    print "uploaded.  URL is %s" % (url,)
+    LoggerInstance.log("uploaded.  URL is %s" % (url,),
+                        summary="events.modifyVideo")    
     
     context.setplaybackUrl(url)
     
@@ -31,7 +33,6 @@ def kupload(FileObject):
        Currently Treats all objects as 'videos' - this should change
     """
     
-    import pdb; pdb.set_trace()
     #this check can be done better
     if not hasattr(FileObject, 'get_data'):
         print "nothing to upload to kaltura from object %s" % (str(FileObject),)
@@ -48,9 +49,11 @@ def kupload(FileObject):
     
     config = KalturaConfiguration(PARTNER_ID)
     config.serviceUrl = SERVICE_URL
-    config.setLogger(KalturaLogger())
+    config.setLogger(LoggerInstance)
     
     client = KalturaClient(config)
+    
+    
 
     # start new session (client session is enough when we do operations in a users scope)
     ks = client.generateSession(ADMIN_SECRET, USER_NAME, KalturaSessionType.ADMIN, PARTNER_ID, 86400, "")    
@@ -64,7 +67,7 @@ def kupload(FileObject):
 
     
     #do the upload
-    uploadTokenId = client.media.upload(file('/temp/tempfile', 'rb'))  
+    uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     
