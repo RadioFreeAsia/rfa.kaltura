@@ -277,24 +277,11 @@ class KalturaConfiguration(object):
     def getLogger(self):
         return self.logger
 
-# Client plugin interface class
-class IKalturaClientPlugin(object):
-    # @return KalturaClientPlugin
-    @staticmethod
-    def get():
-        raise NotImplementedError
-        
-    # @return array<KalturaServiceBase>
-    def getServices(self):
-        raise NotImplementedError
-        
-    # @return string
-    def getName(self):
-        raise NotImplementedError
+
         
 # Client plugin base class
-class KalturaClientPlugin(IKalturaClientPlugin):
-    pass
+from KalterInterfaces import IKalturaClientPlugin
+KalturaClientPlugin = IKalturaClientPlugin
 
 # Kaltura enums factory
 class KalturaEnumsFactory(object):
