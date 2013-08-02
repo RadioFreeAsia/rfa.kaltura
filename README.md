@@ -13,12 +13,13 @@ TestCode/PythonTester.py updated to use stricter imports (gives better examples 
 
 Imports of symbols created by plugins now are accessable through an awkward, but more strict syntax:
 
-  from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+    from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
   
-  client = KalturaClient() #must instantiate client to populate Factories
+    client = KalturaClient() #must instantiate client to populate Factories
   
-  KalturaMetadataProfile = KalturaObjectFactory.objectFactories['KalturaMetadataProfile']
-  KalturaMetadataObjectType = KalturaEnumsFactory.enumFactories['KalturaMetadataObjectType']
+    KalturaMetadataProfile = KalturaObjectFactory.objectFactories['KalturaMetadataProfile']
+    KalturaMetadataObjectType = KalturaEnumsFactory.enumFactories['KalturaMetadataObjectType']
+
   
   (see PythonTester.py)
   
