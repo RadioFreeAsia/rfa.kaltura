@@ -31,8 +31,6 @@ import os.path
 import sys
 
 clientRoot = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
-if not clientRoot in sys.path:
-    sys.path.append(clientRoot)
 
 from KalturaCoreClient import *
 from KalturaCuePointClientPlugin import *

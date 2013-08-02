@@ -55,8 +55,6 @@ except ImportError:
 register_openers()
 
 pluginsFolder = os.path.normpath(os.path.join(os.path.dirname(__file__), 'KalturaPlugins'))
-if not pluginsFolder in sys.path:
-    sys.path.append(pluginsFolder)
 
 class MultiRequestSubResult(object):
     def __init__(self, value):
@@ -102,21 +100,33 @@ class KalturaClient(object):
         if (logger):
             self.shouldLog = True
 
+        self.loadCore()
         self.loadPlugins()            
 
-    def loadPlugins(self):            
+    def loadCore(self):
+        from KalturaCoreClient import KalturaCoreClient
+        
+        corePlugin = KalturaCoreClient.get()
+        self.registerPluginServices(corePlugin)
+        self.registerPluginObjects(corePlugin)        
+        
+    def loadPlugins(self):
+        
         if not os.path.isdir(pluginsFolder):
             return
 
-        pluginList = ['KalturaCoreClient']
+        pluginList = []
         for fileName in os.listdir(pluginsFolder):
             (pluginClass, fileExt) = os.path.splitext(fileName)
             if fileExt.lower() != '.py':
                 continue
             pluginList.append(pluginClass)
 
+        oldpath = sys.path
+        sys.path.append(pluginsFolder)
         for pluginClass in pluginList:
             self.loadPlugin(pluginClass)
+        sys.path = oldpath
 
     def loadPlugin(self, pluginClass):
         pluginModule = __import__(pluginClass)
@@ -126,9 +136,12 @@ class KalturaClient(object):
         pluginClassType = getattr(pluginModule, pluginClass)
 
         plugin = pluginClassType.get()
-        if not isinstance(plugin, IKalturaClientPlugin):
-            return
+        
+        #No need to check this anymore if we use ABC (see interfaces.py)
+        #if not isinstance(plugin, IKalturaClientPlugin):
+        #    return
 
+        
         self.registerPluginServices(plugin)
         self.registerPluginObjects(plugin)
 

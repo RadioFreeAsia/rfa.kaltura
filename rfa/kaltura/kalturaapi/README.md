@@ -42,7 +42,8 @@ The API library depends on the following builtin python libraries:
 == TESTING THE CLIENT LIBRARY ==
   
 To run the test script that accompanies this source:
- - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester.py'
- - Run "python PythonTester.py"
+ - Copy TestCode/PythonTester.py to TestCode/PythonTester-secret.py
+ - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester-secret.py'
+ - Run "python PythonTester-secret.py"
 
 Note: The library was tested under ActivePython 2.5.5
