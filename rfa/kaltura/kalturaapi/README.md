@@ -3,7 +3,30 @@ For my own use (and hopefully others)
 
 Master is at API_VERSION = '3.1.6'  (June 30 2013)
 
-I (or anyone please!) will keep master updated with Kaltura's latest releases.
+Changes from 3.1.6:
+
+Plugin Interface (IKalturaClientPlugin) re-implemented with abc and moved to new interfaces.py
+Removed all changes to sys.path on imports
+Tightened up side-effect imports when importing other modules
+
+TestCode/PythonTester.py updated to use stricter imports (gives better examples now of where stuff is)
+
+Imports of symbols created by plugins now are accessable through an awkward, but more strict syntax:
+
+    from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+  
+    client = KalturaClient() #must instantiate client to populate Factories
+  
+    KalturaMetadataProfile = KalturaObjectFactory.objectFactories['KalturaMetadataProfile']
+    KalturaMetadataObjectType = KalturaEnumsFactory.enumFactories['KalturaMetadataObjectType']
+
+  
+  (see PythonTester.py)
+  
+TODO: come up with a better way of importing plugins than above
+TODO: separate Factory loading from client instantiation - maybe do on import of KalturaClientBase?
+
+I will keep master updated with Kaltura's latest releases.
 
 http://www.kaltura.com/api_v3/testme/client-libs.php
 

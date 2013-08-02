@@ -54,7 +54,9 @@ except ImportError:
 # Register the streaming http handlers with urllib2
 register_openers()
 
-pluginsFolder = os.path.normpath(os.path.join(os.path.dirname(__file__), 'KalturaPlugins'))
+apiRoot = os.path.dirname(__file__)
+pluginsFolder = os.path.normpath(os.path.join(apiRoot, 'KalturaPlugins'))
+
 
 class MultiRequestSubResult(object):
     def __init__(self, value):
@@ -123,6 +125,7 @@ class KalturaClient(object):
             pluginList.append(pluginClass)
 
         oldpath = sys.path
+        sys.path.append(apiRoot)
         sys.path.append(pluginsFolder)
         for pluginClass in pluginList:
             self.loadPlugin(pluginClass)
