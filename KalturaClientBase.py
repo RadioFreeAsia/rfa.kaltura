@@ -280,7 +280,7 @@ class KalturaConfiguration(object):
 
         
 # Client plugin base class
-from KalterInterfaces import IKalturaClientPlugin
+from KalturaInterfaces import IKalturaClientPlugin
 KalturaClientPlugin = IKalturaClientPlugin
 
 # Kaltura enums factory
