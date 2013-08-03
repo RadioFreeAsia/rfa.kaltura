@@ -25,7 +25,7 @@ def modifyVideo(context, event):
     LoggerInstance.log("uploaded.  URL is %s" % (url,),
                         summary="events.modifyVideo")    
     
-    context.setplaybackUrl(url)
+    context.setPlaybackUrl(url)
     
 def kupload(FileObject):
     """Provide an ATCTFileContent based object
@@ -68,6 +68,9 @@ def kupload(FileObject):
     
     #do the upload
     uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
+    
+    #del the temp file
+    os.remove('/tmp/tempfile')
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     

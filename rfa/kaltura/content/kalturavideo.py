@@ -3,16 +3,18 @@
 
 from zope.interface import implements
 
+from AccessControl import ClassSecurityInfo
+
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
-
 from Products.ATContentTypes.interface.file import IATFile
 from Products.ATContentTypes.interface.file import IFileContent
 from plone.app.blob.content import ATBlob
 from plone.app.blob.interfaces import IATBlobFile
 
-# -*- Message Factory Imported Here -*-
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('kaltura_video')
 
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.config import PROJECTNAME
@@ -44,6 +46,7 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      
      atapi.StringField('playbackUrl',
                        searchable=1,
+                       mutator="setPlaybackUrl",
                        widget=atapi.StringWidget(label="Kaltura Url",
                                                  visible={"edit" : "invisible"},
                                                  i18n_domain="kaltura_video")
@@ -74,8 +77,14 @@ class KalturaVideo(ATBlob):
 
     title = atapi.ATFieldProperty('title')
     description = atapi.ATFieldProperty('description')
+    
+    security = ClassSecurityInfo()
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
+    
+    security.declarePrivate("setPlaybackUrl")
+    def setPlaybackUrl(self, value):
+        self.getField('playbackUrl').set(self, value)
         
         
 
