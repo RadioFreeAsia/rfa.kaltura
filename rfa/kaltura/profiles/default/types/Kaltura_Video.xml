@@ -18,7 +18,7 @@
     <element value="base_view" />
   </property>
   <alias from="(Default)" to="(dynamic view)" />
-  <alias from="edit" to="atct_edit" />
+  <alias from="edit" to="base_edit" />
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
   <action title="View" action_id="view" category="object" condition_expr=""

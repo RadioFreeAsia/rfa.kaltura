@@ -47,8 +47,10 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      atapi.StringField('playbackUrl',
                        searchable=1,
                        mutator="setPlaybackUrl",
-                       widget=atapi.StringWidget(label="Kaltura Url",
-                                                 visible={"edit" : "invisible"},
+                       mode="rw",
+                       widget=atapi.ComputedWidget(label="Url",
+                                                 description="Url set by Kaltura after upload (read only)",
+                                                 visible = { 'edit' :'visible', 'view' : 'invisible' },
                                                  i18n_domain="kaltura_video")
                        ), 
                  
@@ -85,7 +87,5 @@ class KalturaVideo(ATBlob):
     security.declarePrivate("setPlaybackUrl")
     def setPlaybackUrl(self, value):
         self.getField('playbackUrl').set(self, value)
-        
-        
 
 atapi.registerType(KalturaVideo, PROJECTNAME)
