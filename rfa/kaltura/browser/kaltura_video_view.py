@@ -3,7 +3,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 class KalturaVideoView(BrowserView):
     
-    template = ViewPageTemplateFile('KalturaVideo.pt')
+    template = ViewPageTemplateFile('../skins/default/KalturaVideo.pt')
     
     def __call__(self):
         """
