@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="context/main_template/macros/master"
+      >
+
+    <metal:block fill-slot="content-core">
+        <div tal:define="width string:560;
+                         height string:315;">
+        
+            <iframe tal:attributes="width width; height height; src context/playbackUrl" 
+                    width="" height="" src="" 
+                    frameborder="0" allowfullscreen></iframe>
+        </div>
+    </metal:block>
+
+</html>
