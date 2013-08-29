@@ -17,11 +17,20 @@
     
     
   <!-- VIEWS -->
+  <!-- this view renders a read-only metadata view for editors 'view' -->
   <browser:page
-    name="kaltura_video_view"
+    name="meta_view"
     for="*"
     permission="zope2.View"
-    class=".kaltura_video_view.KalturaVideoView"
+    class=".kaltura_video.MetaView"
+    />
+    
+  <!--This view renders the video for playback in the browser - 'preview' -->
+  <browser:page
+    name="video_view"
+    for="*"
+    permission="zope.Public"
+    class=".kaltura_video.VideoView"
     />
 
 </configure>
