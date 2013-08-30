@@ -1,0 +1,16 @@
+<metal:macro metal:define-macro="videoframe"
+             tal:define="width width | nothing;
+                         height height | nothing;
+                         url playbackUrl | context/playbackUrl | nothing;">
+                         
+   <iframe tal:condition="url"
+           tal:attributes="src url;
+                           width width; height height;" 
+                    width="" height="" src="" 
+                    frameborder="0" allowfullscreen>
+                    Video Renders in Here
+                    Make sure your playbackUrl isn't tainted - this is an iframe.
+   </iframe>
+                         
+</metal:macro>
+                         

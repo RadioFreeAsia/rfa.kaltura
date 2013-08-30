@@ -50,7 +50,7 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                        mode="rw",
                        widget=atapi.ComputedWidget(label="Url",
                                                  description="Url set by Kaltura after upload (read only)",
-                                                 visible = { 'edit' :'visible', 'view' : 'invisible' },
+                                                 visible = { 'edit' :'visible', 'view' : 'visible' },
                                                  i18n_domain="kaltura_video")
                        ), 
                  
