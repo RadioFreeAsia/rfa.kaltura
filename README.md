@@ -44,31 +44,31 @@ Restart your zope instance<br>
 you _should_ see 'rfa.kaltura' as an available product to install<br>
 Install it.<br>
 
-Add your Kaltura Credentials
---
-look at the file kaltura_secret_config.py.editme  - do what it says.
 
 Once it's installed
 --
+As the portal manager, visit the site config and configure the add-on. 
+*Add your Kaltura API credentials
 
-Navigate to somewhere in plone, and "Create->Kaltura Video"<br>
+
+To test, navigate to somewhere in plone, and "Create->Kaltura Video"<br>
 upload a test video to plone like any other file object (there is one in the kalturaapi/TestCode directory)<br>
 hit 'save'<br>
 note the url (that's from kaltura)<br>
 go login to your kaltura console and note the file is there too.<br>
 
+when you request that object with the default view (or '/video_view') 
+you should get the default template that will play the video in an iframe.
 
-Now that it works
+
+---Document Skin layers---
+
+---Document Macros---
+
+
 ---
 
 Fork this repository and help!!!!
-
-
-
-
-
-
-
 
 
 --------
