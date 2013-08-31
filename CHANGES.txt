@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.2 (2013-08-30)
+Basic Funcionality for video uploads
+API Keys stored in plone.registry through add-on config
+Basic Template, Basic Macro (iframe render directly links to video - no player)
+Basic Archetype for Kaltura Video content type
+events to upload on object create and modify.
+Kaltura Python API included in product
+
 0.1 (xxxx-xx-xx)
 ----------------
 
