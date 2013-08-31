@@ -8,7 +8,7 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('rfa.kaltura')
 
 
-class ISettings(Interface):
+class IRfaKalturaSettings(Interface):
     """ Define settings data structure 
           PARTNER_ID = 54321
           SECRET = "YOUR_USER_SECRET"
@@ -17,10 +17,10 @@ class ISettings(Interface):
           USER_NAME = "testUser"
     """
 
-    partnerId = schema.TextLine(title=u"Partner Id",
+    partnerId = schema.Int(title=u"Partner Id",
                                 description=u"enter your 5-digit Partner ID",
                                 required=True,
-                                default=u"54321")
+                                default=54321)
     
     secret = schema.TextLine(title=u"User Secret",
                              description=u"enter your 32-character User Secret",
@@ -44,9 +44,15 @@ class ISettings(Interface):
     
 
 class SettingsEditForm(controlpanel.RegistryEditForm):
-    schema = ISettings
+    schema = IRfaKalturaSettings
     label = u"rfa.kaltura settings"
     description = u""""""
+    
+    def updateFields(self):
+        super(SettingsEditForm, self).updateFields()    
+    
+    def updateWidgets(self):
+        super(SettingsEditForm, self).updateWidgets()    
 
 class SettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     form = SettingsEditForm

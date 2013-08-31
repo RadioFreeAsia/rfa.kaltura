@@ -5,7 +5,7 @@ from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura.kalturaapi.KalturaClient import *
 
-from rfa.kaltura.config import PARTNER_ID, SECRET, ADMIN_SECRET, SERVICE_URL, USER_NAME
+from rfa.kaltura import credentials
 
 logger = logging.getLogger("rfa.kaltura")
 
@@ -33,6 +33,8 @@ def kupload(FileObject):
        Currently Treats all objects as 'videos' - this should change
     """
     
+    creds = credentials.getCredentials()
+    
     #this check can be done better
     if not hasattr(FileObject, 'get_data'):
         print "nothing to upload to kaltura from object %s" % (str(FileObject),)
@@ -47,8 +49,8 @@ def kupload(FileObject):
     name = FileObject.Title()
     ProviderId = FileObject.UID()
     
-    config = KalturaConfiguration(PARTNER_ID)
-    config.serviceUrl = SERVICE_URL
+    config = KalturaConfiguration(creds['PARTNER_ID'])
+    config.serviceUrl = creds['SERVICE_URL']
     config.setLogger(LoggerInstance)
     
     client = KalturaClient(config)
@@ -56,7 +58,12 @@ def kupload(FileObject):
     
 
     # start new session (client session is enough when we do operations in a users scope)
-    ks = client.generateSession(ADMIN_SECRET, USER_NAME, KalturaSessionType.ADMIN, PARTNER_ID, 86400, "")    
+    ks = client.generateSession(creds['ADMIN_SECRET'], 
+                                creds['USER_NAME'],
+                                KalturaSessionType.ADMIN, 
+                                creds['PARTNER_ID'],
+                                86400,   #XXX look up what this does...
+                                "")    
     client.setKs(ks)
         
     #create an entry
