@@ -58,18 +58,19 @@ Install it.<br>
 Once it's installed
 --
 As the portal manager, visit the site config and configure the add-on. 
-*Add your Kaltura API credentials
+
+
 
 To retrieve the Credentials for filling out the add-on configuration:
 
-Service URL: Set this as the same url you use to login to the Kaltura Management Console
-Username: the username you use to login to the Kaltura Management Console
+Service URL: Set this as the same url you use to login to the Kaltura Management Console<br>
+Username: the username you use to login to the Kaltura Management Console<br>
 
 Partner ID, Admin Secret, User Secret:
 
-1: Login to kaltura management console.
-2: Go to Settings->Integration Settings
-3: Retrieve Partner ID, UserSecret and Admin secret from here.
+1: Login to kaltura management console.<br>
+2: Go to Settings->Integration Settings<br>
+3: Retrieve Partner ID, UserSecret and Admin secret from here.<br>
 
 
 To test, navigate to somewhere in plone, and "Create->Kaltura Video"<br>
