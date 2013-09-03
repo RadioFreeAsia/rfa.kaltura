@@ -20,21 +20,28 @@ You're probably going to want to do something like this:
 [buildout]
 ...
 extensions = mr.developer
-auto-checkout = rfa.kaltura
+
+auto-checkout = 
+...
+   rfa.kaltura
+eggs =
+...
+   rfa.kaltura
 
 [sources]
 ...
 rfa.kaltura = git https://github.com/flipmcf/Products.Kaltura.git
+
+
 </code></pre>
 
 and run ./bin/buildout
 
 
-Old-School Gimme The Source
+From Source
 --
-git clone this into your src/ directory in your plone instance.<br>
+git clone this repository into the src/ directory in your plone instance.<br>
 run setup.py<br>
-pray to god.<br>
 
 
 
