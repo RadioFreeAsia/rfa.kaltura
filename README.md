@@ -12,8 +12,10 @@ Just barely functional, but it works.
 
 Here are some installation 'suggestions' because I haven't run through a full installation test:
 
-Buildout:
---
+Installation:
+----
+
+VIA BUILDOUT:<br/>
 You're probably going to want to do something like this:
 
 <pre><code>
@@ -38,8 +40,8 @@ rfa.kaltura = git https://github.com/flipmcf/Products.Kaltura.git
 and run ./bin/buildout
 
 
-From Source
---
+FROM SOURCE
+
 git clone this repository into the src/ directory in your plone instance.<br>
 run setup.py<br>
 
