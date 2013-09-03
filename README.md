@@ -1,8 +1,8 @@
 Products.Kaltura
 ================
-but call it rfa.kaltura right now (company name).(package name)
+It's rfa.kaltura right now (company name).(package name)
 
-This is so alpha, but it's working.
+Version 0.2 - Alpha.
 
 
 Kaltura Video Integration with Plone
@@ -10,13 +10,13 @@ Kaltura Video Integration with Plone
 
 Just barely functional, but it works.
 
-Here are some installation 'suggestions' because I haven't run through a full installation test:
-
 Installation:
 ----
 
 VIA BUILDOUT:<br/>
-You're probably going to want to do something like this:
+
+edit your buildout.cfg to include this git repository as a source with auto-checkout using mr.developer.<br/>
+And add it to your list of eggs to install.
 
 <pre><code>
 [buildout]
@@ -37,7 +37,7 @@ rfa.kaltura = git https://github.com/flipmcf/Products.Kaltura.git
 
 </code></pre>
 
-and run ./bin/buildout
+Run ./bin/buildout
 
 
 FROM SOURCE
@@ -45,6 +45,7 @@ FROM SOURCE
 git clone this repository into the src/ directory in your plone instance.<br>
 run setup.py<br>
 
+Remember to edit the sys.path line in bin/instance to include the path to the rfa.kaltura source.
 
 
 Once it's built into zope
