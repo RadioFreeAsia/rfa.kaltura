@@ -8,14 +8,8 @@ from KalturaClientBase import KalturaObjectFactory
 class FlavorAssetTests(KalturaBaseTest):
      
     def test_list(self):
-        filt = KalturaObjectFactory.objectFactories['KalturaAssetFilter']()
-        pager = KalturaObjectFactory.objectFactories['KalturaFilterPager']()
-        
-        filt.setCreatedAtLessThanOrEqual(2000)
-        filt.entryIdIn = "17423171"
-        pager.pageSize = 10
         flavAsst = self.client.flavorAsset
-        flavAsstList = flavAsst.list(filter=None, pager=pager)
+        flavAsstList = flavAsst.list()
         self.assertIsInstance(flavAsstList, list)
         
         
