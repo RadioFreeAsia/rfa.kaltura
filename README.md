@@ -63,10 +63,21 @@ The API library depends on the following builtin python libraries:
  - xml.parsers.expat
  
 == TESTING THE CLIENT LIBRARY ==
+
+Test code is based on python unittest framework.
+
+run the entire test suite:
+ - copy test/secret_config_example.py to test/secret_config.py
+ - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester-secret.py'
+ - run the command `python -m unittest discover`
+ 
   
-To run the test script that accompanies this source:
+To run the origional test script that accompanies this source:
  - Copy TestCode/PythonTester.py to TestCode/PythonTester-secret.py
  - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester-secret.py'
- - Run "python PythonTester-secret.py"
+ - Run `python PythonTester-secret.py`
 
-Note: The library was tested under ActivePython 2.5.5
+Note: 
+The library was origionally tested under ActivePython 2.5.5
+The library is currently tested with Python 2.7.3 (default, Apr 10 2013, 06:20:15) [GCC 4.6.3] on linux2
+
