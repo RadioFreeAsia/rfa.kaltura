@@ -59,12 +59,8 @@ import re
 logging.basicConfig(level = logging.DEBUG,
                     format = '%(asctime)s %(levelname)s %(message)s',
                     stream = sys.stdout)
-# UPDATE THIS
-PARTNER_ID = 54321
-SECRET = "YOUR_USER_SECRET"
-ADMIN_SECRET = "YOUR_ADMIN_SECRET"
-SERVICE_URL = "http://www.kaltura.com"
-USER_NAME = "testUser"
+
+from secret_config import *
 
 class KalturaLogger(IKalturaLogger):
     def log(self, msg):
@@ -191,7 +187,6 @@ def AdvancedMultiRequestExample():
     KalturaMixEntry = KalturaObjectFactory.objectFactories['KalturaMixEntry']
     KalturaEditorType = KalturaEnumsFactory.enumFactories['KalturaEditorType']
     
-    
     client.startMultiRequest()
 
     # Request 1
@@ -225,6 +220,7 @@ def AdvancedMultiRequestExample():
             print "Error occurred: " + subResponse.message
 
     # when accessing the response object we will use an index and not the response number (response number - 1)
+    import pdb; pdb.set_trace()
     assert(isinstance(response[1], KalturaMixEntry))
     mixEntry = response[1]
     

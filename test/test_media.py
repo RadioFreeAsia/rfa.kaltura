@@ -14,7 +14,7 @@ class MediaTests(KalturaBaseTest):
         objs = resp.objects
         self.assertIsInstance(objs, list)
         
-        [assertIsInstance(o, KalturaCoreClient.KalturaMediaEntry) for o in objs]
+        [self.assertIsInstance(o, KalturaCoreClient.KalturaMediaEntry) for o in objs]
 
 
 import unittest
