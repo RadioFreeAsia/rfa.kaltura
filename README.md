@@ -1,7 +1,7 @@
 This is an attempt at some cleanup of Kaltura's Python API
 For my own use (and hopefully others)
 
-Master is at API_VERSION = '3.1.6'  (June 30 2013)
+API_VERSION = '3.1.6'  (June 30 2013)
 
 Changes from 3.1.6:
 
