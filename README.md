@@ -78,6 +78,6 @@ To run the origional test script that accompanies this source:
  - Run `python PythonTester-secret.py`
 
 Note: 
-The library was origionally tested under ActivePython 2.5.5
-The library is currently tested with Python 2.7.3 (default, Apr 10 2013, 06:20:15) [GCC 4.6.3] on linux2
+ - The library was origionally tested under ActivePython 2.5.5
+ - The library is currently tested with Python 2.7.3 (default, Apr 10 2013, 06:20:15) [GCC 4.6.3] on linux2
 
