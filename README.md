@@ -23,19 +23,23 @@ Imports of symbols created by plugins now are accessable through an awkward, but
   
   (see PythonTester.py)
   
- - TODO: come up with a better way of importing plugins than above
- - TODO: separate Factory loading from client instantiation - maybe do on import of KalturaClientBase?
 
-I will keep master updated with Kaltura's latest releases.
-
-http://www.kaltura.com/api_v3/testme/client-libs.php
+I will keep master updated with Kaltura's latest releases at http://www.kaltura.com/api_v3/testme/client-libs.php
 
 Docs:
 
 http://www.kaltura.com/api_v3/testmeDoc/index.php
 
+ToDo:
+ -  come up with a better way of importing plugins than above
+ -  separate Factory loading from client instantiation - maybe do on import of KalturaClientBase?
+
+
 Twitter:
 follow @Kaltura_API for updates
+
+IRC:
+I am trying to make a habit of hanging out in #kaltura on freenode
 
 This source contains:
  - The Kaltura client library (KalturaClient.py & KalturaClientBase.py)
