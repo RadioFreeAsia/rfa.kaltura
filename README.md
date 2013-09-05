@@ -67,8 +67,8 @@ The API library depends on the following builtin python libraries:
 Test code is based on python unittest framework.
 
 run the entire test suite:
- - copy test/secret_config_example.py to test/secret_config.py
- - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester-secret.py'
+ - copy test/secret_config_example.py to 'test/secret_config.py'
+ - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'test/secret_config.py'
  - run the command `python -m unittest discover`
  
   
