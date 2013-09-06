@@ -14,7 +14,9 @@
       <h1 tal:content="context/Title">Title</h1>
       <p class="description" tal:content="context/description"> description </p>
         
-      <metal:video metal:use-macro="context/KalturaVideoMacros/macros/videoframe"></metal:video>
+      <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
+        Dynamic Embedding Example
+      </metal:video>
       
     </div>
   </body>

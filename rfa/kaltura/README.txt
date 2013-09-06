@@ -47,7 +47,6 @@ Finally, let's return to the front page of our site before continuing
 
     >>> browser.open(portal_url)
 
--*- extra stuff goes here -*-
 The Kaltura Video content type
 ===============================
 
