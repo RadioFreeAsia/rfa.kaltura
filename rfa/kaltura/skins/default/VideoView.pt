@@ -14,11 +14,90 @@
       <h1 tal:content="context/Title">Title</h1>
       <p class="description" tal:content="context/description"> description </p>
         
-      <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
-        Dynamic Embedding Example
-      </metal:video>
+
+      <hr>
+      <div>
+        <h2> Test Dynamic Embed Macro </h2>
+        <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
+          Dynamic Embedding Example
+        </metal:video>
+      </div>
       
-    </div>
+      <hr>
+      <div>
+        <h2> Manual Pasted Embed Code for Flash </h2>
+        <script src="http://cdnapi.kaltura.com/p/1475532/sp/147553200/embedIframeJs/uiconf_id/17423171/partner_id/1475532"></script>
+	<object id="kaltura_player_1378495471" name="kaltura_player_1378495471" type="application/x-shockwave-flash" allowFullScreen="true" allowNetworking="all" allowScriptAccess="always" height="395" width="560" bgcolor="#000000" style="width: 560px; height: 395px;" xmlns:dc="http://purl.org/dc/terms/" xmlns:media="http://search.yahoo.com/searchmonkey/media/" rel="media:video" resource="http://cdnapi.kaltura.com/index.php/kwidget/cache_st/1378495471/wid/_1475532/uiconf_id/17423171/entry_id/1_ixufeqs2" data="http://cdnapi.kaltura.com/index.php/kwidget/cache_st/1378495471/wid/_1475532/uiconf_id/17423171/entry_id/1_ixufeqs2">
+	    <param name="allowFullScreen" value="true" />
+	    <param name="allowNetworking" value="all" />
+	    <param name="allowScriptAccess" value="always" />
+	    <param name="bgcolor" value="#000000" />
+	    <param name="flashVars" value="" />
+	    <param name="movie" value="http://cdnapi.kaltura.com/index.php/kwidget/cache_st/1378495471/wid/_1475532/uiconf_id/17423171/entry_id/1_ixufeqs2" />
+	
+	    <a rel="media:thumbnail" href=""></a>
+	    <span property="dc:description" content=""></span>
+	    <span property="media:title" content="Media Entry For Mix API Test ver 3.1.6-flipmcf"></span>
+	    <span property="media:width" content="560"></span>
+	    <span property="media:height" content="395"></span>
+	    <span property="media:type" content="application/x-shockwave-flash"></span>	
+	    <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
+	    <a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a> 
+	    <a href="http://corp.kaltura.com/Video-Solutions">Video Solutions</a>
+	    <a href="http://corp.kaltura.com/Products/Features/Video-Player">Video Player</a>
+	</object>
+       </div>
+      
+       <hr>
+       <div>
+        <h2> Manual Pasted Embed Code for "Auto Embed" </h2>
+	
+	<div id="kaltura_player_1378500305" style="width: 560px; height: 395px;" 
+	     itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+          <span itemprop="name" content="Media Entry For Mix API Test ver 3.1.6-flipmcf"></span>
+	  <span itemprop="description" content=""></span>
+          <span itemprop="duration" content=""></span>
+          <span itemprop="thumbnail" content=""></span>
+          <span itemprop="width" content="560"></span>
+          <span itemprop="height" content="395"></span>
+          <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
+          <a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a> 
+	  <a href="http://corp.kaltura.com/Video-Solutions">Video Solutions</a>
+          <a href="http://corp.kaltura.com/Products/Features/Video-Player">Video Player</a>
+	</div>
+	<script src="http://cdnapi.kaltura.com/p/1475532/sp/147553200/embedIframeJs/uiconf_id/17423171/partner_id/1475532?autoembed=true&entry_id=1_ixufeqs2&playerId=kaltura_player_1378500305&cache_st=1378500305&width=560&height=395"></script>
+       </div>
+      
+       <hr>
+       <div>
+        <h2> Manual Pasted Embed Code for "Dynamic Embed" </h2>
+       
+	<script src="http://cdnapi.kaltura.com/p/1475532/sp/147553200/embedIframeJs/uiconf_id/17423171/partner_id/1475532"></script>
+	<div id="kaltura_player_1378500750" style="width: 560px; height: 395px;" 
+              itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+	  <span itemprop="name" content="Media Entry For Mix API Test ver 3.1.6-flipmcf"></span>
+	  <span itemprop="duration" content=""></span>
+          <span itemprop="thumbnail" content=""></span>
+          <span itemprop="width" content="560"></span>
+          <span itemprop="height" content="395"></span>
+          <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
+          <a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a> 
+          <a href="http://corp.kaltura.com/Video-Solutions">Video Solutions</a>
+          <a href="http://corp.kaltura.com/Products/Features/Video-Player">Video Player</a>
+        </div>
+        <script>
+         kWidget.embed({
+         "targetId": "kaltura_player_1378500750",
+         "wid": "_1475532",
+         "uiconf_id": 17423171,
+         "flashvars": {},
+         "cache_st": 1378500750,
+         "entry_id": "1_ixufeqs2"
+        });
+        </script>
+      </div>
+
+    </div> <!-- videopage container div -->
   </body>
    
 </html>

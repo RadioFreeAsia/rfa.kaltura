@@ -5,6 +5,7 @@ from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
 
+
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
 from Products.ATContentTypes.content import schemata
@@ -18,6 +19,7 @@ _ = MessageFactory('kaltura_video')
 
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.config import PROJECTNAME
+from rfa.kaltura.credentials import getCredentials
 
 ###XXX Todo: create base class ExternalMediaEntry 
 ##based off of http://www.kaltura.com/api_v3/testmeDoc/index.php?object=KalturaExternalMediaEntry
@@ -57,10 +59,11 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                i18n_domain="kaltura_video")
                       ),
                       
+                    
      atapi.StringField('playbackUrl',
                        searchable=0,
-                       mutator="setPlaybackUrl",
-                       mode="rw",
+                       accessor="getPlaybackUrl",
+                       mode="r",
                        widget=atapi.ComputedWidget(label="Url",
                                                  description="Url set by Kaltura after upload (read only)",
                                                  visible = { 'edit' :'visible', 'view' : 'visible' },
@@ -70,6 +73,7 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      atapi.StringField('entryId',
                        searchable=0,
                        mode='r',
+                       accesssor="getEntryId",
                        widget=atapi.ComputedWidget(label="Entry Id",
                                                  description="Entry Id set by Kaltura after upload (read only)",
                                                  visible = { 'edit' :'visible', 'view' : 'visible' },
@@ -78,7 +82,8 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      
      atapi.StringField('playerId',
                        searchable=0,
-                       mutator="setPlayerId",
+                       accessor="getPlayerId",
+                       mutator="setPlayerId", 
                        mode='rw',
                        widget=atapi.StringWidget(label="Player Id",
                                                  label_msgid="label_kplayerid_msgid",
@@ -86,20 +91,20 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                  description_msgid="desc_kplayerid_msgid",
                                                  i18n_domain="kaltura_video"),
                        ),
-                       
      
-     #atapi.StringField('embedCode',
-                       #searchable=0,
-                       #mutator="setEmbedCode",
-                       #accessor="getEmbedCode",
-                       #mode="r",
-                       #widget=atapi.TextAreaWidget(label="Embed Code",
-                                                   #description="Embed code",
-                                                   #i18n_domain="kaltura_video",)
-                       #),
-    
-    ),
-
+     atapi.StringField('partnerId',
+                       searchable=0,
+                       mode='rw',
+                       default_method="getDefaultPartnerId",
+                       widget=atapi.StringWidget(label="Partner Id",
+                                                 label_msgid="label_kpartnerid_msgid",
+                                                 description="Kaltura Partner Id (use default if unsure)",
+                                                 description_msgid="desc_kpartnerid_msgid",
+                                                 i18n_domain="kaltura_video"),
+                                             
+                                             
+                      ),                      
+     ),
 )
 
 # Set storage on fields copied from ATContentTypeSchema, making sure
@@ -122,11 +127,42 @@ class KalturaVideo(ATBlob):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
+    KMediaEntry = None
+    
+    def __init__(self, oid, **kwargs):
+        super(KalturaVideo, self).__init__(oid, **kwargs)
+        self.KMediaEntry = None
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
-    security.declarePrivate("setPlaybackUrl")
-    def setPlaybackUrl(self, value):
-        self.getField('playbackUrl').set(self, value)
+    security.declarePrivate("getPlaybackUrl")
+    def getPlaybackUrl(self):
+        if self.KMediaEntry is not None:
+            return self.KMediaEntry.getDataUrl()
+        else:
+            return None
+        
+    playbackUrl = property(getPlaybackUrl)
+        
+    security.declarePublic("getEntryId")
+    def getEntryId(self):
+        if self.KMediaEntry is not None:
+            return self.KMediaEntry.getId()
+        else:
+            return None
+        
+    entryId = property(getEntryId)        
+        
+        
+    security.declarePrivate("setMediaEntry")
+    def setMediaEntry(self, obj):
+        self.KMediaEntry = obj
 
+
+    security.declarePrivate('getDefaultPartnerId')
+    def getDefaultPartnerId(self):
+        return getCredentials()['PARTNER_ID']
+    
+        
+        
 atapi.registerType(KalturaVideo, PROJECTNAME)

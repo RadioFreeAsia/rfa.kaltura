@@ -18,14 +18,11 @@ LoggerInstance = KalturaLogger()
 
 def modifyVideo(context, event):
     
-    LoggerInstance.log("modifyVideo Event!",
-                       summary="events.modifyVideo")
-    
-    url = kupload(context)
-    LoggerInstance.log("uploaded.  URL is %s" % (url,),
+    KMediaEntry = kupload(context)
+    LoggerInstance.log("uploaded.  MediaEntry %s" % (KMediaEntry.__repr__()),
                         summary="events.modifyVideo")    
     
-    context.setPlaybackUrl(url)
+    context.setMediaEntry(KMediaEntry)
     
 def kupload(FileObject):
     """Provide an ATCTFileContent based object
@@ -81,7 +78,6 @@ def kupload(FileObject):
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     
-    #grab the playback url
-    return mediaEntry.dataUrl
+    return mediaEntry
 
     
