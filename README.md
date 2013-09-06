@@ -10,6 +10,10 @@ Kaltura Video Integration with Plone
 
 Just barely functional, but it works.
 
+
+CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
+
+
 Installation:
 ----
 
@@ -88,9 +92,22 @@ you should get the default template that will play the video in an iframe.
 ---Document Macros---
 
 
+Development
 ---
 
-Fork this repository and help!!!!
+Note that this repository contains a subtree of another git repository: the Kaltura API
+
+This repository uses the subtree-merge method to manage external repositories see https://help.github.com/articles/working-with-subtree-merge
+
+In a Nutshell, follow these rules of the road:
+ - 1.  Never change and commit code under the kalturaapi directory, this code is maintained as a subtree.
+ - - if you wish to change code in the api, see https://github.com/flipmcf/Kaltura_API_Python/
+ - 2.  The 'best working state' will always be what's in Products.Kaltura - even if the kalturaapi directory is behind a few revisions.  Trust THIS repository implicitly
+ - 3.  In the event changes from Kaltura_API_Python must be merged into Products.Kaltura follow this:
+ - - checkout / pull a clean local copy of Products.Kaltura with no local changes
+ - - git pull -s subtree kalturaapi 3.1.6-flip   (3.1.6-flip branch of Kaltura_API_Python is currently what we pull from.)
+
+
 
 
 --------
