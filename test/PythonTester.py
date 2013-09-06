@@ -220,7 +220,6 @@ def AdvancedMultiRequestExample():
             print "Error occurred: " + subResponse.message
 
     # when accessing the response object we will use an index and not the response number (response number - 1)
-    import pdb; pdb.set_trace()
     assert(isinstance(response[1], KalturaMixEntry))
     mixEntry = response[1]
     
