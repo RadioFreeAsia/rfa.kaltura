@@ -44,7 +44,7 @@
     
     <script src="http://cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}"
             tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}"></script>
-    <div id="{UNIQUE_OBJ_ID}" style="width:400px;height:330px;"
+    <div id="{UNIQUE_OBJ_ID}" style="width:400px;height:330px"
          tal:attributes="id UNIQUE_OBJ_ID"></div> 
 
    <script

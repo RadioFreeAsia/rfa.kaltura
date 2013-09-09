@@ -9,13 +9,13 @@
   <property name="content_icon">document_icon.gif</property>
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
-  <property name="immediate_view">video_view</property>
+  <property name="immediate_view">VideoView</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
   <property name="allow_discussion">True</property>
-  <property name="default_view">video_view</property>
+  <property name="default_view">VideoView</property>
   <property name="view_methods">
-    <element value="video_view" />
+    <element value="VideoView" />
   </property>
   <property name="default_view_fallback">False</property>
   <alias from="(Default)" to="base_view" />

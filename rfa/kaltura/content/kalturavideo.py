@@ -42,6 +42,7 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      atapi.StringField('description',
                        searchable=0,
                        required=True,
+                       accessor="Description",
                        widget=atapi.StringWidget(label="Description",
                                                  label_msgid="label_kvideofile_desc",
                                                  description="Enter a description",

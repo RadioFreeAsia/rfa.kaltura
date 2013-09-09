@@ -12,7 +12,7 @@
                      url context/playbackUrl;">
                      
       <h1 tal:content="context/Title">Title</h1>
-      <p class="description" tal:content="context/description"> description </p>
+      <p class="description" tal:content="context/Description"> description </p>
         
 
       <hr>
