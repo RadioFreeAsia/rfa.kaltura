@@ -18,7 +18,7 @@ class IRfaKalturaSettings(Interface):
     """
 
     partnerId = schema.Int(title=u"Partner Id",
-                                description=u"enter your 5-digit Partner ID",
+                                description=u"enter your Partner ID",
                                 required=True,
                                 default=54321)
     
