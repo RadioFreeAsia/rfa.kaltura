@@ -8,6 +8,9 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('rfa.kaltura')
 
 
+
+    
+
 class IRfaKalturaSettings(Interface):
     """ Define settings data structure 
           PARTNER_ID = 54321
@@ -18,9 +21,10 @@ class IRfaKalturaSettings(Interface):
     """
 
     partnerId = schema.Int(title=u"Partner Id",
-                                description=u"enter your Partner ID",
-                                required=True,
-                                default=54321)
+                           __name__='partnerId',
+                           description=u"enter your Partner ID",
+                           required=True,
+                           default=54321)
     
     secret = schema.TextLine(title=u"User Secret",
                              description=u"enter your 32-character User Secret",
@@ -49,10 +53,55 @@ class SettingsEditForm(controlpanel.RegistryEditForm):
     description = u""""""
     
     def updateFields(self):
-        super(SettingsEditForm, self).updateFields()    
+        super(SettingsEditForm, self).updateFields()
+        self.fields['partnerId'].widgetFactory = IntFieldWidget        
     
     def updateWidgets(self):
         super(SettingsEditForm, self).updateWidgets()    
-
+        
 class SettingsControlPanel(controlpanel.ControlPanelFormWrapper):
     form = SettingsEditForm
+    
+##############
+
+import zope.interface
+import zope.component
+import zope.schema.interfaces
+
+import z3c.form.interfaces
+from z3c.form.widget import FieldWidget
+from z3c.form.browser.text import TextWidget
+from z3c.form import converter
+
+class IIntWidget(z3c.form.interfaces.ITextWidget):
+    """Int Widget"""
+    
+class IntWidget(TextWidget):
+    zope.interface.implementsOnly(IIntWidget)
+    klass = u'int-widget'
+    value = u''
+
+@zope.component.adapter(zope.schema.interfaces.IField, z3c.form.interfaces.IFormLayer)
+@zope.interface.implementer(z3c.form.interfaces.IFieldWidget)
+def IntFieldWidget(field, request):
+    """IFieldWidget factory for IntWidget."""
+    return FieldWidget(field, IntWidget(request))
+
+zope.component.provideAdapter(IntFieldWidget)
+
+class NoFormatIntegerDataConverter(converter.IntegerDataConverter):
+    """ data converter that ignores the formatter, 
+        simply returns the unicode representation of the integer value
+
+        The base class for this calls upon the locale for a formatter.
+        This completely avoids calling the locale.
+    """
+    
+    zope.component.adapts(zope.schema.interfaces.IInt, IIntWidget)    
+
+    def toWidgetValue(self, value):
+        if value is self.field.missing_value:
+            return u''
+        return unicode(value)
+    
+zope.component.provideAdapter(NoFormatIntegerDataConverter)
