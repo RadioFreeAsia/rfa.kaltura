@@ -1,4 +1,3 @@
-import fixpypath
 from utils import GetConfig
 from utils import KalturaBaseTest
 

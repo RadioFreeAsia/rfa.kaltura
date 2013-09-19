@@ -28,7 +28,6 @@
 
 import os
 
-import fixpypath
 from utils import GetConfig
 from utils import getTestFile
 from utils import KalturaBaseTest
