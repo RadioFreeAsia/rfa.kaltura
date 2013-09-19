@@ -276,21 +276,6 @@ class KalturaConfiguration(object):
     # Gets the logger (internal client use)
     def getLogger(self):
         return self.logger
-
-# Client plugin interface class
-class IKalturaClientPlugin:
-    # @return KalturaClientPlugin
-    @staticmethod
-    def get():
-        raise NotImplementedError
-        
-    # @return array<KalturaServiceBase>
-    def getServices(self):
-        raise NotImplementedError
-        
-    # @return string
-    def getName(self):
-        raise NotImplementedError
         
 # Client plugin base class
 from KalturaInterfaces import IKalturaClientPlugin
