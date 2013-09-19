@@ -34,21 +34,21 @@ from utils import getTestFile
 from utils import KalturaBaseTest
 from utils import KalturaLogger
 
-import KalturaCoreClient
-from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+from KalturaClient import *
 
-from KalturaClient import KalturaClient
-from KalturaClientBase import KalturaConfiguration
-from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 
-from KalturaCoreClient import KalturaSessionType
-from KalturaCoreClient import KalturaMediaEntry, KalturaMediaEntryFilter, KalturaMediaEntryOrderBy
-from KalturaCoreClient import KalturaMediaType
-from KalturaCoreClient import KalturaDataEntry
-from KalturaCoreClient import KalturaException
-from KalturaCoreClient import KalturaFilterPager
+from KalturaClient.Base import KalturaConfiguration
+from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 
-from KalturaCoreClient import API_VERSION
+from KalturaClient.Plugins.Core import KalturaSessionType
+from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaEntryFilter, KalturaMediaEntryOrderBy
+from KalturaClient.Plugins.Core import KalturaMediaType
+from KalturaClient.Plugins.Core import KalturaDataEntry
+from KalturaClient.Plugins.Core import KalturaException
+from KalturaClient.Plugins.Core import KalturaFilterPager
+
+from KalturaClient.Plugins.Core import API_VERSION
 testString = "API Test ver %s" % (API_VERSION,)
 
 import urllib
@@ -211,7 +211,8 @@ class MultiRequestTests(KalturaBaseTest):
         mixEntry = self.client.mixing.add(mixEntry)
     
         # Request 3
-        uploadTokenId = self.client.media.upload(file('DemoVideo.flv', 'rb'))
+        ulFile = getTestFile('DemoVideo.flv')
+        uploadTokenId = self.client.media.upload(ulFile)
     
         mediaEntry = KalturaMediaEntry()
         mediaEntry.setName("Media Entry For Mix %s" % (testString,))

@@ -2,7 +2,7 @@ import fixpypath
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaCoreClient
+import KalturaClient.Plugins.Core as KalturaCoreClient
 
 class WidgetTests(KalturaBaseTest):
      

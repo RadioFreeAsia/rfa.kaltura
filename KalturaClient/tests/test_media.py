@@ -2,8 +2,8 @@ import fixpypath
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaCoreClient
-from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
+import KalturaClient.Plugins.Core as KalturaCoreClient
+from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 
 class MediaTests(KalturaBaseTest):
     

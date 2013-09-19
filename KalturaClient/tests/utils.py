@@ -1,11 +1,12 @@
 import os, sys, inspect
 import unittest
 
-from KalturaClient import KalturaClient
-from KalturaClientBase import KalturaConfiguration
-from KalturaCoreClient import KalturaSessionType
-from KalturaClientBase import KalturaObjectFactory, KalturaEnumsFactory
-from KalturaCoreClient import KalturaMediaType
+from KalturaClient import KalturaClient, KalturaConfiguration
+from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
+from KalturaClient.Base import IKalturaLogger
+
+from KalturaClient.Plugins.Core import KalturaSessionType
+from KalturaClient.Plugins.Core import KalturaMediaType
 
 from secret_config import PARTNER_ID, SERVICE_URL, SECRET, ADMIN_SECRET, USER_NAME
 
@@ -15,8 +16,6 @@ logging.basicConfig(level = logging.DEBUG,
 
                     stream = sys.stdout)
 
-
-from KalturaClientBase import IKalturaLogger
 class KalturaLogger(IKalturaLogger):
     def log(self, msg):
         logging.info(msg)
