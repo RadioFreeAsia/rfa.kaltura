@@ -80,13 +80,6 @@ def SampleMetadataOperations():
 
     client = KalturaClient(GetConfig())
     
-    ###NOW, 3.1.6-flip the plugins are loaded only after Client instantiation,
-    ###        but not into global scope
-    ### Here, we bring them into global scope (preserving test code below)
-    ###     by going too deep into the API, IMHO.
-    ###
-    ### TODO: make this easier, but don't pollute namespaces above here
-    ### (eg, don't just append to sys.path)
     KalturaMetadataProfile = KalturaObjectFactory.objectFactories['KalturaMetadataProfile']
     KalturaMetadataObjectType = KalturaEnumsFactory.enumFactories['KalturaMetadataObjectType']    
     KalturaMetadataProfileFilter = KalturaObjectFactory.objectFactories['KalturaMetadataProfileFilter']
@@ -113,9 +106,7 @@ def SampleMetadataOperations():
     # make sure we have a metadata profile
     profile = KalturaMetadataProfile() 
     profile.setName('TestProfile %s' % (testString,))
-    MetadataObjectType = KalturaMetadataObjectType.ENTRY
-    
-    profile.setMetadataObjectType(MetadataObjectType)
+    profile.setMetadataObjectType(KalturaMetadataObjectType.ENTRY)
     viewsData = ""
 
     newProfile = client.metadata.metadataProfile.add(profile, file(xsdFile, 'rb').read(), viewsData)
