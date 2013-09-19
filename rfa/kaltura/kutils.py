@@ -5,7 +5,9 @@ import logging
 from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura import credentials
-from rfa.kaltura.kalturaapi.KalturaClient import *
+from rfa.kaltura.kalturaapi.KalturaClient import KalturaClient
+
+from rfa.kaltura.kalturaapi.KalturaClient.Base import IKalturaLogger
 
 logger = logging.getLogger("rfa.kaltura")
 
