@@ -1,7 +1,7 @@
 This is an attempt at some cleanup of Kaltura's Python API
 For my own use (and hopefully others)
 
-API_VERSION = '3.1.6'  (June 30 2013)
+API_VERSION = '3.1.6'  (Aug 20 2013)
 
 Changes from 3.1.6:
 
@@ -55,10 +55,7 @@ The API library depends on the following builtin python libraries:
  - hashlib
  - httplib
  - mimetypes
- - os
- - re
  - socket
- - sys
  - time
  - urllib
  - urllib2
@@ -68,20 +65,18 @@ The API library depends on the following builtin python libraries:
  
 == TESTING THE CLIENT LIBRARY ==
 
-Test code is based on python unittest framework.
+to set up your credentials, copy `tests/secret_config_example.py` to `tests/secret_config.py`  and edit with your credentials.  All test files use this.
 
-run the entire test suite:
- - copy test/secret_config_example.py to 'test/secret_config.py'
- - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'test/secret_config.py'
- - run the command `python -m unittest discover`
+you may want to make sure that tests/.gitignore has secret_config.py in there, so you don't accidentally check in your credentials.
+
+To run the entire test suite: 
+  cd to the parent directory (Don't enter the KalturaClient package)
+  `python -m unittest discover`
  
-  
-To run the origional test script that accompanies this source:
- - Copy TestCode/PythonTester.py to TestCode/PythonTester-secret.py
- - Edit your Partner ID, Service Secret, Admin Secret and User Name in 'TestCode/PythonTester-secret.py'
- - Run `python PythonTester-secret.py`
+To run the original test script that accompanies this source:
+ - Run `python KalturaClient/tests/PythonTester.py`
 
 Note: 
- - The library was origionally tested under ActivePython 2.5.5
+ - The library was originally tested under ActivePython 2.5.5
  - The library is currently tested with Python 2.7.3 (default, Apr 10 2013, 06:20:15) [GCC 4.6.3] on linux2
 
