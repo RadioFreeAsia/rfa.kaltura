@@ -13,4 +13,12 @@
         />
   </class>
 
+  <!-- -*- extra stuff goes here -*- -->
+  <class class=".kalturaplaylist.KalturaPlaylist">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IKalturaPlaylist"
+        />
+  </class>
+
 </configure>

@@ -11,5 +11,6 @@
   <factorytypes>
     <!-- -*- extra stuff goes here -*- -->
     <type portal_type="Kaltura Video" />
+    <type portal_type="Kaltura Playlist" />
   </factorytypes>
 </object>

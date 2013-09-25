@@ -1,3 +1,4 @@
 # -*- extra stuff goes here -*-
-from kalturavideo import IKalturaVideo
+from content_interfaces import IKalturaVideo, IKalturaPlaylist
+
 from plonelayers import IRfaKalturaInstalled
