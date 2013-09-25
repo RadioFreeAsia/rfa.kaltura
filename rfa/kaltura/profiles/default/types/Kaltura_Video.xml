@@ -9,11 +9,11 @@
   <property name="content_icon">document_icon.gif</property>
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
-  <property name="immediate_view">VideoView</property>
+  <property name="immediate_view">kvideo_view</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
   <property name="allow_discussion">True</property>
-  <property name="default_view">VideoView</property>
+  <property name="default_view">kvideo_view</property>
   <property name="view_methods">
     <element value="VideoView" />
   </property>
@@ -24,7 +24,7 @@
   <alias from="view" to="(selected layout)" />
   <alias from="properties" to="base_metadata"/>
   <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}/video_view" visible="True">
+    url_expr="string:${object_url}/kvideo_view" visible="True">
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
