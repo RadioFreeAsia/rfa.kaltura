@@ -86,6 +86,7 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                        accessor="getPlayerId",
                        mutator="setPlayerId", 
                        mode='rw',
+                       default_method="getDefaultPlayerId",
                        widget=atapi.StringWidget(label="Player Id",
                                                  label_msgid="label_kplayerid_msgid",
                                                  description="Enter the Player Id to use",
@@ -128,18 +129,18 @@ class KalturaVideo(ATBlob):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
-    KMediaEntry = None
+    KalturaObject = None  ##TODO: Rename to KalturaObject
     
     def __init__(self, oid, **kwargs):
         super(KalturaVideo, self).__init__(oid, **kwargs)
-        self.KMediaEntry = None
+        self.KalturaObject = None ##TODO: Rename to KalturaObject
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
     security.declarePrivate("getPlaybackUrl")
     def getPlaybackUrl(self):
-        if self.KMediaEntry is not None:
-            return self.KMediaEntry.getDataUrl()
+        if self.KalturaObject is not None:
+            return self.KalturaObject.getDataUrl()
         else:
             return None
         
@@ -147,23 +148,24 @@ class KalturaVideo(ATBlob):
         
     security.declarePublic("getEntryId")
     def getEntryId(self):
-        if self.KMediaEntry is not None:
-            return self.KMediaEntry.getId()
+        if self.KalturaObject is not None:
+            return self.KalturaObject.getId()
         else:
             return None
         
     entryId = property(getEntryId)        
         
-        
     security.declarePrivate("setMediaEntry")
     def setMediaEntry(self, obj):
-        self.KMediaEntry = obj
-
+        self.KalturaObject = obj
 
     security.declarePrivate('getDefaultPartnerId')
     def getDefaultPartnerId(self):
         return getCredentials()['PARTNER_ID']
     
+    security.declarePrivate('getDefaultPlayerId')
+    def getDefaultPlayerId(self):
+        return "a default value"
         
         
 atapi.registerType(KalturaVideo, PROJECTNAME)

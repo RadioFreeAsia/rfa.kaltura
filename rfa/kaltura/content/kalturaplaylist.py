@@ -90,39 +90,31 @@ class KalturaPlaylist(ATFolder):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
-    KMediaEntry = None
+    KalturaObject = None
     
     def __init__(self, oid, **kwargs):
         super(KalturaPlaylist, self).__init__(oid, **kwargs)
-        self.KMediaEntry = None
-        
-    security.declarePrivate("getPlaybackUrl")
-    def getPlaybackUrl(self):
-        if self.KMediaEntry is not None:
-            return self.KMediaEntry.getDataUrl()
-        else:
-            return None                
-    playbackUrl = property(getPlaybackUrl)
+        self.KalturaObject = None
                 
     security.declarePublic("getEntryId")
     def getEntryId(self):
-        if self.KMediaEntry is not None:
-            return self.KMediaEntry.getId()
+        if self.KalturaObject is not None:
+            return self.KalturaObject.getId()
         else:
             return None     
     entryId = property(getEntryId)        
                 
-                
     security.declarePrivate("setMediaEntry")
-    def setMediaEntry(self, obj):
-        self.KMediaEntry = obj
-    
+    def setPlaylist(self, obj):
+        self.KalturaObject = obj
     
     security.declarePrivate('getDefaultPartnerId')
     def getDefaultPartnerId(self):
         return getCredentials()['PARTNER_ID']
         
-                
+    security.declarePrivate('getDefaultPlayerId')
+    def getDefaultPlayerId(self):
+        return "19707592"    #Some playlist I found on kmc.kaltura.com  Nothing special.
                 
 atapi.registerType(KalturaPlaylist, PROJECTNAME)
     

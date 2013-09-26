@@ -1,7 +1,9 @@
 from ZPublisher.HTTPRequest import FileUpload as FileUploadClass
 
+from rfa.kaltura.interfaces import IKalturaPlaylist
+
 from rfa.kaltura.kutils import KalturaLoggerInstance as logger
-from rfa.kaltura.kutils import kupload
+from rfa.kaltura.kutils import kupload, kcreatePlaylist
 
 def initVideo(context, event):
     """Fired when the object is first saved"""
@@ -21,7 +23,22 @@ def modifyVideo(context, event):
         pass #not modified
     else:
         #File Modification Occured
-        KMediaEntry = kupload(context)    
-        context.setMediaEntry(KMediaEntry)        
+        context.setMediaEntry(kupload(context))        
 
+def addVideo(context, event):
+    parent = event.newParent
+    if IKalturaPlaylist.providedBy(parent): #and make sure we don't add it 5 times!!! this event gets called a lot.
+        parent.addToPlaylist(context)
+    else:
+        pass
+    
+def initPlaylist(context, event):
+    """Fired when the playlist object is created"""
+    
+    context.setPlaylist(kcreatePlaylist(context))
+    
+    
+def modifyPlaylist(context, event):
+    """Fired when the playlist object itself is edited"""
+    
     

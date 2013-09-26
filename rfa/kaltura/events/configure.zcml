@@ -22,5 +22,24 @@
      handler=".events.deleteVideo"
    />
    -->
+   <subscriber
+    for="rfa.kaltura.interfaces.IKalturaVideo
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+     handler=".events.addVideo"
+   />
+   
+   
+   <subscriber
+     for="rfa.kaltura.interfaces.IKalturaPlaylist
+          Products.Archetypes.interfaces.IObjectInitializedEvent"
+     handler=".events.initPlaylist"
+   />
+     
+     
+   <subscriber
+     for="rfa.kaltura.interfaces.IKalturaPlaylist
+          Products.Archetypes.interfaces.IObjectEditedEvent"
+     handler=".events.modifyPlaylist"
+   />
 
 </configure>

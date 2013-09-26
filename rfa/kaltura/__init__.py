@@ -13,6 +13,9 @@ from Products.CMFCore import utils
 
 kalturaMessageFactory = MessageFactory('rfa.kaltura')
 
+##Damnit! This is the cost of keeping the api inside the plone package.
+import sys, os
+sys.path.append(os.path.dirname(os.path.realpath(__file__))+"/kalturaapi")
 
 def initialize(context):
     """Initializer called when used as a Zope 2 product.
