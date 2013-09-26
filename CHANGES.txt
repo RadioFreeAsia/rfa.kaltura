@@ -1,5 +1,14 @@
 Changelog
 =========
+0.3 (2013-09-26)
+Kaltura API updated to '3.1.6'  (Aug 20 2013)
+Added default template to display video
+Added Player selection to kaltura video: type in player ID to use.
+Added Macros for use in custom templates
+Added skin layers to easily override default template.
+Added (incomplete) content type "Kaltura Playlist"
+Better handling of video uploads, not creating duplicate videos on every edit.
+Kaltura Credentials now stored in Plone Registry and configured via add-on config
 
 0.2 (2013-08-30)
 Basic Funcionality for video uploads

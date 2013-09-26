@@ -1,6 +1,5 @@
 .. contents::
 
-.. Note!
    -----
    Update the following URLs to point to your:
 
@@ -11,7 +10,7 @@
 
    Or remove it if not used.
 
-- Code repository: http://svn.somewhere.com/...
-- Questions and comments to somemailing_list
-- Report bugs at http://bug.somewhere.com/..
+- Code repository: https://github.com/flipmcf/Products.Kaltura
+- Questions and comments mcfaddenm@rfa.org
+- Report bugs at https://github.com/flipmcf/Products.Kaltura/issues
 

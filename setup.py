@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '0.2'
+version = '0.3'
 
 long_description = (
     read('README.txt')
@@ -56,6 +56,7 @@ setup(name='rfa.kaltura',
       zip_safe=False,
       install_requires=['setuptools',
                         "plone.app.registry",
+                        "Products.CMFPlone",
                         ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
