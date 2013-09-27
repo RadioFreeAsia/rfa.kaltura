@@ -1,21 +1,24 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaClient.Plugins.Core as KalturaCoreClient
+from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
+from KalturaClient.Plugins.Core import KalturaUiConfListResponse
 from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 
 class UiConfTests(KalturaBaseTest):
      
     def test_list(self):
         resp = self.client.uiConf.list()
-        self.assertIsInstance(resp, KalturaCoreClient.KalturaUiConfListResponse)
+        self.assertIsInstance(resp, KalturaUiConfListResponse)
         
         objs = resp.objects
         self.assertIsInstance(objs, list)
         
+        for o in objs:
+            self.assertIsInstance(o, KalturaUiConf)
+        
     def test_get_players(self):
-        KalturaUiConfObjType = KalturaEnumsFactory.enumFactories['KalturaUiConfObjType']
-        filt = KalturaObjectFactory.objectFactories['KalturaUiConfFilter']()
+        filt = KalturaUiConfFilter()
         
         players = [KalturaUiConfObjType.HTML5_PLAYER, 
                    KalturaUiConfObjType.PLAYER_V3,
@@ -33,10 +36,14 @@ class UiConfTests(KalturaBaseTest):
      
     def test_list_templates(self):
         templates = self.client.uiConf.listTemplates()
-        self.assertIsInstance(templates, KalturaCoreClient.KalturaUiConfListResponse)
+        self.assertIsInstance(templates, KalturaUiConfListResponse)
         
         objs = templates.objects
         self.assertIsInstance(objs, list)
+        
+        for o in objs:
+            self.assertIsInstance(o, KalturaUiConf)
+        
         
         
         
