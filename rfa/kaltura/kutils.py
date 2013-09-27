@@ -6,9 +6,15 @@ from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura import credentials
 
-from rfa.kaltura.kalturaapi.KalturaClient import KalturaClient, KalturaConfiguration
-from rfa.kaltura.kalturaapi.KalturaClient.Base import IKalturaLogger
-from rfa.kaltura.kalturaapi.KalturaClient.Plugins import Core as KalturaCoreClient
+from KalturaClient import *
+
+from KalturaClient.Base import IKalturaLogger
+from KalturaClient.Base import KalturaConfiguration
+
+from KalturaClient.Plugins.Core import KalturaSessionType
+from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
+from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
+
 
 logger = logging.getLogger("rfa.kaltura")
 
@@ -21,9 +27,9 @@ KalturaLoggerInstance = KalturaLogger()
 def kcreatePlaylist(FolderishObject):
     """Create an empty playlist on the kaltura account"""
     
-    kplaylist = KalturaCoreClient.KalturaPlaylist()
+    kplaylist = KalturaPlaylist()
     kplaylist.setName(FolderishObject.Title())
-    kplaylist.setType(KalturaCoreClient.KalturaPlaylistType.STATIC_LIST) #???
+    kplaylist.setType(KalturaPlaylistType.STATIC_LIST) #???
     
     (client, session) = kconnect()
     
@@ -52,14 +58,15 @@ def kupload(FileObject):
     name = FileObject.Title()
     ProviderId = FileObject.UID()
      
+    (client, session) = kconnect()
+    
     #create an entry
-    mediaEntry = KalturaCoreClient.KalturaMediaEntry()
+    mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(name)
-    mediaEntry.setMediaType(KalturaCoreClient.KalturaMediaType(KalturaCoreClient.KalturaMediaType.VIDEO))
+    mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
     mediaEntry.searchProviderId = ProviderId
 
     #do the upload
-    (client, session) = kconnect()
     
     uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
     
@@ -84,7 +91,7 @@ def kconnect():
     # start new session
     ks = client.generateSession(creds['ADMIN_SECRET'], 
                                 creds['USER_NAME'],
-                                KalturaCoreClient.KalturaSessionType.ADMIN, 
+                                KalturaSessionType.ADMIN, 
                                 creds['PARTNER_ID'],
                                 86400,   #XXX look up what this does...
                                 "")    
