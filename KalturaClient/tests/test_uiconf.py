@@ -3,7 +3,6 @@ from utils import KalturaBaseTest
 
 from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
 from KalturaClient.Plugins.Core import KalturaUiConfListResponse
-from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 
 class UiConfTests(KalturaBaseTest):
      
