@@ -1,8 +1,12 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaClient.Plugins.Core as KalturaCoreClient
+from KalturaClient import *
+
 from KalturaClient.Base import KalturaObjectFactory
+
+from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
+from KalturaClient.Plugins.Core import KalturaPlaylistListResponse
 
 class PlaylistTests(KalturaBaseTest):
      
@@ -12,13 +16,25 @@ class PlaylistTests(KalturaBaseTest):
     def test_list(self):
         resp = self.client.playlist.list()
     
-        self.assertIsInstance(resp, KalturaCoreClient.KalturaPlaylistListResponse)
+        self.assertIsInstance(resp, KalturaPlaylistListResponse)
                 
         objs = resp.objects
         self.assertIsInstance(objs, list)
         
-        [self.assertIsInstance(o, KalturaCoreClient.KalturaPlaylist) for o in objs]            
+        [self.assertIsInstance(o, KalturaPlaylist) for o in objs] 
         
+    def test_createRemote(self):
+        kplaylist = KalturaPlaylist()
+        kplaylist.setName('pytest.PlaylistTests.test_createRemote')
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST)) #??? STATIC LIST ???
+        
+        kplaylist = self.client.playlist.add(kplaylist)        
+        self.assertIsInstance(kplaylist, KalturaPlaylist)
+        
+        self.assertIsInstance(kplaylist.getId(), unicode)
+        
+        #cleanup
+        self.client.playlist.delete(kplaylist.getId())
         
 
 import unittest
