@@ -35,8 +35,6 @@ from utils import KalturaLogger
 
 from KalturaClient import *
 
-from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
-
 from KalturaClient.Base import KalturaConfiguration
 from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
 

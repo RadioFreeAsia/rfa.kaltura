@@ -1,8 +1,10 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
+from utils import getTestFile
 
 import KalturaClient.Plugins.Core as KalturaCoreClient
-from KalturaClient.Base import KalturaObjectFactory, KalturaEnumsFactory
+
+
 
 class MediaTests(KalturaBaseTest):
     
@@ -14,6 +16,21 @@ class MediaTests(KalturaBaseTest):
         self.assertIsInstance(objs, list)
         
         [self.assertIsInstance(o, KalturaCoreClient.KalturaMediaEntry) for o in objs]
+        
+
+    def test_createRemote(self):
+        mediaEntry = KalturaCoreClient.KalturaMediaEntry()
+        mediaEntry.setName('pytest.MediaTests.test_createRemote')
+        mediaEntry.setMediaType(KalturaCoreClient.KalturaMediaType(KalturaCoreClient.KalturaMediaType.VIDEO))
+            
+        ulFile = getTestFile('DemoVideo.flv')
+        uploadTokenId = self.client.media.upload(ulFile)            
+                     
+        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
+        
+        #delete it
+        self.client.media.delete(mediaEntry.id)
+        
 
 
 import unittest
