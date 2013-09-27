@@ -1,10 +1,6 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-from KalturaClient import *
-
-from KalturaClient.Base import KalturaObjectFactory
-
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaPlaylistListResponse
 
