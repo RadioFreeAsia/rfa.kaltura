@@ -19,7 +19,7 @@ from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 logger = logging.getLogger("rfa.kaltura")
 
 class KalturaLogger(IKalturaLogger):
-    def log(self, msg, summary='', level=logging.INFO):
+    def log(self, msg, summary='', level=logging.WARN):
         logger.log(level, '%s \n%s', summary, msg)    
 
 KalturaLoggerInstance = KalturaLogger()
@@ -29,7 +29,7 @@ def kcreatePlaylist(FolderishObject):
     
     kplaylist = KalturaPlaylist()
     kplaylist.setName(FolderishObject.Title())
-    kplaylist.setType(KalturaPlaylistType.STATIC_LIST) #???
+    kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST)) #??? STATIC LIST ???
     
     (client, session) = kconnect()
     
