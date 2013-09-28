@@ -17,11 +17,12 @@ from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 
 
 logger = logging.getLogger("rfa.kaltura")
+logger.setLevel(logging.WARN)
 
 class KalturaLogger(IKalturaLogger):
-    def log(self, msg, summary='', level=logging.WARN):
-        logger.log(level, '%s \n%s', summary, msg)    
-
+    def log(self, msg, summary='', level=logging.INFO):
+        logger.log(level, '%s \n%s', summary, msg)
+        
 KalturaLoggerInstance = KalturaLogger()
 
 def kcreatePlaylist(FolderishObject):
