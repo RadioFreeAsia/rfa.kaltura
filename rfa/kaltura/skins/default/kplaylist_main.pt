@@ -7,8 +7,24 @@
   <head>
     <title tal:content="context/Title"></title>
   </head>
-  <body class="KalturaPlaylist">
-     This template is a big TODO
+  <body class="KalturaPlaylistPage">
+  
+    <div >
+                     
+      <h1 tal:content="context/Title">Title</h1>
+        <p class="description" tal:content="context/Description"> description </p>
+          
+    
+        <hr>
+        <div>
+          <h2> Test Auto Embed Macro </h2>
+          <metal:video metal:use-macro="context/KalturaPlaylistMacros/macros/autoEmbed">
+            Auto Embedding Example
+          </metal:video>
+        </div>
+
+    </div> <!-- playlist page container div -->
+     
   </body>
   
 </html>

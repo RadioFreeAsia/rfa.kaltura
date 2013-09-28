@@ -1,0 +1,32 @@
+<metal:macro metal:define-macro="autoEmbed"
+             tal:define="UNIQUE_OBJ_ID objUniqId | context/uuid;
+                         PARTNER_ID partnerId | context/partnerId | nothing;
+                         UICONF_ID playerId | context/playerId | nothing;
+                         ENTRY_ID entryId | context/entryId | nothing;
+                         width width | string:400;
+                         height height | string:680;
+                        ">
+                        
+   <div tal:attributes="id UNIQUE_OBJ_ID;
+                        style string:width: ${width}px;; height: ${height}px;;;
+                        "
+        itemprop="video" 
+        itemscope 
+        itemtype="http://schema.org/VideoObject">
+     <span itemprop="name" content=""></span>
+     <span itemprop="description" content=""></span>
+     <span itemprop="duration" content=""></span>
+     <span itemprop="thumbnail" content=""></span>
+     <span itemprop="width" content="400"
+           tal:attributes="content width"></span>
+     <span itemprop="height" content="680"
+           tal:attributes="content height"></span>
+     <a href="http://corp.kaltura.com/products/video-platform-features">Video Platform</a>
+     <a href="http://corp.kaltura.com/Products/Features/Video-Management">Video Management</a> 
+     <a href="http://corp.kaltura.com/Video-Solutions">Video Solutions</a>
+     <a href="http://corp.kaltura.com/Products/Features/Video-Player">Video Player</a>
+   </div>
+   <script tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}?autoembed=true&playerId=${UNIQUE_OBJ_ID}&cache_st=1380334147&width=${width}&height=${height}&flashvars[playlistAPI.kpl0Id]=${ENTRY_ID}"></script>
+     
+     
+</metal:macro>

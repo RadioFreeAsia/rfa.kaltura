@@ -115,6 +115,10 @@ class KalturaPlaylist(ATFolder):
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
         return "19707592"    #Some playlist I found on kmc.kaltura.com  Nothing special.
+    
+    def addToPlaylist(self):
+        import pdb; pdb.set_trace()
+        pass
                 
 atapi.registerType(KalturaPlaylist, PROJECTNAME)
     
