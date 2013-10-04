@@ -42,22 +42,22 @@ class PlaylistTests(KalturaBaseTest):
         
         
     def test_update(self):
+        referenceId = 'pytest.PlaylistTests.test_update'
+        
         kplaylist = KalturaPlaylist()
-        kplaylist.setName('pytest.PlaylistTests.test_update')        
+        kplaylist.setName(referenceId)
+        kplaylist.setReferenceId(referenceId)
         kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
-        kplaylist = self.client.playlist.add(kplaylist)
-        
-        
+        kplaylist = self.client.playlist.add(kplaylist)        
         self.addCleanup(self.client.playlist.delete, kplaylist.getId())
+
+        newPlaylist = KalturaPlaylist()        
+        newPlaylist.setReferenceId(referenceId)
+        newPlaylist.setName("changed!")
+        self.client.playlist.update(kplaylist.getId(), newPlaylist)
         
-        remotePlaylist = self.client.playlist.get(kplaylist.getId())
-        
-        #bug? I have to set this now.
-        remotePlaylist.setReferenceId("pytest.PlaylistTests.test_update")
-        
-        
-        #no change, just update
-        self.client.playlist.update(kplaylist.getId(), remotePlaylist)
+        resultPlaylist = self.client.playlist.get(kplaylist.getId())
+        self.assertEqual("changed!", resultPlaylist.getName())
         
     def test_updateStaticContent(self):        
                 
@@ -81,14 +81,14 @@ class PlaylistTests(KalturaBaseTest):
         
         self.addCleanup(self.client.media.delete, mediaEntry2.getId())
         
-        #playlistContent is simply a comma separated string of id's
+        #playlistContent is simply a comma separated string of id's ?  
         playlistContent = u','.join([mediaEntry1.getId(), mediaEntry2.getId()])
                         
         kplaylist = KalturaPlaylist()
         kplaylist.setName('pytest.PlaylistTests.test_updateStaticContent')
         kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
         
-        kplaylist.playlistContent = playlistContent        
+        kplaylist.setPlaylistContent(playlistContent)
         kplaylist = self.client.playlist.add(kplaylist)
         
         self.addCleanup(self.client.playlist.delete, kplaylist.getId())
@@ -102,11 +102,11 @@ class PlaylistTests(KalturaBaseTest):
         
     def test_addStaticToExistingEmpty(self):
         from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
-        
-        import pdb; pdb.set_trace()
+        referenceId = 'pytest.PlaylistTests.test_addStaticToExistingEmpty'
         #create empty playlist on server
         kplaylist = KalturaPlaylist()
-        kplaylist.setName('pytest.PlaylistTests.test_addStaticToExistingEmpty')
+        kplaylist.setName(referenceId)
+        kplaylist.setReferenceId(referenceId)
         kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
         kplaylist = self.client.playlist.add(kplaylist)
         self.addCleanup(self.client.playlist.delete, kplaylist.getId())
@@ -116,7 +116,7 @@ class PlaylistTests(KalturaBaseTest):
         #now, add some media
         
         mediaEntry = KalturaMediaEntry()
-        mediaEntry.setName('pytest.PlaylistTests.test_addStaticToExistingEmpty')
+        mediaEntry.setName(referenceId)
         mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
         ulFile = getTestFile('DemoVideo.flv')
         uploadTokenId = self.client.media.upload(ulFile) 
@@ -124,21 +124,18 @@ class PlaylistTests(KalturaBaseTest):
         self.addCleanup(self.client.media.delete, mediaEntry.getId())
         
         #add to (update) existing playlist
-        playlist = self.client.playlist.get(playlistId)
-        
+        newplaylist = KalturaPlaylist()
+        newplaylist.setReferenceId(referenceId)
+    
         playlistContent = u','.join([mediaEntry.getId()])
+        newplaylist.setPlaylistContent(playlistContent)
         
-        playlist.setPlaylistContent(playlistContent)
-        playlist.referenceId = "pytest.PlaylistTests.test_addStaticToExistingEmpty"
-        import pdb; pdb.set_trace()
-        playlist.conversionProfileId = ''
-        self.client.playlist.update(playlistId, playlist)
-        del(playlist)
+        self.client.playlist.update(playlistId, newplaylist)
         
         #check it.
-        playlist = self.client.playlist.get(playlistId)
+        resultPlaylist = self.client.playlist.get(playlistId)
         
-        self.assertEqual(playlistContent, playlist.playlistContent)
+        self.assertEqual(playlistContent, resultPlaylist.getPlaylistContent())
         
         
         
@@ -158,8 +155,8 @@ class PlaylistTests(KalturaBaseTest):
         #don't set referenceId
         
         self.assertRaises(KalturaException, self.client.playlist.update, playlistId, playlist) 
-        
-        
+    
+    
 import unittest
 def test_suite():
     return unittest.TestSuite((
