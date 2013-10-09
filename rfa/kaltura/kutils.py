@@ -26,11 +26,11 @@ class KalturaLogger(IKalturaLogger):
 KalturaLoggerInstance = KalturaLogger()
 
 def kcreatePlaylist(FolderishObject):
-    """Create an empty playlist on the kaltura account"""
+    """Create an empty playlist on the kaltura server"""
     
     kplaylist = KalturaPlaylist()
     kplaylist.setName(FolderishObject.Title())
-    kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST)) #??? STATIC LIST ???
+    kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
     
     (client, session) = kconnect()
     

@@ -137,7 +137,7 @@ class KalturaVideo(ATBlob):
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
-    security.declarePrivate("getPlaybackUrl")
+    security.declarePublic("getPlaybackUrl")
     def getPlaybackUrl(self):
         if self.KalturaObject is not None:
             return self.KalturaObject.getDataUrl()
@@ -165,7 +165,7 @@ class KalturaVideo(ATBlob):
     
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
-        return "a default value"
+        return "20100652"
         
         
 atapi.registerType(KalturaVideo, PROJECTNAME)

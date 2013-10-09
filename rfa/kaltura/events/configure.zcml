@@ -7,6 +7,12 @@
           Products.Archetypes.interfaces.IObjectInitializedEvent"
      handler=".events.initVideo"
    />
+   
+   <subscriber
+    for="rfa.kaltura.interfaces.IKalturaVideo
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+     handler=".events.addVideo"
+   />
      
      
    <subscriber
@@ -22,11 +28,7 @@
      handler=".events.deleteVideo"
    />
    -->
-   <subscriber
-    for="rfa.kaltura.interfaces.IKalturaVideo
-         zope.lifecycleevent.interfaces.IObjectAddedEvent"
-     handler=".events.addVideo"
-   />
+   
    
    
    <subscriber

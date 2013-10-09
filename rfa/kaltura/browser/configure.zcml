@@ -24,7 +24,8 @@
     layer="rfa.kaltura.interfaces.IRfaKalturaInstalled"
     permission="zope.Public"
     allowed_attributes="title
-                        description"
+                        description
+                        playbackUrl"
     />
 
 </configure>

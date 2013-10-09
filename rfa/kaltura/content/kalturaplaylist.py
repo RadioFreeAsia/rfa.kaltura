@@ -12,6 +12,9 @@ from Products.ATContentTypes.content.folder import ATFolder, ATFolderSchema
 from rfa.kaltura.interfaces import IKalturaPlaylist
 from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.credentials import getCredentials
+from rfa.kaltura.kutils import kconnect
+
+from KalturaClient.Plugins.Core import KalturaPlaylist as API_KalturaPlaylist
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
@@ -95,6 +98,7 @@ class KalturaPlaylist(ATFolder):
     def __init__(self, oid, **kwargs):
         super(KalturaPlaylist, self).__init__(oid, **kwargs)
         self.KalturaObject = None
+        self.playlistContent = []
                 
     security.declarePublic("getEntryId")
     def getEntryId(self):
@@ -104,9 +108,10 @@ class KalturaPlaylist(ATFolder):
             return None     
     entryId = property(getEntryId)        
                 
-    security.declarePrivate("setMediaEntry")
-    def setPlaylist(self, obj):
+    security.declarePrivate("setKalturaObject")
+    def setKalturaObject(self, obj):
         self.KalturaObject = obj
+        self.KalturaObject.referenceId = self.UID()
     
     security.declarePrivate('getDefaultPartnerId')
     def getDefaultPartnerId(self):
@@ -116,9 +121,19 @@ class KalturaPlaylist(ATFolder):
     def getDefaultPlayerId(self):
         return "19707592"    #Some playlist I found on kmc.kaltura.com  Nothing special.
     
-    def addToPlaylist(self):
-        import pdb; pdb.set_trace()
-        pass
+    def appendVideo(self, videoId):
+        if videoId not in self.playlistContent:
+            self.playlistContent.append(videoId)
+            contentString = u','.join(self.playlistContent)
+            self._updateRemote(PlaylistContent=contentString)
+            
+    def _updateRemote(self, **kwargs):
+        (client, session) = kconnect()
+        newPlaylist = API_KalturaPlaylist()
+        for (attr, value) in kwargs.iteritems():
+            setter = getattr(newPlaylist, 'set'+attr)
+            setter(value)
+        resultPlaylist = client.playlist.update(self.getEntryId(), newPlaylist)
+        self.setKalturaObject(resultPlaylist)
                 
 atapi.registerType(KalturaPlaylist, PROJECTNAME)
-    
