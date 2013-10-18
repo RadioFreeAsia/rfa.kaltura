@@ -36,7 +36,7 @@ eggs =
 
 [sources]
 ...
-rfa.kaltura = git https://github.com/flipmcf/Products.Kaltura.git
+rfa.kaltura = git https://github.com/RadioFreeAsia/Products.Kaltura.git
 
 
 </code></pre>
