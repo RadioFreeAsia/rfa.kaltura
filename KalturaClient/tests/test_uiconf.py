@@ -1,3 +1,5 @@
+import re
+
 from utils import GetConfig
 from utils import KalturaBaseTest
 
@@ -32,7 +34,58 @@ class UiConfTests(KalturaBaseTest):
         for o in objs:
             self.assertIn(o.objType.getValue(), players)
         
-     
+    def test_get_playlist_players(self):
+        """Until I find a better way... this gets all uiconfs that are 'playlist players'
+           not sure if this is the right way"""
+        filt = KalturaUiConfFilter()
+        players = [KalturaUiConfObjType.HTML5_PLAYER, 
+                   KalturaUiConfObjType.PLAYER_V3,
+                   KalturaUiConfObjType.PLAYER,
+                   KalturaUiConfObjType.PLAYER_SL,
+                  ]
+        tags = 'playlist'
+        
+        filt.setObjTypeIn(players)
+        filt.setTagsMultiLikeOr(tags)
+       
+        resp = self.client.uiConf.list(filter=filt)
+        objs = resp.objects
+        
+        for o in objs:
+            self.assertIn(o.objType.getValue(), players)
+            match = re.search('isPlaylist="(.*?)"', o.getConfFile())
+            self.assertIsNotNone(match, "isPlaylist not found in confFile")
+            
+            value = match.group(1)
+            self.assertIn(value, ["true", "multi"])
+            
+    def test_get_video_players(self):
+        """Until I find a better way... this gets all uiconfs that are 'single video' players
+           Not sure if this is the right way"""
+        filt = KalturaUiConfFilter()
+        players = [KalturaUiConfObjType.HTML5_PLAYER, 
+                   KalturaUiConfObjType.PLAYER_V3,
+                   KalturaUiConfObjType.PLAYER,
+                   KalturaUiConfObjType.PLAYER_SL,
+                  ]
+        tags = 'player'
+        
+        filt.setObjTypeIn(players)
+        filt.setTagsMultiLikeOr(tags)
+       
+        resp = self.client.uiConf.list(filter=filt)
+        objs = resp.objects
+        
+        for o in objs:
+            self.assertIn(o.objType.getValue(), players)
+            match = re.search('isPlaylist="(.*?)"', o.getConfFile())
+            if match is None:
+                pass
+            else:
+                value = match.group(1)
+                self.assertIn(value, ["true", "multi"])
+                
+            
     def test_list_templates(self):
         templates = self.client.uiConf.listTemplates()
         self.assertIsInstance(templates, KalturaUiConfListResponse)
