@@ -14,6 +14,7 @@ from KalturaClient.Base import KalturaConfiguration
 from KalturaClient.Plugins.Core import KalturaSessionType
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
+from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
 
 
 logger = logging.getLogger("rfa.kaltura")
@@ -24,6 +25,46 @@ class KalturaLogger(IKalturaLogger):
         logger.log(level, '%s \n%s', summary, msg)
         
 KalturaLoggerInstance = KalturaLogger()
+
+#@cache me!
+def kGetVideoPlayers():
+    (client, session) = kconnect()
+    
+    filt = KalturaUiConfFilter()
+    players = [KalturaUiConfObjType.HTML5_PLAYER, 
+               KalturaUiConfObjType.PLAYER_V3,
+               KalturaUiConfObjType.PLAYER,
+               KalturaUiConfObjType.PLAYER_SL,
+               ]
+    tags = 'player'
+        
+    filt.setObjTypeIn(players)
+    filt.setTagsMultiLikeOr(tags)
+       
+    resp = self.client.uiConf.list(filter=filt)
+    objs = resp.objects
+    
+    return objs
+
+#@cache me!
+def kGetPlaylistPlayers():
+    (client, session) = kconnect()
+    
+    filt = KalturaUiConfFilter()
+    players = [KalturaUiConfObjType.HTML5_PLAYER, 
+               KalturaUiConfObjType.PLAYER_V3,
+               KalturaUiConfObjType.PLAYER,
+               KalturaUiConfObjType.PLAYER_SL,
+               ]
+    tags = 'playlist'
+        
+    filt.setObjTypeIn(players)
+    filt.setTagsMultiLikeOr(tags)
+       
+    resp = self.client.uiConf.list(filter=filt)
+    objs = resp.objects
+    
+    return objs
 
 def kcreatePlaylist(FolderishObject):
     """Create an empty playlist on the kaltura server"""

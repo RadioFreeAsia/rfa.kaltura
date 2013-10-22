@@ -81,17 +81,17 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                  i18n_domain="kaltura_video"),
                        ),
      
-     atapi.StringField('playerId',
+     atapi.StringField('player',
                        searchable=0,
-                       accessor="getPlayerId",
-                       mutator="setPlayerId", 
+                       accessor="getPlayer",
+                       mutator="setPlayer", 
                        mode='rw',
                        default_method="getDefaultPlayerId",
-                       widget=atapi.StringWidget(label="Player Id",
-                                                 label_msgid="label_kplayerid_msgid",
-                                                 description="Enter the Player Id to use",
-                                                 description_msgid="desc_kplayerid_msgid",
-                                                 i18n_domain="kaltura_video"),
+                       widget=atapi.SelectionWidget(label="Player",
+                                                    label_msgid="label_kplayerid_msgid",
+                                                    description="Choose the Player to use",
+                                                    description_msgid="desc_kplayerid_msgid",
+                                                    i18n_domain="kaltura_video"),
                        ),
      
      atapi.StringField('partnerId',
@@ -121,6 +121,16 @@ schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 class KalturaVideo(ATBlob):
     """Kaltura Video Content Type - stores the video file on your Kaltura account"""
     implements(IKalturaVideo, IATBlobFile, IATFile, IFileContent)
+
+    # CMF FTI setup
+    global_allow   = True
+    default_view   = 'kvideo_main'
+    #immediate_view = 'generic_preview'
+    
+    # CompositePack setup
+    layout         = 'kvideo_main'
+    layouts        = ('kvideo_main',
+                      )
 
     meta_type = "KalturaVideo"
     schema = KalturaVideoSchema
@@ -169,3 +179,13 @@ class KalturaVideo(ATBlob):
         
         
 atapi.registerType(KalturaVideo, PROJECTNAME)
+
+
+def getVideoPlayerVocabulary():
+    items = []
+    players = kGetPlaylistPlayers()
+    
+    for player in players:
+        items.append( (player.getId(), player.getName()) )
+        
+    return SimpleVocabulary.fromItems(items)
