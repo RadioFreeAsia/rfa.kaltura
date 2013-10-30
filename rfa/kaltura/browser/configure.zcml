@@ -15,6 +15,12 @@
     class=".kaltura_video_form.KalturaVideoFormView"
     />
     
+ <browser:page
+    name="kaltura_playlist_form"
+    for="rfa.kaltura.interfaces.IKalturaVideo"
+    permission="zope2.View"
+    class=".kaltura_video_form.KalturaVideoFormView"
+    />    
     
   <!-- VIEWS -->
   <browser:page
