@@ -231,8 +231,6 @@ class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
                 contentString = u','.join(self.playlistContent)
                 self._updateRemote(PlaylistContent=contentString)    
 
-atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
-
 class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     
     schema = RuleBasedKalturaPlaylistSchema
@@ -253,7 +251,8 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     
     def setKeywords(self, keywords):
         self.keywords = keywords
-
+        
+atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
 atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)
 
 
