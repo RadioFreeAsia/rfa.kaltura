@@ -2,7 +2,7 @@
 <object name="Rule-Based Kaltura Playlist"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="rfa.kaltura" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Kaltura Playlist</property>
+  <property name="title" i18n:translate="">Rule-Based Kaltura Playlist</property>
   <property name="description"
     i18n:translate="">Rule-Based Kaltura Playlist - Creates a collection of videos according to matching tags and categories of Kaltura Videos</property>
   <!-- 

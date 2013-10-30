@@ -2,7 +2,7 @@
 <object name="Manual Kaltura Playlist"
    meta_type="Factory-based Type Information with dynamic views"
    i18n:domain="rfa.kaltura" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <property name="title" i18n:translate="">Kaltura Playlist</property>
+  <property name="title" i18n:translate="">Manual Kaltura Playlist</property>
   <property name="description"
     i18n:translate="">Manual Kaltura Playlist - stores a collection of individually selected videos for a playlist</property>
   <property name="content_meta_type">ManualKalturaPlaylist</property>
