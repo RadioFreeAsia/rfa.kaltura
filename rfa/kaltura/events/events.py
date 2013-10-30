@@ -12,7 +12,6 @@ def initVideo(context, event):
     if isinstance(datafile, FileUploadClass):
         KMediaEntry = kupload(context)    
         context.setMediaEntry(KMediaEntry)
-        _updatePlaylists(context)
         
 def modifyVideo(context, event):
     """Fired when the object is edited"""
@@ -39,13 +38,4 @@ def initPlaylist(context, event):
 def modifyPlaylist(context, event):
     """Fired when the playlist object itself is edited"""
     context._updateRemote()
-    
-def _updatePlaylists(context):
-    parent = context.aq_parent
-    if IKalturaPlaylist.providedBy(parent):
-        if context.getEntryId() is not None:
-            parent.appendVideo(context.getEntryId())
-        #else:
-            #logger.warning("playlist not appended to - no entryId on object")    
-    
     

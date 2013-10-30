@@ -94,6 +94,32 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                     i18n_domain="kaltura_video"),
                        ),
      
+     atapi.LinesField('categories',
+                      multiValued = True,
+                      searchable=0,
+                      required=True,
+                      accessor="getCategories",
+                      mutator="setCategories",
+                      widget=atapi.MultiSelectionWidget(label="Categories",
+                                                label_msgid="label_kvideofile_categories",
+                                                description="Select video category(ies) this playlist will provide",
+                                                description_msgid="desc_kvideofile_categories",
+                                                i18n_domain="kaltura_video"),
+                      ),       
+    
+    atapi.LinesField('tags',
+                      multiValued = True,
+                      searchable=0,
+                      required=True,
+                      accessor="getTags",
+                      mutator="setTags",
+                      widget=atapi.MultiSelectionWidget(label="Tags",
+                                                label_msgid="label_kvideofile_tags",
+                                                description="Select video tag(s) this playlist will provide ",
+                                                description_msgid="desc_kvideofile_title",
+                                                i18n_domain="kaltura_video"),
+                      ),
+
      atapi.StringField('partnerId',
                        searchable=0,
                        mode='rw',
@@ -181,11 +207,5 @@ class KalturaVideo(ATBlob):
 atapi.registerType(KalturaVideo, PROJECTNAME)
 
 
-def getVideoPlayerVocabulary():
-    items = []
-    players = kGetPlaylistPlayers()
-    
-    for player in players:
-        items.append( (player.getId(), player.getName()) )
-        
-    return SimpleVocabulary.fromItems(items)
+
+
