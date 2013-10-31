@@ -4,23 +4,25 @@ from zope.schema.vocabulary import SimpleVocabulary
 from rfa.kaltura.kutils import kGetPlaylistPlayers
 
 
-def getTagVoculabulary():    
-    items = []
+def getTagVoculabulary():
+    return ('tag1', 'tag2', 'tag3')
+    #items = []
     
-    tags = kGetTags()
-    for tag in tags:
-        items.append( (tag.getId(), tag.getName()))
+    #tags = kGetTags()
+    #for tag in tags:
+        #items.append( (tag.getId(), tag.getName()))
         
-    return SimpleVocabulary.fromItems(tags)
+    #return SimpleVocabulary.fromItems(tags)
 
 def getCategoryVoculabulary():    
-    items = []
+    return ('cat1', 'cat2', 'cat3')
+    #items = []
     
-    tags = kGetCategories()
-    for tag in tags:
-        items.append( (tag.getId(), tag.getName()))
+    #tags = kGetCategories()
+    #for tag in tags:
+        #items.append( (tag.getId(), tag.getName()))
         
-    return SimpleVocabulary.fromItems(tags)
+    #return SimpleVocabulary.fromItems(tags)
 
 
 def getVideoPlayerVocabulary():

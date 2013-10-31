@@ -21,8 +21,9 @@ from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.credentials import getCredentials
 
-###XXX Todo: create base class ExternalMediaEntry 
-##based off of http://www.kaltura.com/api_v3/testmeDoc/index.php?object=KalturaExternalMediaEntry
+from rfa.kaltura.content import base as KalturaBase
+
+from KalturaClient.Plugins.Core import KalturaVideo as API_KalturaVideo
 
 KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
 
@@ -71,16 +72,6 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                  i18n_domain="kaltura_video")
                        ),
      
-     atapi.StringField('entryId',
-                       searchable=0,
-                       mode='r',
-                       accesssor="getEntryId",
-                       widget=atapi.ComputedWidget(label="Entry Id",
-                                                 description="Entry Id set by Kaltura after upload (read only)",
-                                                 visible = { 'edit' :'visible', 'view' : 'visible' },
-                                                 i18n_domain="kaltura_video"),
-                       ),
-     
      atapi.StringField('player',
                        searchable=0,
                        accessor="getPlayer",
@@ -94,32 +85,6 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
                                                     i18n_domain="kaltura_video"),
                        ),
      
-     atapi.LinesField('categories',
-                      multiValued = True,
-                      searchable=0,
-                      required=True,
-                      accessor="getCategories",
-                      mutator="setCategories",
-                      widget=atapi.MultiSelectionWidget(label="Categories",
-                                                label_msgid="label_kvideofile_categories",
-                                                description="Select video category(ies) this playlist will provide",
-                                                description_msgid="desc_kvideofile_categories",
-                                                i18n_domain="kaltura_video"),
-                      ),       
-    
-    atapi.LinesField('tags',
-                      multiValued = True,
-                      searchable=0,
-                      required=True,
-                      accessor="getTags",
-                      mutator="setTags",
-                      widget=atapi.MultiSelectionWidget(label="Tags",
-                                                label_msgid="label_kvideofile_tags",
-                                                description="Select video tag(s) this playlist will provide ",
-                                                description_msgid="desc_kvideofile_title",
-                                                i18n_domain="kaltura_video"),
-                      ),
-
      atapi.StringField('partnerId',
                        searchable=0,
                        mode='rw',
@@ -135,6 +100,8 @@ KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
      ),
 )
 
+KalturaVideoSchema += KalturaBase.KalturaMetadataSchema
+
 # Set storage on fields copied from ATContentTypeSchema, making sure
 # they work well with the python bridge properties.
 
@@ -143,9 +110,10 @@ KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 
 schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
-
-class KalturaVideo(ATBlob):
+###TODO: Offer option NOT to store video as a blob in the ZODB
+class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     """Kaltura Video Content Type - stores the video file on your Kaltura account"""
+    #ISA KalturaMediaEntry
     implements(IKalturaVideo, IATBlobFile, IATFile, IFileContent)
 
     # CMF FTI setup
@@ -166,10 +134,6 @@ class KalturaVideo(ATBlob):
     
     security = ClassSecurityInfo()
     KalturaObject = None  ##TODO: Rename to KalturaObject
-    
-    def __init__(self, oid, **kwargs):
-        super(KalturaVideo, self).__init__(oid, **kwargs)
-        self.KalturaObject = None ##TODO: Rename to KalturaObject
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
@@ -180,29 +144,21 @@ class KalturaVideo(ATBlob):
         else:
             return None
         
-    playbackUrl = property(getPlaybackUrl)
-        
-    security.declarePublic("getEntryId")
-    def getEntryId(self):
-        if self.KalturaObject is not None:
-            return self.KalturaObject.getId()
-        else:
-            return None
-        
-    entryId = property(getEntryId)        
-        
-    security.declarePrivate("setMediaEntry")
-    def setMediaEntry(self, obj):
-        self.KalturaObject = obj
-
-    security.declarePrivate('getDefaultPartnerId')
-    def getDefaultPartnerId(self):
-        return getCredentials()['PARTNER_ID']
+    playbackUrl = property(getPlaybackUrl)      
     
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
         return "20100652"
         
+    security.declarePrivate('_updateRemote')
+    def _updateRemote(self, **kwargs):
+            (client, session) = kconnect()
+            newVideo = KalturaMediaEntry()
+            for (attr, value) in kwargs.iteritems():
+                setter = getattr(newPlaylist, 'set'+attr)
+                setter(value)
+            result = client.playlist.update(self.getEntryId(), newVideo)
+            self.setKalturaObject(result) 
         
 atapi.registerType(KalturaVideo, PROJECTNAME)
 
