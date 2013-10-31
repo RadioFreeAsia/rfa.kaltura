@@ -16,10 +16,7 @@ from rfa.kaltura.interfaces import IKalturaPlaylist
 from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.credentials import getCredentials
 from rfa.kaltura.kutils import kconnect
-from rfa.kaltura.content.vocabularies import getPlaylistPlayerVocabulary
-
-
-from zope.schema.vocabulary import SimpleVocabulary
+#from rfa.kaltura.content.vocabularies import getPlaylistPlayerVocabulary
 
 from KalturaClient.Plugins.Core import KalturaPlaylist as API_KalturaPlaylist
 
@@ -52,13 +49,19 @@ BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema + \
                            accessor="getPlayer",
                            mutator="setPlayer", 
                            mode='rw',
-                           vocabulary_factory=getPlaylistPlayerVocabulary,
-                           widget=atapi.SelectionWidget(label="Player",
-                                                        label_msgid="label_kplayerid_msgid",
-                                                        description="Choose the Video player to use",
-                                                        description_msgid="desc_kplayerid_msgid",
-                                                        i18n_domain="kaltura_video"),
-                           ),
+                           #vocabulary_factory=getPlaylistPlayerVocabulary(),
+                           #widget=atapi.SelectionWidget(label="Player",
+                                                        #label_msgid="label_kplayerid_msgid",
+                                                        #description="Choose the Video player to use",
+                                                        #description_msgid="desc_kplayerid_msgid",
+                                                        #i18n_domain="kaltura_video"),
+                           #),
+                           widget=atapi.StringWidget(label="Player Id",
+                                                     label_msgid="label_kplayerid_msgid",
+                                                     description="Enter the Player Id to use",
+                                                     description_msgid="desc_kplayerid_msgid",
+                                                     i18n_domain="kaltura_video"),
+                           ),         
      
          atapi.StringField('partnerId',
                            searchable=0,
@@ -228,12 +231,4 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
         self.keywords = keywords
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
-atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)
-
-
-
-
-
-
-    
-    
+atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)  

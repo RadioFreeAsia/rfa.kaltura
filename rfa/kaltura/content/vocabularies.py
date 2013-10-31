@@ -1,4 +1,5 @@
 """functions for populating vocabularies for various select or multiselect fields"""
+from zope.schema.vocabulary import SimpleVocabulary
 
 from rfa.kaltura.kutils import kGetPlaylistPlayers
 
