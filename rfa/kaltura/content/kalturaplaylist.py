@@ -45,31 +45,7 @@ BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema + \
                                      visible={'view': 'visible',
                                               'edit': 'visible'},
                                     ),
-               ),
-    
-         atapi.StringField('title',
-                           searchable=1,
-                           required=True,
-                           languageIndependent=1,
-                           accessor="Title",
-                           widget=atapi.StringWidget(label="Title",
-                                                     label_msgid="label_kvideofile_title",
-                                                     description="The title of this Playlist.",
-                                                     description_msgid="desc_kvideofile_title",
-                                                     i18n_domain="kaltura_video"),
-    
-                           ),
-             
-         atapi.StringField('description',
-                           searchable=0,
-                           required=True,
-                           accessor="Description",
-                           widget=atapi.StringWidget(label="Description",
-                                                     label_msgid="label_kvideofile_desc",
-                                                     description="Enter a description",
-                                                     description_msgid="desc_kvideofile_title",
-                                                     i18n_domain="kaltura_video"),
-                           ),     
+               ),    
                            
          atapi.StringField('player',
                            searchable=0,
@@ -172,17 +148,13 @@ schemata.finalizeATCTSchema(RuleBasedKalturaPlaylistSchema, folderish=False, mov
 class BaseKalturaPlaylist(base.ATCTContent):
     implements(IKalturaPlaylist)
     
-    meta_type = "KalturaPlaylist"
-    isPrincipiaFolderish = True
-
-    title = atapi.ATFieldProperty('title')
-    description = atapi.ATFieldProperty('description')
+    isPrincipiaFolderish = False
     
     security = ClassSecurityInfo()
     KalturaObject = None
     
     def __init__(self, oid, **kwargs):
-        super(KalturaPlaylist, self).__init__(oid, **kwargs)
+        super(BaseKalturaPlaylist, self).__init__(oid, **kwargs)
         self.KalturaObject = None
                 
     security.declarePublic("getEntryId")
@@ -218,8 +190,10 @@ class BaseKalturaPlaylist(base.ATCTContent):
                 
                 
 class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
-    
+    meta_type = "ManualKalturaPlaylist"
     schema = ManualKalturaPlaylistSchema
+    
+    isPrincipiaFolderish = True
     
     def __init__(self, oid, **kwargs):
         super(BaseKalturaPlaylist, self).__init__(oid, **kwargs)
@@ -233,6 +207,7 @@ class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
 
 class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     
+    meta_type = "RuleBasedKalturaPlaylist"
     schema = RuleBasedKalturaPlaylistSchema
     
     def __init__(self, oid, **kwargs):
