@@ -4,6 +4,7 @@ from Products.Archetypes import atapi
 from AccessControl import ClassSecurityInfo
 
 from rfa.kaltura.content import vocabularies
+from rfa.kaltura.credentials import getCredentials
 
 KalturaBaseSchema = atapi.Schema(
     (atapi.StringField('entryId',
@@ -51,8 +52,6 @@ KalturaBaseSchema = atapi.Schema(
      )
      
 )
-    
-    )
 
 
 KalturaMetadataSchema = atapi.Schema(

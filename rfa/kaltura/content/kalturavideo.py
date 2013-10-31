@@ -19,11 +19,10 @@ _ = MessageFactory('kaltura_video')
 
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.config import PROJECTNAME
-from rfa.kaltura.credentials import getCredentials
 
 from rfa.kaltura.content import base as KalturaBase
 
-from KalturaClient.Plugins.Core import KalturaVideo as API_KalturaVideo
+from KalturaClient.Plugins.Core import KalturaMediaEntry
 
 KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
 

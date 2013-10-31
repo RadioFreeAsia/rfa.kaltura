@@ -2,6 +2,8 @@
 """
 from zope.interface import implements
 
+from AccessControl import ClassSecurityInfo
+
 from Products.Archetypes import atapi
 from archetypes.referencebrowserwidget.widget import ReferenceBrowserWidget
 from Products.ATContentTypes.content import base
@@ -12,7 +14,6 @@ from Products.ATContentTypes.content.folder import ATFolderSchema
 
 from rfa.kaltura.interfaces import IKalturaPlaylist
 from rfa.kaltura.config import PROJECTNAME
-from rfa.kaltura.credentials import getCredentials
 from rfa.kaltura.kutils import kconnect
 
 from rfa.kaltura.content import base as KalturaBase
@@ -67,7 +68,9 @@ schemata.finalizeATCTSchema(RuleBasedKalturaPlaylistSchema, folderish=False, mov
 class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
     implements(IKalturaPlaylist)
     
+    security = ClassSecurityInfo()
     isPrincipiaFolderish = False
+    
     
     def __init__(self, oid, **kwargs):
         super(BaseKalturaPlaylist, self).__init__(oid, **kwargs)
@@ -92,7 +95,8 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
 class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
     meta_type = "ManualKalturaPlaylist"
     schema = ManualKalturaPlaylistSchema
-    
+
+    security = ClassSecurityInfo()
     isPrincipiaFolderish = True
     
     playlistContent = []
@@ -108,6 +112,8 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     
     meta_type = "RuleBasedKalturaPlaylist"
     schema = RuleBasedKalturaPlaylistSchema
+    
+    security = ClassSecurityInfo()
         
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)

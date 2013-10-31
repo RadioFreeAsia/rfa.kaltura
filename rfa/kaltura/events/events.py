@@ -11,7 +11,7 @@ def initVideo(context, event):
     datafile = context.REQUEST.form.get('file_file')
     if isinstance(datafile, FileUploadClass):
         KMediaEntry = kupload(context)    
-        context.setMediaEntry(KMediaEntry)
+        context.setKalturaObject(KMediaEntry)
         
 def modifyVideo(context, event):
     """Fired when the object is edited"""
@@ -21,7 +21,7 @@ def modifyVideo(context, event):
         pass #not modified
     else:
         #File Modification Occured
-        context.setMediaEntry(kupload(context))
+        context.setKalturaObject(kupload(context))
 
 def addVideo(context, event):
     """When a video is added to a container
