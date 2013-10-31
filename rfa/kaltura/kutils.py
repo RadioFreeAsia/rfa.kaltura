@@ -2,6 +2,8 @@
 import os
 import logging
 
+from Acquisition import aq_parent
+
 from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura import credentials
@@ -66,11 +68,11 @@ def kGetPlaylistPlayers():
     
     return objs
 
-def kcreatePlaylist(FolderishObject):
+def kcreatePlaylist(context):
     """Create an empty playlist on the kaltura server"""
     
     kplaylist = KalturaPlaylist()
-    kplaylist.setName(FolderishObject.Title())
+    kplaylist.setName(context.Title())
     kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
     
     (client, session) = kconnect()
@@ -79,11 +81,26 @@ def kcreatePlaylist(FolderishObject):
     
     return kplaylist
 
-def kupload(FileObject):
+def kcreateVideo(context):
+    
+    mediaEntry = KalturaMediaEntry()
+    mediaEntry.setName(context.Title())
+    mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
+    mediaEntry.searchProviderId = context.UID()
+    mediaEntry.setReferenceId = context.UID()
+    
+    mediaEntry.setCategories(','.join([c for c in context.categories if c]))
+    mediaEntry.setTags(','.join([t for t in context.tags if t]))
+    
+    return mediaEntry
+    
+    
+def kupload(FileObject, mediaEntry=None):
     """Provide an ATCTFileContent based object
        Upload attached contents to Kaltura
        Currently Treats all objects as 'videos' - 
          this should change when other kaltura media types are implemented.
+       If MediaEntry is provided, the File is 
     """
     
     #this check can be done better
@@ -97,19 +114,20 @@ def kupload(FileObject):
     tempfh.write(FileObject.get_data())
     tempfh.close()    
     
+    #XXX Not A good idea if we plan on not using the ZODB
     name = FileObject.Title()
-    ProviderId = FileObject.UID()
+    ProviderId = FileObject.UID()  
      
     (client, session) = kconnect()
     
-    #create an entry
-    mediaEntry = KalturaMediaEntry()
-    mediaEntry.setName(name)
-    mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
-    mediaEntry.searchProviderId = ProviderId
+    if mediaEntry is None:
+        #create an entry
+        mediaEntry = KalturaMediaEntry()
+        mediaEntry.setName(name)
+        mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
+        mediaEntry.searchProviderId = ProviderId
+        mediaEntry.setReferenceId = ProviderId
 
-    #do the upload
-    
     uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
     
     #del the temp file
