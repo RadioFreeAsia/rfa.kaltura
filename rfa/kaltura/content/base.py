@@ -123,7 +123,7 @@ class KalturaContentMixin(object):
         self.tags = tags
         
     def getCategories(self):
-        return self.keywords
+        return self.categories
     
     def setCategories(self, categories):
         self.categories = categories    
