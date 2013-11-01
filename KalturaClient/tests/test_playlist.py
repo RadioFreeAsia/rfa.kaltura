@@ -156,11 +156,30 @@ class PlaylistTests(KalturaBaseTest):
         
         self.assertRaises(KalturaException, self.client.playlist.update, playlistId, playlist) 
     
+class DynamicPlaylistTests(KalturaBaseTest):
     
+    def test_createRemote(self):
+        kplaylist = KalturaPlaylist()
+        kplaylist.setName('pytest.PlaylistTests.test_createRemote')
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.DYNAMIC))
+        
+        #must add a totalResults field
+        kplaylist.setTotalResults(10)
+        
+        kplaylist = self.client.playlist.add(kplaylist)        
+        self.assertIsInstance(kplaylist, KalturaPlaylist)
+        
+        self.assertIsInstance(kplaylist.getId(), unicode)
+        
+        #cleanup
+        self.client.playlist.delete(kplaylist.getId())        
+        
+        
 import unittest
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(PlaylistTests),
+        unittest.makeSuite(DynamicPlaylistTests),
         ))
 
 if __name__ == "__main__":
