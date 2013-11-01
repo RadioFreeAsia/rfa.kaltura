@@ -174,6 +174,53 @@ class DynamicPlaylistTests(KalturaBaseTest):
         #cleanup
         self.client.playlist.delete(kplaylist.getId())        
         
+    def test_createTagRule(self):
+        from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
+        from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
+        
+        referenceId = 'pytest.DynamicPlaylistTests.test_createTagRule'
+        
+        #create a video, and put a tag on it.
+        mediaEntry = KalturaMediaEntry()
+        mediaEntry.setName(referenceId)
+        mediaEntry.setReferenceId(referenceId)
+        mediaEntry.setTags('footag')
+        mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
+        ulFile = getTestFile('DemoVideo.flv')
+        uploadTokenId = self.client.media.upload(ulFile) 
+        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)         
+        self.addCleanup(self.client.media.delete, mediaEntry.getId())    
+        
+        #create a playlist
+        kplaylist = KalturaPlaylist()
+        kplaylist.setName(referenceId)
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.DYNAMIC))
+        kplaylist.setTotalResults(10)
+        kplaylist.setReferenceId(referenceId)
+        
+        #create a filter for the playlist
+        playlistFilter = KalturaMediaEntryFilterForPlaylist()
+        playlistFilter.setTagsMultiLikeOr('footag')
+
+        filtersArray = [playlistFilter,]
+        
+        kplaylist.setFilters(filtersArray)
+        
+        kplaylist = self.client.playlist.add(kplaylist)
+        self.addCleanup(self.client.playlist.delete, kplaylist.getId())
+        
+        import time
+        time.sleep(5)
+        #you have to do this first?
+        results = self.client.playlist.executeFromFilters(filtersArray, 10)
+        
+        #see if we get our video back!
+        results = self.client.playlist.execute(kplaylist.getId(), kplaylist)
+        
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].getName(), referenceId)
+        
+        
         
 import unittest
 def test_suite():
