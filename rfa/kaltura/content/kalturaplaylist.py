@@ -24,7 +24,6 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
 
 BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema + KalturaBase.KalturaBaseSchema
-BaseKalturaPlaylistSchema['playerId'].default_method="getDefaultPlaylistPlayerId"
 
 ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema + \
     ATFolderSchema + \
@@ -62,8 +61,13 @@ ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema + \
 
 schemata.finalizeATCTSchema(ManualKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
 
+
+
 RuleBasedKalturaPlaylistSchema = BaseKalturaPlaylistSchema + KalturaBase.KalturaMetadataSchema
+
 schemata.finalizeATCTSchema(RuleBasedKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
+
+
 
 class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
     implements(IKalturaPlaylist)

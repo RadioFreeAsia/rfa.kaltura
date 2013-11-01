@@ -21,6 +21,8 @@ def initVideo(context, event):
 def modifyVideo(context, event):
     """Fired when the object is edited"""
     
+    context._updateRemote()
+    
     status = context.REQUEST.form.get('file_delete')
     if status in ("nochange", None):
         pass #not modified
