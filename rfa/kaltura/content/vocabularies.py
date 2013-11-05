@@ -4,16 +4,12 @@ from rfa.kaltura.kutils import kGetCategories
 
 
 def getTagVoculabulary():
-    return ('tag1', 'tag2', 'tag3') #for testing / development only
-    #items = []
-    
-    #tags = kGetTags()
-    #for tag in tags:
-        #items.append( (tag.getId(), tag.getName()))
-        
-    #return SimpleVocabulary.fromItems(items)
+    """Get Currently created tags on Kaltura server"""
+    # Not implemented yet.
+    pass
 
 def getCategoryVocabulary():
+    """Get Currently created Categories on Kaltura server"""
     items = []
     
     categoryObjs = kGetCategories()
