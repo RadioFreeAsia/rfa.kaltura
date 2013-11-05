@@ -132,5 +132,5 @@ class KalturaContentMixin(object):
         return vocabularies.getTagVoculabulary()
         
     def getCategoryVocabulary(self):
-        return vocabularies.getCategoryVoculabulary()
+        return vocabularies.getCategoryVocabulary()
     

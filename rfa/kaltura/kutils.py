@@ -110,10 +110,7 @@ def kcreatePlaylist(context):
         kfilter = kcreateEmptyFilterForPlaylist()
         kfilter.setFreeText(','.join(context.getTags()))
 
-        
-            
-        
-        
+        import pdb; pdb.set_trace()
         kfilter.setCategoriesMatchOr(','.join(context.getCategories()))
         kplaylist.setFilters([kfilter])
     else:
@@ -181,7 +178,7 @@ def kupload(FileObject, mediaEntry=None):
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     return mediaEntry
 
-def kGetCateories():
+def kGetCategories():
     (client, session) = kconnect()
     
     result = client.category.list().objects

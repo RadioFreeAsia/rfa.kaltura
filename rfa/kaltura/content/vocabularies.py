@@ -1,26 +1,26 @@
 """functions for populating vocabularies for various select or multiselect fields"""
-from zope.schema.vocabulary import SimpleVocabulary
-
 from rfa.kaltura.kutils import kGetPlaylistPlayers
 from rfa.kaltura.kutils import kGetCategories
 
 
 def getTagVoculabulary():
-    return ('tag1', 'tag2', 'tag3')
+    return ('tag1', 'tag2', 'tag3') #for testing / development only
     #items = []
     
     #tags = kGetTags()
     #for tag in tags:
         #items.append( (tag.getId(), tag.getName()))
         
-    #return SimpleVocabulary.fromItems(tags)
+    #return SimpleVocabulary.fromItems(items)
 
-def getCategoryVoculabulary():
+def getCategoryVocabulary():
+    items = []
+    
     categoryObjs = kGetCategories()
     for cat in categoryObjs:
-        items.append( (cat.getId(), cat.getName()))
+        items.append( (str(cat.getId()), cat.getName(),) )
         
-    return SimpleVocabulary.fromItems(tags)
+    return items
 
 
 def getVideoPlayerVocabulary():
