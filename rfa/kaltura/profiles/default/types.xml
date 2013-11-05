@@ -10,6 +10,8 @@
   <!-- -*- extra stuff goes here -*- -->
   <object name="Kaltura Video"
     meta_type="Factory-based Type Information with dynamic views" />
-  <object name="Kaltura Playlist"
+  <object name="Manual Kaltura Playlist"
+    meta_type="Factory-based Type Information with dynamic views" />
+  <object name="Rule-Based Kaltura Playlist"
     meta_type="Factory-based Type Information with dynamic views" />
 </object>

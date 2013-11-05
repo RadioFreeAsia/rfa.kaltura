@@ -6,5 +6,9 @@
       <role name="Manager" />
       <role name="Contributor" />
     </permission>
+    <permission name="rfa.kaltura: Add Kaltura Playlist" acquire="False">
+      <role name="Manager" />
+      <role name="Contributor" />
+    </permission>
   </permissions>
 </rolemap>

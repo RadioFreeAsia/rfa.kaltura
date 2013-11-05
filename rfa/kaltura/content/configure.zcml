@@ -2,10 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="rfa.kaltura">
-
-  <!-- configure your content components here -->
   
-  <!-- -*- extra stuff goes here -*- -->
   <class class=".kalturavideo.KalturaVideo">
     <require
         permission="zope2.View"
@@ -13,8 +10,14 @@
         />
   </class>
 
-  <!-- -*- extra stuff goes here -*- -->
-  <class class=".kalturaplaylist.KalturaPlaylist">
+  <class class=".kalturaplaylist.ManualKalturaPlaylist">
+    <require
+        permission="zope2.View"
+        interface="..interfaces.IKalturaPlaylist"
+        />
+  </class>
+  
+  <class class=".kalturaplaylist.RuleBasedKalturaPlaylist">
     <require
         permission="zope2.View"
         interface="..interfaces.IKalturaPlaylist"

@@ -29,7 +29,7 @@
       name="default"
       title="rfa.kaltura"
       directory="profiles/default"
-      description="Kaltura Video Archetype for Zope/Plone"
+      description="Kaltura Archetypes for Zope/Plone"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   

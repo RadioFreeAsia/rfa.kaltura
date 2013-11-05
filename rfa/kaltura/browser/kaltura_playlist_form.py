@@ -3,7 +3,7 @@ from zope import schema
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
 
-class IKalturaVideoForm(Interface):    
+class IKalturaPlaylistForm(Interface):    
     title = schema.TextLine(title=_(u'Title'), 
                             required=False)
     description = schema.Text(title=u'Description', 
@@ -16,7 +16,7 @@ from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from z3c.form import form, field
 
-class KalturaVideoForm(form.Form):
+class KalturaPlaylistForm(form.Form):
     fields = field.Fields(IKalturaVideoForm)
     ignoreContext = True
     
@@ -41,19 +41,11 @@ class KalturaVideoForm(form.Form):
         else:
             description = ''
             
-        if data['filename'] is not None:
-            filename = data['filename']
-            IStatusMessage(self.request).addStatusMessage("I would have uploaded %s" % (filename,), 'info')
-        else:
-            filename = 'empty'
-            IStatusMessage(self.request).addStatusMessage("you got away with not adding a filename!", 'info')
-            
-            
         IStatusMessage(self.request).addStatusMessage(
-                "Video Saved",
+                "Playlist Saved",
                 'info')
         
-        redirect_url = "%s/@@kaltura_video_form" % self.context.absolute_url()
+        redirect_url = "%s/@@kaltura_playlist_form" % self.context.absolute_url()
         self.request.response.redirect(redirect_url)    
 
 
@@ -62,7 +54,7 @@ class KalturaVideoForm(form.Form):
         IStatusMessage(self.request).addStatusMessage(
             "Canceled",
             'info')
-        redirect_url = "%s/@@kaltura_video_form" % self.context.absolute_url()
+        redirect_url = "%s/@@kaltura_playlist_form" % self.context.absolute_url()
         self.request.response.redirect(redirect_url)    
         
         
