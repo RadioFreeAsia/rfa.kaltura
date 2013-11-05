@@ -16,8 +16,6 @@ def initVideo(context, event):
         
     context.setKalturaObject(KMediaEntry)
         
-    
-        
 def modifyVideo(context, event):
     """Fired when the object is edited"""
     
@@ -44,5 +42,5 @@ def initPlaylist(context, event):
     
 def modifyPlaylist(context, event):
     """Fired when the playlist object itself is edited"""
-    context._updateRemote()
+    pass
     

@@ -12,13 +12,14 @@ from Products.ATContentTypes.content.folder import ATFolder
 from Products.ATContentTypes.content import schemata
 from Products.ATContentTypes.content.folder import ATFolderSchema
 
-from rfa.kaltura.interfaces import IKalturaPlaylist
+from rfa.kaltura.interfaces import IKalturaPlaylist, IKalturaRuleBasedPlaylist, IKalturaManualPlaylist
 from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.kutils import kconnect
 
 from rfa.kaltura.content import base as KalturaBase
 
 from KalturaClient.Plugins.Core import KalturaPlaylist as API_KalturaPlaylist
+from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
@@ -62,7 +63,6 @@ ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema + \
 schemata.finalizeATCTSchema(ManualKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
 
 
-
 RuleBasedKalturaPlaylistSchema = BaseKalturaPlaylistSchema + KalturaBase.KalturaMetadataSchema
 
 schemata.finalizeATCTSchema(RuleBasedKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
@@ -86,6 +86,11 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
             
     security.declarePrivate('_updateRemote')
     def _updateRemote(self, **kwargs):
+        """will set the specified attribute on the matching object in Kaltura
+           Try not to modify self.KalturaObject directly -use this method instead
+           to keep things in sync.
+        """
+        
         (client, session) = kconnect()
         newPlaylist = API_KalturaPlaylist()
         for (attr, value) in kwargs.iteritems():
@@ -97,6 +102,7 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
                 
                 
 class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
+    implements(IKalturaManualPlaylist)
     meta_type = "ManualKalturaPlaylist"
     schema = ManualKalturaPlaylistSchema
 
@@ -113,11 +119,28 @@ class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
                 
 
 class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
-    
+    implements(IKalturaRuleBasedPlaylist)
     meta_type = "RuleBasedKalturaPlaylist"
     schema = RuleBasedKalturaPlaylistSchema
     
     security = ClassSecurityInfo()
+        
+    def _setFilterTags(self, tagStr):
+        kfilters = self.KalturaObject.getFilters()
+        kfilters[0].setFreeText(tagStr)
+        self.KalturaObject.setFilters(kfilters)
+        
+    def _setCategoryTags(self, catStr):
+        kfilters = self.KalturaObject.getFilters()
+        kfilters[0].setCategoriesMatchOr(catStr)
+        self.KalturaObject.setFilters(kfilters)
+        
+    def updateFilter(self):
+        tags = ','.join(self.getTags())
+        cats = ','.join(self.getCategories())
+        self._setFilterTags(tags)
+        self._setCategoryTags(cats)
+        self._updateRemote(Filters, self.KalturaFilterObject)
         
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)

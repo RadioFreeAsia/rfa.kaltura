@@ -1,4 +1,7 @@
-# -*- extra stuff goes here -*-
-from content_interfaces import IKalturaVideo, IKalturaPlaylist
+
+from content_interfaces import IKalturaVideo
+from content_interfaces import IKalturaPlaylist
+from content_interfaces import IKalturaManualPlaylist, IKalturaRuleBasedPlaylist
+
 
 from plonelayers import IRfaKalturaInstalled

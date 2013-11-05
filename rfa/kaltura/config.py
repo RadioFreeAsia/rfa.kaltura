@@ -10,3 +10,6 @@ ADD_PERMISSIONS = {
     'ManualKalturaPlaylist': 'rfa.kaltura: Add Kaltura Playlist',
 }
 
+
+#if playlist size not set, this is the default.
+DEFAULT_DYNAMIC_PLAYLIST_SIZE = 20

@@ -7,6 +7,8 @@ from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura import credentials
+from rfa.kaltura.config import DEFAULT_DYNAMIC_PLAYLIST_SIZE
+from rfa.kaltura.interfaces import IKalturaRuleBasedPlaylist, IKalturaManualPlaylist
 
 from KalturaClient import *
 
@@ -17,7 +19,8 @@ from KalturaClient.Plugins.Core import KalturaSessionType
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
-
+from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
+from KalturaClient.Plugins.Core import KalturaSearchOperator
 
 logger = logging.getLogger("rfa.kaltura")
 logger.setLevel(logging.WARN)
@@ -68,12 +71,53 @@ def kGetPlaylistPlayers():
     
     return objs
 
+def kcreateEmptyFilterForPlaylist():
+    """Create a Playlist Filter, filled in with default, required values"""
+    #These were mined by reverse-engineering a playlist created on the KMC and inspecting the object
+    kfilter = KalturaMediaEntryFilterForPlaylist()
+    
+    #kfilter.setAdvancedSearch = KalturaSearchOperator()
+    #kfilter.AdvancedSearch.items = [ KalturaMetadataSearchItem()]
+    #kfilter.AdvancedSearch.items[0].setMetadataProfileId(1062502) #commented out b/c this is not understood
+    #kfilter.AdvancedSearch.items[0].setItems([])
+    #kfilter.AdvancedSearch.items[0].setType(KalturaSearchOperatorType())
+    #kfilter.AdvancedSearch.items[0].type.value=1
+    #kfilter.AdvancedSearch.setType(KalturaSearchOperatorType())
+    #kfilter.AdvancedSearch.type.value=1
+    
+    kfilter.setLimit(200)
+    kfilter.setModerationStatusIn(u'2,5,6,1')
+    kfilter.setOrderBy(u'-plays')
+    kfilter.setStatusIn(u'2,1')
+    kfilter.setTypeIn(u'1,2,7')
+    
+    return kfilter   
+
 def kcreatePlaylist(context):
     """Create an empty playlist on the kaltura server"""
     
     kplaylist = KalturaPlaylist()
     kplaylist.setName(context.Title())
-    kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
+    kplaylist.setDescription(context.Description())
+    kplaylist.setReferenceId(context.UID())
+    
+    if IKalturaManualPlaylist.providedBy(context):
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.STATIC_LIST))
+    elif IKalturaRuleBasedPlaylist.providedBy(context):
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.DYNAMIC))
+        maxVideos = getattr(context, 'maxVideos', DEFAULT_DYNAMIC_PLAYLIST_SIZE)
+        kplaylist.setTotalResults(maxVideos)
+        kfilter = kcreateEmptyFilterForPlaylist()
+        kfilter.setFreeText(','.join(context.getTags()))
+
+        
+            
+        
+        
+        kfilter.setCategoriesMatchOr(','.join(context.getCategories()))
+        kplaylist.setFilters([kfilter])
+    else:
+        raise AssertionError, "%s is not a known playlist type" % (context.portal_type,)
     
     (client, session) = kconnect()
     
@@ -87,7 +131,7 @@ def kcreateVideo(context):
     mediaEntry.setName(context.Title())
     mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
     mediaEntry.searchProviderId = context.UID()
-    mediaEntry.setReferenceId = context.UID()
+    mediaEntry.setReferenceId(context.UID())
     
     mediaEntry.setCategories(','.join([c for c in context.categories if c]))
     mediaEntry.setTags(','.join([t for t in context.tags if t]))
@@ -134,9 +178,14 @@ def kupload(FileObject, mediaEntry=None):
     os.remove('/tmp/tempfile')
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
-    
-    KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))        
+    KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     return mediaEntry
+
+def kGetCateories():
+    (client, session) = kconnect()
+    
+    result = client.category.list().objects
+    return result
 
 def kconnect():
     
@@ -158,3 +207,4 @@ def kconnect():
     client.setKs(ks)    
     
     return (client, ks)
+

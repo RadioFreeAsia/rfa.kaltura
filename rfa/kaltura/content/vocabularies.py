@@ -2,6 +2,7 @@
 from zope.schema.vocabulary import SimpleVocabulary
 
 from rfa.kaltura.kutils import kGetPlaylistPlayers
+from rfa.kaltura.kutils import kGetCategories
 
 
 def getTagVoculabulary():
@@ -14,15 +15,12 @@ def getTagVoculabulary():
         
     #return SimpleVocabulary.fromItems(tags)
 
-def getCategoryVoculabulary():    
-    return ('cat1', 'cat2', 'cat3')
-    #items = []
-    
-    #tags = kGetCategories()
-    #for tag in tags:
-        #items.append( (tag.getId(), tag.getName()))
+def getCategoryVoculabulary():
+    categoryObjs = kGetCategories()
+    for cat in categoryObjs:
+        items.append( (cat.getId(), cat.getName()))
         
-    #return SimpleVocabulary.fromItems(tags)
+    return SimpleVocabulary.fromItems(tags)
 
 
 def getVideoPlayerVocabulary():

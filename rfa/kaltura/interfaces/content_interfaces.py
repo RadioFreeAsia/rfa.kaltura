@@ -8,4 +8,19 @@ class IKalturaVideo(Interface):
 
 class IKalturaPlaylist(Interface):
     """Kaltura Playlist Content Type - 
-       Folderish, contains (Kaltura) Videos and renders them all as a playlist"""
+       contains Kaltura Media and renders them all as a playlist"""
+    
+class IKalturaRuleBasedPlaylist(IKalturaPlaylist):
+    """Kaltura Rule-Based Playlist
+       For creating dynamic playlists configured by rules
+       such as matching tags, categories, a date range, etc"""
+    
+class IKalturaManualPlaylist(IKalturaPlaylist):
+    """Kaltura Manual Playlist
+       for creating playlists by manually specifying the media
+       that the playlist contains"""
+    
+
+    
+    
+    
