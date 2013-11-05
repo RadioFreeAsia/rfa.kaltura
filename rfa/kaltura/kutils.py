@@ -108,10 +108,9 @@ def kcreatePlaylist(context):
         maxVideos = getattr(context, 'maxVideos', DEFAULT_DYNAMIC_PLAYLIST_SIZE)
         kplaylist.setTotalResults(maxVideos)
         kfilter = kcreateEmptyFilterForPlaylist()
-        kfilter.setFreeText(','.join(context.getTags()))
+        kfilter.setFreeText(u','.join(context.getTags()))
 
-        import pdb; pdb.set_trace()
-        kfilter.setCategoriesMatchOr(','.join(context.getCategories()))
+        kfilter.setCategoriesIdsMatchOr(u','.join(context.getCategories()))
         kplaylist.setFilters([kfilter])
     else:
         raise AssertionError, "%s is not a known playlist type" % (context.portal_type,)
