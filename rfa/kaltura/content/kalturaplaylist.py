@@ -17,6 +17,7 @@ from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.kutils import kconnect
 
 from rfa.kaltura.content import base as KalturaBase
+from rfa.kaltura.content.vocabularies import getPlaylistPlayerVocabulary
 
 from KalturaClient.Plugins.Core import KalturaPlaylist as API_KalturaPlaylist
 from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
@@ -24,10 +25,20 @@ from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
 
-BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema + KalturaBase.KalturaBaseSchema
+BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema.copy() + KalturaBase.KalturaBaseSchema.copy()
 
-ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema + \
-    ATFolderSchema + \
+#edit the playerId field to show a list of Players for Playlists
+BaseKalturaPlaylistSchema["playerId"].vocabulary_factory=getPlaylistPlayerVocabulary
+BaseKalturaPlaylistSchema["playerId"].widget = atapi.SelectionWidget(label="Player",
+                                                    label_msgid="label_kplayerid_msgid",
+                                                    description="Choose the Video player to use",
+                                                    description_msgid="desc_kplayerid_msgid",
+                                                    i18n_domain="kaltura_video")
+                                                    
+
+
+ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema.copy() + \
+    ATFolderSchema.copy() + \
     atapi.Schema(
         (atapi.ReferenceField('playlistVideos',
                               relationship = 'playlist_videos',
@@ -60,14 +71,24 @@ ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema + \
          )
     )
 
+
 schemata.finalizeATCTSchema(ManualKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
 
 
-RuleBasedKalturaPlaylistSchema = BaseKalturaPlaylistSchema + KalturaBase.KalturaMetadataSchema
+RuleBasedKalturaPlaylistSchema = BaseKalturaPlaylistSchema.copy() + KalturaBase.KalturaMetadataSchema.copy()
+    #atapi.Schema(
+        #(atapi.IntegerField("daysOld",
+                           #accessor="getDaysOld",
+                           #mutator="setDaysOld",
+                           #required=True,
+                           #default=30,
+                           #),
+         #)
+    #)    
 
 schemata.finalizeATCTSchema(RuleBasedKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
-
-
+                       
+schemata.finalizeATCTSchema(ManualKalturaPlaylistSchema, folderish=False, moveDiscussion=False)
 
 class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
     implements(IKalturaPlaylist)
@@ -124,7 +145,19 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     schema = RuleBasedKalturaPlaylistSchema
     
     security = ClassSecurityInfo()
+    
+    def setTags(self, tagList):
+        super(RuleBasedKalturaPlaylist, self).setTags(tagList)
+        self.updateFilter()
         
+    def setCategories(self, catList):
+        super(RuleBasedKalturaPlaylist, self).setCategiroes(catList)
+        self.updateFilter()
+
+    def setDaysOld(self, days):
+        #Hummm... is there a way to do this?
+        pass
+    
     def _setFilterTags(self, tagStr):
         kfilters = self.KalturaObject.getFilters()
         kfilters[0].setFreeText(tagStr)
@@ -144,4 +177,4 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
         
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
-atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)  
+atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)

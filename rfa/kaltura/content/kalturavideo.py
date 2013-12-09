@@ -25,82 +25,56 @@ from rfa.kaltura.kutils import kconnect
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry
 
-KalturaVideoSchema = ATBlob.schema.copy() + atapi.Schema((
-
-     atapi.StringField('title',
-                       searchable=1,
-                       required=True,
-                       languageIndependent=1,
-                       accessor="Title",
-                       widget=atapi.StringWidget(label="Title",
-                                                 label_msgid="label_kvideofile_title",
-                                                 description="The title of this video.",
-                                                 description_msgid="desc_kvideofile_title",
-                                                 i18n_domain="kaltura_video"),
-
-                       ),
-     
-     atapi.StringField('description',
-                       searchable=0,
-                       required=True,
-                       accessor="Description",
-                       widget=atapi.StringWidget(label="Description",
-                                                 label_msgid="label_kvideofile_desc",
-                                                 description="Enter a description",
-                                                 description_msgid="desc_kvideofile_title",
-                                                 i18n_domain="kaltura_video"),
-                       ),
-
-     atapi.ImageField('thumbnail',
-                      searchable=0,
-                      required=False,
-                      mode='r',
-                      widget=atapi.ImageWidget(label="Thumbnail",
-                                               description="Thumbnail of video",
-                                               visible = {'edit': 'invisible', 'view': 'visible'},
-                                               i18n_domain="kaltura_video")
-                      ),
-                      
-                    
-     atapi.StringField('playbackUrl',
-                       searchable=0,
-                       accessor="getPlaybackUrl",
-                       mode="r",
-                       widget=atapi.ComputedWidget(label="Url",
-                                                 description="Url set by Kaltura after upload (read only)",
-                                                 visible = { 'edit' :'visible', 'view' : 'visible' },
-                                                 i18n_domain="kaltura_video")
-                       ),
-     
-     atapi.StringField('player',
-                       searchable=0,
-                       accessor="getPlayer",
-                       mutator="setPlayer", 
-                       mode='rw',
-                       default_method="getDefaultPlayerId",
-                       widget=atapi.SelectionWidget(label="Player",
-                                                    label_msgid="label_kplayerid_msgid",
-                                                    description="Choose the Player to use",
-                                                    description_msgid="desc_kplayerid_msgid",
+KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy() + \
+    atapi.Schema((
+        atapi.StringField('title',
+                          searchable=1,
+                          required=True,
+                          languageIndependent=1,
+                          accessor="Title",
+                          widget=atapi.StringWidget(label="Title",
+                                                    label_msgid="label_kvideofile_title",
+                                                    description="The title of this video.",
+                                                    description_msgid="desc_kvideofile_title",
                                                     i18n_domain="kaltura_video"),
-                       ),
-     
-     atapi.StringField('partnerId',
-                       searchable=0,
-                       mode='rw',
-                       default_method="getDefaultPartnerId",
-                       widget=atapi.StringWidget(label="Partner Id",
-                                                 label_msgid="label_kpartnerid_msgid",
-                                                 description="Kaltura Partner Id (use default if unsure)",
-                                                 description_msgid="desc_kpartnerid_msgid",
-                                                 i18n_domain="kaltura_video"),
-                                             
-                                             
-                      ),                      
-     ),
-)
+   
+                          ),
+        
+        atapi.StringField('description',
+                          searchable=0,
+                          required=True,
+                          accessor="Description",
+                          widget=atapi.StringWidget(label="Description",
+                                                    label_msgid="label_kvideofile_desc",
+                                                    description="Enter a description",
+                                                    description_msgid="desc_kvideofile_title",
+                                                    i18n_domain="kaltura_video"),
+                          ),
+   
+        atapi.ImageField('thumbnail',
+                         searchable=0,
+                         required=False,
+                         mode='r',
+                         widget=atapi.ImageWidget(label="Thumbnail",
+                                                  description="Thumbnail of video",
+                                                  visible = {'edit': 'invisible', 'view': 'visible'},
+                                                  i18n_domain="kaltura_video")
+                         ),
+                         
+        atapi.StringField('playbackUrl',
+                          searchable=0,
+                          accessor="getPlaybackUrl",
+                          mode="r",
+                          widget=atapi.ComputedWidget(label="Url",
+                                                    description="Url set by Kaltura after upload (read only)",
+                                                    visible = { 'edit' :'visible', 'view' : 'visible' },
+                                                    i18n_domain="kaltura_video")
+                          ),
+                           
+        ),
+   )
 
-KalturaVideoSchema += KalturaBase.KalturaMetadataSchema
+KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
 
 # Set storage on fields copied from ATContentTypeSchema, making sure
 # they work well with the python bridge properties.
@@ -133,7 +107,7 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
-    KalturaObject = None  ##TODO: Rename to KalturaObject
+    KalturaObject = None
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
@@ -152,13 +126,13 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         
     security.declarePrivate('_updateRemote')
     def _updateRemote(self, **kwargs):
-            (client, session) = kconnect()
-            newVideo = KalturaMediaEntry()
-            for (attr, value) in kwargs.iteritems():
-                setter = getattr(newPlaylist, 'set'+attr)
-                setter(value)
-            result = client.playlist.update(self.getEntryId(), newVideo)
-            self.setKalturaObject(result) 
+        (client, session) = kconnect()
+        newVideo = KalturaMediaEntry()
+        for (attr, value) in kwargs.iteritems():
+            setter = getattr(newPlaylist, 'set'+attr)
+            setter(value)
+        result = client.playlist.update(self.getEntryId(), newVideo)
+        self.setKalturaObject(result) 
         
 atapi.registerType(KalturaVideo, PROJECTNAME)
 
