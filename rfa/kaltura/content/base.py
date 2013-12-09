@@ -17,20 +17,16 @@ KalturaBaseSchema = atapi.Schema(
                                                  i18n_domain="kaltura_video"),
                        ),
      
+     #sub-classes that use this schema may alter this field 
+     # to use a selection widget and a vocabulary
+     # if not, it's a simple string field where you type in the playerId (aka ui_conf) manually.
      atapi.StringField('playerId',
                        searchable=0,
                        accessor="getPlayer",
                        mutator="setPlayer", 
                        mode='rw',
                        default_method="getDefaultPlayerId",
-                       #vocabulary_factory=getPlaylistPlayerVocabulary(),
-                       #widget=atapi.SelectionWidget(label="Player",
-                                                    #label_msgid="label_kplayerid_msgid",
-                                                    #description="Choose the Video player to use",
-                                                    #description_msgid="desc_kplayerid_msgid",
-                                                    #i18n_domain="kaltura_video"),
-                                                    #),
-                      widget=atapi.StringWidget(label="Player Id",
+                       widget=atapi.StringWidget(label="Player Id",
                                                 label_msgid="label_kplayerid_msgid",
                                                 description="Enter the Player Id to use",
                                                 description_msgid="desc_kplayerid_msgid",
@@ -53,7 +49,7 @@ KalturaBaseSchema = atapi.Schema(
      
 )
 
-
+#this seems misnamed
 KalturaMetadataSchema = atapi.Schema(
     (atapi.LinesField('categories',
                       multiValued = True,
@@ -77,7 +73,7 @@ KalturaMetadataSchema = atapi.Schema(
                       mutator="setTags",
                       widget=atapi.LinesWidget(label="Tags",
                                                label_msgid="label_kvideofile_tags",
-                                               description="Add keyword tag(s) this playlist will provide",
+                                               description="Add keyword tag(s) this playlist will provide (one per line)",
                                                description_msgid="desc_kvideofile_title",
                                                i18n_domain="kaltura_video"),
                       ),
@@ -109,7 +105,7 @@ class KalturaContentMixin(object):
             return self.KalturaObject.getId()
         else:
             return None     
-        entryId = property(getEntryId)            
+    entryId = property(getEntryId)            
         
     security.declarePrivate('getDefaultPartnerId')
     def getDefaultPartnerId(self):

@@ -85,7 +85,7 @@ def kcreateEmptyFilterForPlaylist():
     #kfilter.AdvancedSearch.setType(KalturaSearchOperatorType())
     #kfilter.AdvancedSearch.type.value=1
     
-    kfilter.setLimit(200)
+    kfilter.setLimit(30)
     kfilter.setModerationStatusIn(u'2,5,6,1')
     kfilter.setOrderBy(u'-plays')
     kfilter.setStatusIn(u'2,1')
