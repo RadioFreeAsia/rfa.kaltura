@@ -1,5 +1,8 @@
-<div class="videobox">
- <h2>YO!  KALTURA VIDEO!</h2>
- <p> and this is where we start - use the macro!</p>
- <p tal:replace="here/Description"/>
+<div class="videobox"
+     tal:define="width string:265px;
+                 height string:174px;">
+ <h2 tal:content="context/Title">Video Title</h2>
+ <div metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
+   Dynamic Embed Video
+ </div>
 </div>
