@@ -7,7 +7,7 @@ Take the time to make sure your .gitignore file is correct,
 
 To Run All Tests:
 
-cd to the directory that contains KalturaClient (do not cd into the actual module)
+cd to the directory that contains KalturaClient (do not cd into the actual KalturaClient package)
 
 run:
   python -m unittest discover
