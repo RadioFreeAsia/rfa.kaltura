@@ -2,16 +2,21 @@ Products.Kaltura
 ================
 It's rfa.kaltura right now (company name).(package name)
 
-Version 0.2 - Alpha.
+Version 0.3 - Alpha.
+
+
+CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
 
 
 Kaltura Video Integration with Plone
 ----
 
-Just barely functional, but it works.
+Create Videos in Plone, automatically uploaded to your Kaltura account.
+Create Playlists in Plone automatically synced with your Kaltura account.
 
+Customize your Kaltura view templates in skins
 
-CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
+Add Kaltura Videos (and soon, playlists) to a composite page layout.
 
 
 Installation:
@@ -62,7 +67,6 @@ Install it.<br>
 Once it's installed
 --
 As the portal manager, visit the site config and configure the add-on. 
-
 
 
 To retrieve the Credentials for filling out the add-on configuration:
