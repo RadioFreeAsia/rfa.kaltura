@@ -31,7 +31,7 @@ class KalturaLogger(IKalturaLogger):
         
 KalturaLoggerInstance = KalturaLogger()
 
-#@cache me!
+#@cache me?
 def kGetVideoPlayers():
     (client, session) = kconnect()
     
@@ -46,12 +46,12 @@ def kGetVideoPlayers():
     filt.setObjTypeIn(players)
     filt.setTagsMultiLikeOr(tags)
        
-    resp = self.client.uiConf.list(filter=filt)
+    resp = client.uiConf.list(filter=filt)
     objs = resp.objects
     
     return objs
 
-#@cache me!
+#@cache me?
 def kGetPlaylistPlayers():
     (client, session) = kconnect()
     
@@ -66,7 +66,7 @@ def kGetPlaylistPlayers():
     filt.setObjTypeIn(players)
     filt.setTagsMultiLikeOr(tags)
        
-    resp = self.client.uiConf.list(filter=filt)
+    resp = client.uiConf.list(filter=filt)
     objs = resp.objects
     
     return objs

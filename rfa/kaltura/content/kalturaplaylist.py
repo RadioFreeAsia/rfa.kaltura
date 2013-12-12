@@ -17,7 +17,6 @@ from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.kutils import kconnect
 
 from rfa.kaltura.content import base as KalturaBase
-from rfa.kaltura.content.vocabularies import getPlaylistPlayerVocabulary
 
 from KalturaClient.Plugins.Core import KalturaPlaylist as API_KalturaPlaylist
 from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
@@ -26,16 +25,6 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
 
 BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema.copy() + KalturaBase.KalturaBaseSchema.copy()
-
-#edit the playerId field to show a list of Players for Playlists
-BaseKalturaPlaylistSchema["playerId"].vocabulary="getPlaylistPlayerVocabulary"
-BaseKalturaPlaylistSchema["playerId"].widget = atapi.SelectionWidget(label="Player",
-                                                    label_msgid="label_kplayerid_msgid",
-                                                    description="Choose the Video player to use",
-                                                    description_msgid="desc_kplayerid_msgid",
-                                                    i18n_domain="kaltura_video")
-                                                    
-
 
 ManualKalturaPlaylistSchema = BaseKalturaPlaylistSchema.copy() + \
     ATFolderSchema.copy() + \
@@ -121,7 +110,6 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
         self.setKalturaObject(resultPlaylist)
                 
                 
-                
 class ManualKalturaPlaylist(BaseKalturaPlaylist, ATFolder):
     implements(IKalturaManualPlaylist)
     meta_type = "ManualKalturaPlaylist"
@@ -175,7 +163,7 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
         cats = ','.join(self.getCategories())
         self._setFilterTags(tags)
         self._setCategoryTags(cats)
-        self._updateRemote(Filters, self.KalturaFilterObject)
+        self._updateRemote(Filters=self.KalturaObject.getFilters())
         
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
