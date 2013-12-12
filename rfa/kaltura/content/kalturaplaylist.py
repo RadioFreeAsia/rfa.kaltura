@@ -151,7 +151,7 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
         self.updateFilter()
         
     def setCategories(self, catList):
-        super(RuleBasedKalturaPlaylist, self).setCategiroes(catList)
+        super(RuleBasedKalturaPlaylist, self).setCategories(catList)
         self.updateFilter()
 
     def setDaysOld(self, days):
