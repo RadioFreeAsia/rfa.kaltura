@@ -148,11 +148,13 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
     
     def setTags(self, tagList):
         super(RuleBasedKalturaPlaylist, self).setTags(tagList)
-        self.updateFilter()
+        if self.KalturaObject is not None:
+            self.updateFilter()
         
     def setCategories(self, catList):
         super(RuleBasedKalturaPlaylist, self).setCategories(catList)
-        self.updateFilter()
+        if self.KalturaObject is not None:
+            self.updateFilter()
 
     def setDaysOld(self, days):
         #Hummm... is there a way to do this?
