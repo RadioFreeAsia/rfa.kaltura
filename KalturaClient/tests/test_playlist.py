@@ -1,3 +1,5 @@
+import time
+
 from utils import GetConfig
 from utils import KalturaBaseTest
 from utils import getTestFile
@@ -205,16 +207,17 @@ class DynamicPlaylistTests(KalturaBaseTest):
         filtersArray = [playlistFilter,]
         
         kplaylist.setFilters(filtersArray)
-        
+
         kplaylist = self.client.playlist.add(kplaylist)
         self.addCleanup(self.client.playlist.delete, kplaylist.getId())
         
-        import time
-        time.sleep(5)
-        #you have to do this first?
-        results = self.client.playlist.executeFromFilters(filtersArray, 10)
+        ######you want to wait for some unspecified amount of time
+        sleeptime=30
+        print "SLEEPING FOR %s Seconds before retrieving results" % (sleeptime)
+        time.sleep(sleeptime)
+        # NEED BETTER CODE HERE!!!!
+        #######
         
-        #see if we get our video back!
         results = self.client.playlist.execute(kplaylist.getId(), kplaylist)
         
         self.assertEqual(len(results), 1)
