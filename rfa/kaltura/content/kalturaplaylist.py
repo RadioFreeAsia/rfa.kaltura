@@ -28,7 +28,7 @@ _ = MessageFactory('kaltura_video')
 BaseKalturaPlaylistSchema = schemata.ATContentTypeSchema.copy() + KalturaBase.KalturaBaseSchema.copy()
 
 #edit the playerId field to show a list of Players for Playlists
-BaseKalturaPlaylistSchema["playerId"].vocabulary_factory=getPlaylistPlayerVocabulary
+BaseKalturaPlaylistSchema["playerId"].vocabulary="getPlaylistPlayerVocabulary"
 BaseKalturaPlaylistSchema["playerId"].widget = atapi.SelectionWidget(label="Player",
                                                     label_msgid="label_kplayerid_msgid",
                                                     description="Choose the Video player to use",
