@@ -1,13 +1,13 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaClient.Plugins.Core as KalturaCoreClient
+from KalturaClient.Plugins.Core import KalturaWidgetListResponse
 
 class WidgetTests(KalturaBaseTest):
      
     def test_list_widgets(self):
         widgets = self.client.widget.list()
-        self.assertIsInstance(widgets, KalturaCoreClient.KalturaWidgetListResponse)
+        self.assertIsInstance(widgets, KalturaWidgetListResponse)
 
 
 import unittest

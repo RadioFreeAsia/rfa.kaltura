@@ -1,8 +1,7 @@
 from utils import GetConfig
 from utils import KalturaBaseTest
 
-import KalturaClient.Plugins.Core as KalturaCoreClient
-from KalturaClient.Base import KalturaObjectFactory
+from KalturaClient.Plugins.Core import KalturaFlavorAssetListResponse
 
 class FlavorAssetTests(KalturaBaseTest):
      
