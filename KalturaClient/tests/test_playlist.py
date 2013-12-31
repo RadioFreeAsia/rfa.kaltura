@@ -190,8 +190,8 @@ class DynamicPlaylistTests(KalturaBaseTest):
         mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
         ulFile = getTestFile('DemoVideo.flv')
         uploadTokenId = self.client.media.upload(ulFile) 
-        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)         
-        self.addCleanup(self.client.media.delete, mediaEntry.getId())    
+        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
+        self.addCleanup(self.client.media.delete, mediaEntry.getId())
         
         #create a playlist
         kplaylist = KalturaPlaylist()
@@ -211,19 +211,42 @@ class DynamicPlaylistTests(KalturaBaseTest):
         kplaylist = self.client.playlist.add(kplaylist)
         self.addCleanup(self.client.playlist.delete, kplaylist.getId())
         
-        ######you want to wait for some unspecified amount of time
-        sleeptime=30
-        print "SLEEPING FOR %s Seconds before retrieving results" % (sleeptime)
-        time.sleep(sleeptime)
-        # NEED BETTER CODE HERE!!!!
-        #######
+        print "Waiting for Media Entry to be 'Ready'"
+        sleeptime=5
+        mediaEntry = self.client.media.get(mediaEntry.getId())
+        while mediaEntry.getStatus().getValue() != '2':
+            print "media entry status is %s " % (mediaEntry.getStatus().getValue())
+            time.sleep(sleeptime)
+            mediaEntry = self.client.media.get(mediaEntry.getId())
         
         results = self.client.playlist.execute(kplaylist.getId(), kplaylist)
         
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].getName(), referenceId)
         
+    def test_createCategoryRule(self):
+        from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
+        from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
+        referenceId = 'pytest.DynamicPlaylistTests.test_createTagRule'
+                
+        #create a video, and assign it to a category.
+        mediaEntry = KalturaMediaEntry()
+        mediaEntry.setName(referenceId)
+        mediaEntry.setReferenceId(referenceId)
+        mediaEntry.setTags('footag')
+        mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
+        ulFile = getTestFile('DemoVideo.flv')
+        uploadTokenId = self.client.media.upload(ulFile) 
+        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)         
+        self.addCleanup(self.client.media.delete, mediaEntry.getId())    
         
+        #create a playlist
+        kplaylist = KalturaPlaylist()
+        kplaylist.setName(referenceId)
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.DYNAMIC))
+        kplaylist.setTotalResults(10)
+        kplaylist.setReferenceId(referenceId)        
+
         
 import unittest
 def test_suite():
