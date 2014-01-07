@@ -227,7 +227,7 @@ class DynamicPlaylistTests(KalturaBaseTest):
     def test_createSingleCategoryRule(self):
         from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
         from KalturaClient.Plugins.Core import KalturaPlaylistFilter
-        referenceId = 'pytest.DynamicPlaylistTests.test_createTagRule'
+        referenceId = 'pytest.DynamicPlaylistTests.test_createSingleCategoryRule'
                 
         categories = "category1"        
                 
@@ -270,6 +270,66 @@ class DynamicPlaylistTests(KalturaBaseTest):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].getName(), referenceId)
 
+    def test_createAncestorCategoryRule(self):
+        from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
+        from KalturaClient.Plugins.Core import KalturaPlaylistFilter
+        from KalturaClient.Plugins.Core import KalturaCategory
+        
+        referenceId = 'pytest.DynamicPlaylistTests.test_createAncestorCategoryRule'
+                
+        #create category entry hierarchy
+        topCategory = KalturaCategory()
+        topCategory.setName("TopCategory")
+        topCategory = self.client.category.add(topCategory)
+        self.addCleanup(self.client.category.delete, topCategory.getId())
+        
+        subCategory = KalturaCategory()
+        subCategory.setName("SubCategory")
+        subCategory.setParentId(topCategory.getId())
+        subCategory = self.client.category.add(subCategory)
+        self.addCleanup(self.client.category.delete, subCategory.getId())
+                
+        #create a video, and assign it to subCategory.
+        mediaEntry = KalturaMediaEntry()
+        mediaEntry.setName(referenceId)
+        mediaEntry.setReferenceId(referenceId)
+        mediaEntry.setCategoriesIds(subCategory.getId())
+        mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
+        ulFile = getTestFile('DemoVideo.flv')
+        uploadTokenId = self.client.media.upload(ulFile) 
+        mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)         
+        self.addCleanup(self.client.media.delete, mediaEntry.getId())    
+        
+        #create a playlist
+        kplaylist = KalturaPlaylist()
+        kplaylist.setName(referenceId)
+        kplaylist.setPlaylistType(KalturaPlaylistType(KalturaPlaylistType.DYNAMIC))
+        kplaylist.setTotalResults(10)
+        kplaylist.setReferenceId(referenceId)
+        
+        #Create A Filter - use Top Level Category
+        kFilter = KalturaPlaylistFilter()
+        kFilter.setCategoryAncestorIdIn(topCategory.getId())
+        kplaylist.setFilters([kFilter])
+        
+        kplaylist = self.client.playlist.add(kplaylist)
+        self.addCleanup(self.client.playlist.delete, kplaylist.getId())
+        
+        print "Waiting for Media Entry to be 'Ready'"
+        sleeptime=5
+        mediaEntry = self.client.media.get(mediaEntry.getId())
+        while mediaEntry.getStatus().getValue() != '2':
+            print "media entry status is %s " % (mediaEntry.getStatus().getValue())
+            time.sleep(sleeptime)
+            mediaEntry = self.client.media.get(mediaEntry.getId())
+        
+        import pdb; pdb.set_trace()
+        results = self.client.playlist.execute(kplaylist.getId(), kplaylist)
+        
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].getName(), referenceId)
+        
+        
         
 import unittest
 def test_suite():
