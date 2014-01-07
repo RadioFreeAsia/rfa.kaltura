@@ -409,7 +409,7 @@ class DynamicPlaylistTests(KalturaBaseTest):
         #test existing Rule
         self.assertEqual(len(results), 2)
         
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         ###Edit filter to only search for SubCategory2 now.
         new_kFilter = KalturaPlaylistFilter()
         new_kFilter.setCategoryAncestorIdIn(subCategory2.getId())
@@ -418,7 +418,7 @@ class DynamicPlaylistTests(KalturaBaseTest):
         new_kplaylist.setFilters([new_kFilter])
         result_kplaylist = self.client.playlist.update(kplaylist.getId(), new_kplaylist)
         
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         results = self.client.playlist.execute(result_kplaylist.getId(), kplaylist)
         
         self.assertEqual(len(results), 1)
