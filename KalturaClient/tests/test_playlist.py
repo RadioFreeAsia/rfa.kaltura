@@ -323,7 +323,6 @@ class DynamicPlaylistTests(KalturaBaseTest):
             time.sleep(sleeptime)
             mediaEntry = self.client.media.get(mediaEntry.getId())
         
-        import pdb; pdb.set_trace()
         results = self.client.playlist.execute(kplaylist.getId(), kplaylist)
         
         self.assertEqual(len(results), 1)
