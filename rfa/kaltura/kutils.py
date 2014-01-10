@@ -1,5 +1,6 @@
 """Useful Utils for rfa.kaltura"""
 import os
+import sys
 import logging
 
 from Acquisition import aq_parent
@@ -25,9 +26,18 @@ from KalturaClient.Plugins.Core import KalturaSearchOperator
 logger = logging.getLogger("rfa.kaltura")
 logger.setLevel(logging.WARN)
 
+logging.basicConfig(level = logging.DEBUG,
+                    format = '%(asctime)s %(levelname)s %(message)s',
+                    stream = sys.stdout)
+
 class KalturaLogger(IKalturaLogger):
-    def log(self, msg, summary='', level=logging.INFO):
-        logger.log(level, '%s \n%s', summary, msg)
+    def log(self, msg):
+        logging.info(msg)
+
+
+#class KalturaLogger(IKalturaLogger):
+#    def log(self, msg, summary='', level=logging.INFO):
+#        logger.log(level, '%s \n%s', summary, msg)
         
 KalturaLoggerInstance = KalturaLogger()
 
@@ -75,15 +85,6 @@ def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
     #These were mined by reverse-engineering a playlist created on the KMC and inspecting the object
     kfilter = KalturaMediaEntryFilterForPlaylist()
-    
-    #kfilter.setAdvancedSearch = KalturaSearchOperator()
-    #kfilter.AdvancedSearch.items = [ KalturaMetadataSearchItem()]
-    #kfilter.AdvancedSearch.items[0].setMetadataProfileId(1062502) #commented out b/c this is not understood
-    #kfilter.AdvancedSearch.items[0].setItems([])
-    #kfilter.AdvancedSearch.items[0].setType(KalturaSearchOperatorType())
-    #kfilter.AdvancedSearch.items[0].type.value=1
-    #kfilter.AdvancedSearch.setType(KalturaSearchOperatorType())
-    #kfilter.AdvancedSearch.type.value=1
     
     kfilter.setLimit(30)
     kfilter.setModerationStatusIn(u'2,5,6,1')

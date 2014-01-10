@@ -12,9 +12,13 @@ from Products.ATContentTypes.content.folder import ATFolder
 from Products.ATContentTypes.content import schemata
 from Products.ATContentTypes.content.folder import ATFolderSchema
 
-from rfa.kaltura.interfaces import IKalturaPlaylist, IKalturaRuleBasedPlaylist, IKalturaManualPlaylist
+from rfa.kaltura.interfaces import IKalturaPlaylist
+from rfa.kaltura.interfaces import IKalturaRuleBasedPlaylist
+from rfa.kaltura.interfaces import IKalturaManualPlaylist
+
 from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.kutils import kconnect
+from rfa.kaltura.kutils import kcreateEmptyFilterForPlaylist
 
 from rfa.kaltura.content import base as KalturaBase
 
@@ -99,6 +103,9 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
         """will set the specified attribute on the matching object in Kaltura
            Try not to modify self.KalturaObject directly -use this method instead
            to keep things in sync.
+           
+           For example, to update the name of the kaltura playlist:
+           self._updateRemote(name='NewName')
         """
         
         (client, session) = kconnect()
@@ -148,23 +155,25 @@ class RuleBasedKalturaPlaylist(BaseKalturaPlaylist):
         #Hummm... is there a way to do this?
         pass
     
-    def _setFilterTags(self, tagStr):
-        kfilters = self.KalturaObject.getFilters()
-        kfilters[0].setFreeText(tagStr)
-        self.KalturaObject.setFilters(kfilters)
+    def _setFilterTags(self, tagStr, kfilter):
+        kfilter.setFreeText(tagStr)
+        return kfilter
         
-    def _setCategoryTags(self, catStr):
-        kfilters = self.KalturaObject.getFilters()
-        kfilters[0].setCategoriesMatchOr(catStr)
-        self.KalturaObject.setFilters(kfilters)
+    def _setFilterCategories(self, catStr, kfilter):
+        kfilter.setCategoryMatchOr(catStr)
+        return kfilter
         
     def updateFilter(self):
-        tags = ','.join(self.getTags())
-        cats = ','.join(self.getCategories())
-        self._setFilterTags(tags)
-        self._setCategoryTags(cats)
-        self._updateRemote(Filters=self.KalturaObject.getFilters())
+        newFilter = kcreateEmptyFilterForPlaylist()
         
+        tags = u','.join(self.getTags())
+        if tags:
+            newFilter.setFreeText(tags)
+            
+        cats = u','.join(self.getCategories())
+        if cats:
+            newFilter.setCategoriesIdsMatchOr(cats)
+        self._updateRemote(Filters=[newFilter])
         
 atapi.registerType(ManualKalturaPlaylist, PROJECTNAME)
 atapi.registerType(RuleBasedKalturaPlaylist, PROJECTNAME)
