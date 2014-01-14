@@ -1,0 +1,11 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    i18n_domain="rfa.kaltura">
+    
+    <utility
+         component=".vocabularies.PlayerVocabularyFactory"
+         name="rfa.kaltura.video_players"
+         provides="zope.schema.interfaces.IVocabularyFactory" />
+
+</configure>

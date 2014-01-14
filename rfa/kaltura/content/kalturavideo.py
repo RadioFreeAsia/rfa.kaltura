@@ -23,7 +23,7 @@ from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.content import base as KalturaBase
 from rfa.kaltura.kutils import kconnect
 
-from KalturaClient.Plugins.Core import KalturaMediaEntry
+from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 
 KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy() + \
     atapi.Schema((
@@ -126,12 +126,19 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         
     security.declarePrivate('_updateRemote')
     def _updateRemote(self, **kwargs):
+        """will set the specified attribute on the matching object in Kaltura
+           Try not to modify self.KalturaObject directly -use this method instead
+           to keep things in sync with the remote server.
+           
+           For example, to update the name of the kaltura video:
+           self._updateRemote(name='NewName')
+        """        
         (client, session) = kconnect()
-        newVideo = KalturaMediaEntry()
+        newVideo = API_KalturaMediaEntry()
         for (attr, value) in kwargs.iteritems():
-            setter = getattr(newPlaylist, 'set'+attr)
+            setter = getattr(newVideo, 'set'+attr)
             setter(value)
-        result = client.playlist.update(self.getEntryId(), newVideo)
+        result = client.media.update(self.getEntryId(), newVideo)
         self.setKalturaObject(result) 
         
 atapi.registerType(KalturaVideo, PROJECTNAME)

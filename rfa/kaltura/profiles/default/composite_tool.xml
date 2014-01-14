@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <object name="composite_tool" meta_type="CompositePack Tool">
- <composites name="composites">
+ <composables name="composites">
    <composable name="Kaltura Video">
      <c_viewlet name="kaltura_video_box" default="True"/>
    </composable>
- </composites>
+ </composables>
  <viewlets name="viewlets">
    <viewlet name="kaltura_video_box" title="Video Box"
      skin_method="video_box_viewlet"/>
  </viewlets>
- <layouts>
- </layouts>
 </object>

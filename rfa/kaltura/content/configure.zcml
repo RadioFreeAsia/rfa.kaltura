@@ -3,6 +3,8 @@
     xmlns:five="http://namespaces.zope.org/five"
     i18n_domain="rfa.kaltura">
   
+  <include file="vocabularies.zcml" />  
+  
   <class class=".kalturavideo.KalturaVideo">
     <require
         permission="zope2.View"

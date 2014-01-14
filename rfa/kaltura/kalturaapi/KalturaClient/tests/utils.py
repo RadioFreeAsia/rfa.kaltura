@@ -46,7 +46,12 @@ class KalturaBaseTest(unittest.TestCase):
         self.client.setKs(self.ks)            
             
             
-    def tearDown(self):        
-        self.config = None
-        self.client = None
-        self.ks = None    
+    def tearDown(self):
+        
+        #do cleanup first, probably relies on self.client
+        self.doCleanups()
+        
+        del(self.ks)
+        del(self.client)
+        del(self.config)
+        
