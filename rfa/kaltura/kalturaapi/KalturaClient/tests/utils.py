@@ -13,7 +13,6 @@ from secret_config import PARTNER_ID, SERVICE_URL, SECRET, ADMIN_SECRET, USER_NA
 import logging
 logging.basicConfig(level = logging.DEBUG,
                     format = '%(asctime)s %(levelname)s %(message)s',
-
                     stream = sys.stdout)
 
 class KalturaLogger(IKalturaLogger):
