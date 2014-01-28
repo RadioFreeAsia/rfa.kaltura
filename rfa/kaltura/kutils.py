@@ -46,8 +46,7 @@ def kGetVideoPlayers():
     (client, session) = kconnect()
     
     filt = KalturaUiConfFilter()
-    players = [KalturaUiConfObjType.HTML5_PLAYER, 
-               KalturaUiConfObjType.PLAYER_V3,
+    players = [KalturaUiConfObjType.PLAYER_V3,
                KalturaUiConfObjType.PLAYER,
                KalturaUiConfObjType.PLAYER_SL,
                ]
@@ -55,7 +54,6 @@ def kGetVideoPlayers():
         
     filt.setObjTypeIn(players)
     filt.setTagsMultiLikeOr(tags)
-       
     resp = client.uiConf.list(filter=filt)
     objs = resp.objects
     
@@ -130,7 +128,7 @@ def kcreateVideo(context):
     mediaEntry.searchProviderId = context.UID()
     mediaEntry.setReferenceId(context.UID())
     
-    mediaEntry.setCategories(','.join([c for c in context.categories if c]))
+    mediaEntry.setCategoriesIds(','.join([c for c in context.categories if c]))
     mediaEntry.setTags(','.join([t for t in context.tags if t]))
     
     return mediaEntry

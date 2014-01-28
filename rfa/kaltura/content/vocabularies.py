@@ -3,6 +3,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 from rfa.kaltura.kutils import kGetPlaylistPlayers
 from rfa.kaltura.kutils import kGetCategories
+from rfa.kaltura.kutils import kGetVideoPlayers
 
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.interfaces import IKalturaPlaylist
