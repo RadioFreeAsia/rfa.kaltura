@@ -128,7 +128,7 @@ def kcreateVideo(context):
     mediaEntry.searchProviderId = context.UID()
     mediaEntry.setReferenceId(context.UID())
     
-    mediaEntry.setCategories(','.join([c for c in context.categories if c]))
+    mediaEntry.setCategoriesIds(','.join([c for c in context.categories if c]))
     mediaEntry.setTags(','.join([t for t in context.tags if t]))
     
     return mediaEntry
