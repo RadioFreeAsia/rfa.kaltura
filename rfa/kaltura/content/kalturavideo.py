@@ -123,6 +123,28 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
         return "20100652"
+
+    ### These may get duplicated in base.py - we'll see ###        
+        
+    def setTitle(self, title):
+        super(KalturaVideo, self).setTitle(title)
+        self._updateRemote(Name=self.Title())
+        
+    def setDescription(self, description):
+        super(KalturaVideo, self).setDescription(description)
+        self._updateRemote(Description=self.Description())    
+        
+    def setCategories(self, categories):
+        self.categories = categories
+        categoryString = ','.join([c for c in self.categories if c])
+        self._updateRemote(CategoriesIds=categoryString)
+            
+    def setTags(self, tags):
+        self.tags = tags    
+        tagsString = ','.join([t for t in self.tags if t])
+        self._updateRemote(Tags=tagsString)        
+        
+    ### end possible base class methods ###
         
     security.declarePrivate('_updateRemote')
     def _updateRemote(self, **kwargs):

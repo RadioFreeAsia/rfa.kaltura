@@ -9,16 +9,18 @@
   <property name="content_icon">document_icon.gif</property>
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
-  <property name="immediate_view">kvideo_main</property>
+  <property name="add_view_expr"/>
+  <property name="link_target"/>
+  <property name="immediate_view">generic_preview</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
   <property name="allow_discussion">True</property>
-  <property name="default_view">kvideo_main</property>
+  <property name="default_view">view</property>
   <property name="view_methods">
     <element value="kvideo_main" />
   </property>
   <property name="default_view_fallback">False</property>
-  <alias from="(Default)" to="base_view" />
+  <alias from="(Default)" to="generic_preview" />
   <alias from="edit" to="base_edit" />
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
