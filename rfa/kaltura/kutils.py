@@ -82,9 +82,8 @@ def kGetPlaylistPlayers():
 def getRecent(limit=10, partner_id=None):
     """Get the most recently uploaded videos"""    
     
-    order = KalturaMediaEntryOrderBy.CREATED_AT_DESC
     kfilter = KalturaMediaEntryFilter()
-    kfilter.setOrderBy(order)
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
  
     (client, session) = kconnect(partner_id)
     
