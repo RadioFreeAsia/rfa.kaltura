@@ -82,7 +82,6 @@ def kGetPlaylistPlayers():
 def getRecent(limit=10, partner_id=None):
     """Get the most recently uploaded videos"""    
     
-    import pdb; pdb.set_trace()
     order = KalturaMediaEntryOrderBy.CREATED_AT_DESC
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(order)
@@ -91,11 +90,7 @@ def getRecent(limit=10, partner_id=None):
     
     result = client.media.list(filter=kfilter)
     
-    return result
-        
-    
-    
-    
+    return result.objects
     
 def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
