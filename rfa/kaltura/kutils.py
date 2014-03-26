@@ -79,6 +79,13 @@ def kGetPlaylistPlayers():
     
     return objs
 
+def getVideo(videoId):
+    (client, session) = kconnect(partner_id)
+    result = client.media.get(videoId)
+    import pdb; pdb.set_trace()
+    
+
+
 def getRecent(limit=10, partner_id=None):
     """Get the most recently uploaded videos"""    
     
