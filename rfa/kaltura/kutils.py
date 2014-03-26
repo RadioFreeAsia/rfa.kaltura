@@ -80,10 +80,9 @@ def kGetPlaylistPlayers():
     return objs
 
 def getVideo(videoId):
-    (client, session) = kconnect(partner_id)
+    (client, session) = kconnect()
     result = client.media.get(videoId)
-    import pdb; pdb.set_trace()
-    
+    return result
 
 
 def getRecent(limit=10, partner_id=None):
