@@ -96,6 +96,17 @@ def getRecent(limit=10, partner_id=None):
     result = client.media.list(filter=kfilter)
     
     return result.objects
+
+def getRelated(kvideoObj, limit=10, partner_id=None):
+    """ Get videos related to the provided video"""
+    kfilter = KalturaMediaEntryFilter()
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
+    kfilter.setTagsLike(kvideoObj.getTags())
+    
+    (client, session) = kconnect(partner_id)
+    result = client.media.list(filter=kfilter)
+    
+    return result.objects
     
 def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
