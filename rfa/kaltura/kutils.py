@@ -20,7 +20,8 @@ from KalturaClient.Plugins.Core import KalturaSessionType
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
-from KalturaClient.Plugins.Core import KalturaMediaEntryFilterForPlaylist
+from KalturaClient.Plugins.Core import KalturaMediaEntryFilter, KalturaMediaEntryFilterForPlaylist
+from KalturaClient.Plugins.Core import KalturaMediaEntryOrderBy
 from KalturaClient.Plugins.Core import KalturaSearchOperator
 
 logger = logging.getLogger("rfa.kaltura")
@@ -33,7 +34,6 @@ logging.basicConfig(level = logging.DEBUG,
 class KalturaLogger(IKalturaLogger):
     def log(self, msg):
         logging.info(msg)
-
 
 #class KalturaLogger(IKalturaLogger):
 #    def log(self, msg, summary='', level=logging.INFO):
@@ -79,6 +79,35 @@ def kGetPlaylistPlayers():
     
     return objs
 
+def getVideo(videoId):
+    (client, session) = kconnect()
+    result = client.media.get(videoId)
+    return result
+
+
+def getRecent(limit=10, partner_id=None):
+    """Get the most recently uploaded videos"""    
+    
+    kfilter = KalturaMediaEntryFilter()
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
+ 
+    (client, session) = kconnect(partner_id)
+    
+    result = client.media.list(filter=kfilter)
+    
+    return result.objects
+
+def getRelated(kvideoObj, limit=10, partner_id=None):
+    """ Get videos related to the provided video"""
+    kfilter = KalturaMediaEntryFilter()
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
+    kfilter.setTagsLike(kvideoObj.getTags())
+    
+    (client, session) = kconnect(partner_id)
+    result = client.media.list(filter=kfilter)
+    
+    return result.objects
+    
 def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
     #These were mined by reverse-engineering a playlist created on the KMC and inspecting the object
@@ -182,9 +211,11 @@ def kGetCategories():
     result = client.category.list().objects
     return result
 
-def kconnect():
+def kconnect(partner_id=None):
     
     creds = credentials.getCredentials()
+    if partner_id is not None:
+        creds['PARTNER_ID'] = partner_id
     
     config = KalturaConfiguration(creds['PARTNER_ID'])
     config.serviceUrl = creds['SERVICE_URL']
