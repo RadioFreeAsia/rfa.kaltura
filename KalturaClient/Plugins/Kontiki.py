@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaKontikiStorageProfileOrderBy:
+class KalturaKontikiStorageProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -65,6 +65,7 @@ class KalturaKontikiStorageProfile(KalturaStorageProfile):
             storagePassword=NotImplemented,
             storageFtpPassiveMode=NotImplemented,
             deliveryHttpBaseUrl=NotImplemented,
+            deliveryHttpsBaseUrl=NotImplemented,
             deliveryRmpBaseUrl=NotImplemented,
             deliveryIisBaseUrl=NotImplemented,
             minFileSize=NotImplemented,
@@ -81,6 +82,8 @@ class KalturaKontikiStorageProfile(KalturaStorageProfile):
             rtmpPrefix=NotImplemented,
             readyBehavior=NotImplemented,
             allowAutoDelete=NotImplemented,
+            createFileLink=NotImplemented,
+            rules=NotImplemented,
             serviceToken=NotImplemented):
         KalturaStorageProfile.__init__(self,
             id,
@@ -98,6 +101,7 @@ class KalturaKontikiStorageProfile(KalturaStorageProfile):
             storagePassword,
             storageFtpPassiveMode,
             deliveryHttpBaseUrl,
+            deliveryHttpsBaseUrl,
             deliveryRmpBaseUrl,
             deliveryIisBaseUrl,
             minFileSize,
@@ -113,7 +117,9 @@ class KalturaKontikiStorageProfile(KalturaStorageProfile):
             deliveryStatus,
             rtmpPrefix,
             readyBehavior,
-            allowAutoDelete)
+            allowAutoDelete,
+            createFileLink,
+            rules)
 
         # @var string
         self.serviceToken = serviceToken
@@ -211,6 +217,7 @@ class KalturaKontikiStorageExportJobData(KalturaStorageExportJobData):
             srcFileSyncId=NotImplemented,
             destFileSyncStoredPath=NotImplemented,
             force=NotImplemented,
+            createLink=NotImplemented,
             flavorAssetId=NotImplemented,
             contentMoid=NotImplemented,
             serviceToken=NotImplemented):
@@ -222,7 +229,8 @@ class KalturaKontikiStorageExportJobData(KalturaStorageExportJobData):
             srcFileSyncLocalPath,
             srcFileSyncId,
             destFileSyncStoredPath,
-            force)
+            force,
+            createLink)
 
         # Holds the id of the exported asset
         # @var string

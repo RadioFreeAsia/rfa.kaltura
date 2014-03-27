@@ -34,7 +34,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaEmailNotificationTemplatePriority:
+class KalturaEmailNotificationTemplatePriority(object):
     HIGH = 1
     NORMAL = 3
     LOW = 5
@@ -47,7 +47,7 @@ class KalturaEmailNotificationTemplatePriority:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEmailNotificationFormat:
+class KalturaEmailNotificationFormat(object):
     HTML = "1"
     TEXT = "2"
 
@@ -59,7 +59,7 @@ class KalturaEmailNotificationFormat:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEmailNotificationRecipientProviderType:
+class KalturaEmailNotificationRecipientProviderType(object):
     STATIC_LIST = "1"
     CATEGORY = "2"
     USER = "3"
@@ -72,7 +72,7 @@ class KalturaEmailNotificationRecipientProviderType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEmailNotificationTemplateOrderBy:
+class KalturaEmailNotificationTemplateOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"

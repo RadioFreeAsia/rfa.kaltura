@@ -35,8 +35,8 @@ from ..Base import *
 ########## classes ##########
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadXmlJobData(KalturaBulkUploadJobData):
-    """Represents the Bulk upload job data for xml bulk upload"""
+class KalturaBulkUploadFilterJobData(KalturaBulkUploadJobData):
+    """Represents the Bulk upload job data for filter bulk upload"""
 
     def __init__(self,
             userId=NotImplemented,
@@ -52,7 +52,9 @@ class KalturaBulkUploadXmlJobData(KalturaBulkUploadJobData):
             objectData=NotImplemented,
             type=NotImplemented,
             emailRecipients=NotImplemented,
-            numOfErrorObjects=NotImplemented):
+            numOfErrorObjects=NotImplemented,
+            filter=NotImplemented,
+            templateObject=NotImplemented):
         KalturaBulkUploadJobData.__init__(self,
             userId,
             uploadedBy,
@@ -69,32 +71,56 @@ class KalturaBulkUploadXmlJobData(KalturaBulkUploadJobData):
             emailRecipients,
             numOfErrorObjects)
 
+        # Filter for extracting the objects list to upload
+        # @var KalturaFilter
+        self.filter = filter
+
+        # Template object for new object creation
+        # @var KalturaObjectBase
+        self.templateObject = templateObject
+
 
     PROPERTY_LOADERS = {
+        'filter': (KalturaObjectFactory.create, KalturaFilter), 
+        'templateObject': (KalturaObjectFactory.create, KalturaObjectBase), 
     }
 
     def fromXml(self, node):
         KalturaBulkUploadJobData.fromXml(self, node)
-        self.fromXmlImpl(node, KalturaBulkUploadXmlJobData.PROPERTY_LOADERS)
+        self.fromXmlImpl(node, KalturaBulkUploadFilterJobData.PROPERTY_LOADERS)
 
     def toParams(self):
         kparams = KalturaBulkUploadJobData.toParams(self)
-        kparams.put("objectType", "KalturaBulkUploadXmlJobData")
+        kparams.put("objectType", "KalturaBulkUploadFilterJobData")
+        kparams.addObjectIfDefined("filter", self.filter)
+        kparams.addObjectIfDefined("templateObject", self.templateObject)
         return kparams
+
+    def getFilter(self):
+        return self.filter
+
+    def setFilter(self, newFilter):
+        self.filter = newFilter
+
+    def getTemplateObject(self):
+        return self.templateObject
+
+    def setTemplateObject(self, newTemplateObject):
+        self.templateObject = newTemplateObject
 
 
 ########## services ##########
 ########## main ##########
-class KalturaBulkUploadXmlClientPlugin(KalturaClientPlugin):
-    # KalturaBulkUploadXmlClientPlugin
+class KalturaBulkUploadFilterClientPlugin(KalturaClientPlugin):
+    # KalturaBulkUploadFilterClientPlugin
     instance = None
 
-    # @return KalturaBulkUploadXmlClientPlugin
+    # @return KalturaBulkUploadFilterClientPlugin
     @staticmethod
     def get():
-        if KalturaBulkUploadXmlClientPlugin.instance == None:
-            KalturaBulkUploadXmlClientPlugin.instance = KalturaBulkUploadXmlClientPlugin()
-        return KalturaBulkUploadXmlClientPlugin.instance
+        if KalturaBulkUploadFilterClientPlugin.instance == None:
+            KalturaBulkUploadFilterClientPlugin.instance = KalturaBulkUploadFilterClientPlugin()
+        return KalturaBulkUploadFilterClientPlugin.instance
 
     # @return array<KalturaServiceBase>
     def getServices(self):
@@ -107,10 +133,10 @@ class KalturaBulkUploadXmlClientPlugin(KalturaClientPlugin):
 
     def getTypes(self):
         return {
-            'KalturaBulkUploadXmlJobData': KalturaBulkUploadXmlJobData,
+            'KalturaBulkUploadFilterJobData': KalturaBulkUploadFilterJobData,
         }
 
     # @return string
     def getName(self):
-        return 'bulkUploadXml'
+        return 'bulkUploadFilter'
 

@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailChangeXmlNodeType:
+class KalturaAuditTrailChangeXmlNodeType(object):
     CHANGED = 1
     ADDED = 2
     REMOVED = 3
@@ -46,7 +46,7 @@ class KalturaAuditTrailChangeXmlNodeType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailContext:
+class KalturaAuditTrailContext(object):
     CLIENT = -1
     SCRIPT = 0
     PS2 = 1
@@ -60,7 +60,7 @@ class KalturaAuditTrailContext:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailFileSyncType:
+class KalturaAuditTrailFileSyncType(object):
     FILE = 1
     LINK = 2
     URL = 3
@@ -73,7 +73,7 @@ class KalturaAuditTrailFileSyncType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailStatus:
+class KalturaAuditTrailStatus(object):
     PENDING = 1
     READY = 2
     FAILED = 3
@@ -86,7 +86,7 @@ class KalturaAuditTrailStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailAction:
+class KalturaAuditTrailAction(object):
     CHANGED = "CHANGED"
     CONTENT_VIEWED = "CONTENT_VIEWED"
     COPIED = "COPIED"
@@ -105,7 +105,7 @@ class KalturaAuditTrailAction:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailObjectType:
+class KalturaAuditTrailObjectType(object):
     BATCH_JOB = "BatchJob"
     EMAIL_INGESTION_PROFILE = "EmailIngestionProfile"
     FILE_SYNC = "FileSync"
@@ -145,7 +145,7 @@ class KalturaAuditTrailObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAuditTrailOrderBy:
+class KalturaAuditTrailOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     PARSED_AT_ASC = "+parsedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -1303,7 +1303,7 @@ class KalturaAuditTrailService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("auditTrail", auditTrail)
-        self.client.queueServiceActionCall("audit_audittrail", "add", kparams)
+        self.client.queueServiceActionCall("audit_audittrail", "add", KalturaAuditTrail, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -1314,7 +1314,7 @@ class KalturaAuditTrailService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall("audit_audittrail", "get", kparams)
+        self.client.queueServiceActionCall("audit_audittrail", "get", KalturaAuditTrail, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -1326,7 +1326,7 @@ class KalturaAuditTrailService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("audit_audittrail", "list", kparams)
+        self.client.queueServiceActionCall("audit_audittrail", "list", KalturaAuditTrailListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaVirusFoundAction:
+class KalturaVirusFoundAction(object):
     NONE = 0
     DELETE = 1
     CLEAN_NONE = 2
@@ -47,7 +47,7 @@ class KalturaVirusFoundAction:
 
 # @package External
 # @subpackage Kaltura
-class KalturaVirusScanJobResult:
+class KalturaVirusScanJobResult(object):
     SCAN_ERROR = 1
     FILE_IS_CLEAN = 2
     FILE_WAS_CLEANED = 3
@@ -61,7 +61,7 @@ class KalturaVirusScanJobResult:
 
 # @package External
 # @subpackage Kaltura
-class KalturaVirusScanProfileStatus:
+class KalturaVirusScanProfileStatus(object):
     DISABLED = 1
     ENABLED = 2
     DELETED = 3
@@ -74,7 +74,7 @@ class KalturaVirusScanProfileStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaVirusScanEngineType:
+class KalturaVirusScanEngineType(object):
     CLAMAV_SCAN_ENGINE = "clamAVScanEngine.ClamAV"
     SYMANTEC_SCAN_DIRECT_ENGINE = "symantecScanEngine.SymantecScanDirectEngine"
     SYMANTEC_SCAN_ENGINE = "symantecScanEngine.SymantecScanEngine"
@@ -88,7 +88,7 @@ class KalturaVirusScanEngineType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaVirusScanProfileOrderBy:
+class KalturaVirusScanProfileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     UPDATED_AT_ASC = "+updatedAt"
     CREATED_AT_DESC = "-createdAt"
@@ -615,7 +615,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "list", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "list", KalturaVirusScanProfileListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -626,7 +626,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("virusScanProfile", virusScanProfile)
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "add", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "add", KalturaVirusScanProfile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -637,7 +637,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("virusScanProfileId", virusScanProfileId);
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "get", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "get", KalturaVirusScanProfile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -649,7 +649,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("virusScanProfileId", virusScanProfileId);
         kparams.addObjectIfDefined("virusScanProfile", virusScanProfile)
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "update", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "update", KalturaVirusScanProfile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -660,7 +660,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("virusScanProfileId", virusScanProfileId);
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "delete", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "delete", KalturaVirusScanProfile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -672,7 +672,7 @@ class KalturaVirusScanProfileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("flavorAssetId", flavorAssetId)
         kparams.addIntIfDefined("virusScanProfileId", virusScanProfileId);
-        self.client.queueServiceActionCall("virusscan_virusscanprofile", "scan", kparams)
+        self.client.queueServiceActionCall("virusscan_virusscanprofile", "scan", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaShortLinkStatus:
+class KalturaShortLinkStatus(object):
     DISABLED = 1
     ENABLED = 2
     DELETED = 3
@@ -46,7 +46,7 @@ class KalturaShortLinkStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaShortLinkOrderBy:
+class KalturaShortLinkOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     EXPIRES_AT_ASC = "+expiresAt"
     UPDATED_AT_ASC = "+updatedAt"
@@ -515,7 +515,7 @@ class KalturaShortLinkService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("shortlink_shortlink", "list", kparams)
+        self.client.queueServiceActionCall("shortlink_shortlink", "list", KalturaShortLinkListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -526,7 +526,7 @@ class KalturaShortLinkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("shortLink", shortLink)
-        self.client.queueServiceActionCall("shortlink_shortlink", "add", kparams)
+        self.client.queueServiceActionCall("shortlink_shortlink", "add", KalturaShortLink, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -537,7 +537,7 @@ class KalturaShortLinkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("shortlink_shortlink", "get", kparams)
+        self.client.queueServiceActionCall("shortlink_shortlink", "get", KalturaShortLink, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -549,7 +549,7 @@ class KalturaShortLinkService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
         kparams.addObjectIfDefined("shortLink", shortLink)
-        self.client.queueServiceActionCall("shortlink_shortlink", "update", kparams)
+        self.client.queueServiceActionCall("shortlink_shortlink", "update", KalturaShortLink, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -560,7 +560,7 @@ class KalturaShortLinkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("shortlink_shortlink", "delete", kparams)
+        self.client.queueServiceActionCall("shortlink_shortlink", "delete", KalturaShortLink, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -572,7 +572,7 @@ class KalturaShortLinkService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
         kparams.addBoolIfDefined("proxy", proxy);
-        self.client.queueServiceActionCall('shortlink_shortlink', 'goto', kparams)
+        self.client.queueServiceActionCall('shortlink_shortlink', 'goto', None ,kparams)
         return self.client.getServeUrl()
 
 ########## main ##########
