@@ -37,7 +37,7 @@ from ..Base import *
 # @package External
 # @subpackage Kaltura
 class KalturaBulkService(KalturaServiceBase):
-    """Bulk upload service is used to upload & manage bulk uploads using CSV files"""
+    """Bulk upload service is used to upload & manage bulk uploads"""
 
     def __init__(self, client = None):
         KalturaServiceBase.__init__(self, client)
@@ -47,7 +47,7 @@ class KalturaBulkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall("bulkupload_bulk", "get", kparams)
+        self.client.queueServiceActionCall("bulkupload_bulk", "get", KalturaBulkUpload, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -59,7 +59,7 @@ class KalturaBulkService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("bulkUploadFilter", bulkUploadFilter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("bulkupload_bulk", "list", kparams)
+        self.client.queueServiceActionCall("bulkupload_bulk", "list", KalturaBulkUploadListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -70,7 +70,7 @@ class KalturaBulkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall('bulkupload_bulk', 'serve', kparams)
+        self.client.queueServiceActionCall('bulkupload_bulk', 'serve', None ,kparams)
         return self.client.getServeUrl()
 
     def serveLog(self, id):
@@ -78,7 +78,7 @@ class KalturaBulkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall('bulkupload_bulk', 'serveLog', kparams)
+        self.client.queueServiceActionCall('bulkupload_bulk', 'serveLog', None ,kparams)
         return self.client.getServeUrl()
 
     def abort(self, id):
@@ -86,7 +86,7 @@ class KalturaBulkService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall("bulkupload_bulk", "abort", kparams)
+        self.client.queueServiceActionCall("bulkupload_bulk", "abort", KalturaBulkUpload, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

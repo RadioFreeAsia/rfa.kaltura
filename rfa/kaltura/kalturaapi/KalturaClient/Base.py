@@ -262,7 +262,7 @@ class KalturaConfiguration(object):
         self.serviceUrl                 = serviceUrl
         self.partnerId                  = None
         self.format                     = KALTURA_SERVICE_FORMAT_XML
-        self.clientTag                  = "python:13-08-20"
+        self.clientTag                  = "python:14-01-16"
         self.requestTimeout             = 120
         
         if partnerId != None and type(partnerId) != int:
@@ -276,10 +276,25 @@ class KalturaConfiguration(object):
     # Gets the logger (internal client use)
     def getLogger(self):
         return self.logger
+
+# Client plugin interface class
+class IKalturaClientPlugin(object):
+    # @return KalturaClientPlugin
+    @staticmethod
+    def get():
+        raise NotImplementedError
+        
+    # @return array<KalturaServiceBase>
+    def getServices(self):
+        raise NotImplementedError
+        
+    # @return string
+    def getName(self):
+        raise NotImplementedError
         
 # Client plugin base class
-from KalturaInterfaces import IKalturaClientPlugin
-KalturaClientPlugin = IKalturaClientPlugin
+class KalturaClientPlugin(IKalturaClientPlugin):
+    pass
 
 # Kaltura enums factory
 class KalturaEnumsFactory(object):
@@ -320,7 +335,7 @@ class KalturaObjectFactory(object):
             return None
         objType = getXmlNodeText(objTypeNode)
         if not KalturaObjectFactory.objectFactories.has_key(objType):
-            raise KalturaClientException("Unrecognized object '%s'" % objType, KalturaClientException.ERROR_INVALID_OBJECT_TYPE)
+            objType = expectedType.__name__        
         result = KalturaObjectFactory.objectFactories[objType]()
         if not isinstance(result, expectedType):
             raise KalturaClientException("Unexpected object type '%s'" % objType, KalturaClientException.ERROR_INVALID_OBJECT_TYPE)
