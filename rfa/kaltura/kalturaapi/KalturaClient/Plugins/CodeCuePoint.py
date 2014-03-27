@@ -34,7 +34,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaCodeCuePointOrderBy:
+class KalturaCodeCuePointOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_TIME_ASC = "+endTime"

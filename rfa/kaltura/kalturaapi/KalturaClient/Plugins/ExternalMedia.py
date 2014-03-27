@@ -33,10 +33,11 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaExternalMediaEntryOrderBy:
+class KalturaExternalMediaEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_DATE_ASC = "+endDate"
+    LAST_PLAYED_AT_ASC = "+lastPlayedAt"
     MEDIA_TYPE_ASC = "+mediaType"
     MODERATION_COUNT_ASC = "+moderationCount"
     NAME_ASC = "+name"
@@ -52,6 +53,7 @@ class KalturaExternalMediaEntryOrderBy:
     CREATED_AT_DESC = "-createdAt"
     DURATION_DESC = "-duration"
     END_DATE_DESC = "-endDate"
+    LAST_PLAYED_AT_DESC = "-lastPlayedAt"
     MEDIA_TYPE_DESC = "-mediaType"
     MODERATION_COUNT_DESC = "-moderationCount"
     NAME_DESC = "-name"
@@ -73,7 +75,7 @@ class KalturaExternalMediaEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaExternalMediaSourceType:
+class KalturaExternalMediaSourceType(object):
     INTERCALL = "InterCall"
     YOUTUBE = "YouTube"
 
@@ -123,12 +125,14 @@ class KalturaExternalMediaEntry(KalturaMediaEntry):
             replacementStatus=NotImplemented,
             partnerSortValue=NotImplemented,
             conversionProfileId=NotImplemented,
+            redirectEntryId=NotImplemented,
             rootEntryId=NotImplemented,
             operationAttributes=NotImplemented,
             entitledUsersEdit=NotImplemented,
             entitledUsersPublish=NotImplemented,
             plays=NotImplemented,
             views=NotImplemented,
+            lastPlayedAt=NotImplemented,
             width=NotImplemented,
             height=NotImplemented,
             duration=NotImplemented,
@@ -182,12 +186,14 @@ class KalturaExternalMediaEntry(KalturaMediaEntry):
             replacementStatus,
             partnerSortValue,
             conversionProfileId,
+            redirectEntryId,
             rootEntryId,
             operationAttributes,
             entitledUsersEdit,
             entitledUsersPublish,
             plays,
             views,
+            lastPlayedAt,
             width,
             height,
             duration,
@@ -347,6 +353,7 @@ class KalturaExternalMediaEntryBaseFilter(KalturaMediaEntryFilter):
             replacementStatusIn=NotImplemented,
             partnerSortValueGreaterThanOrEqual=NotImplemented,
             partnerSortValueLessThanOrEqual=NotImplemented,
+            redirectEntryIdEqual=NotImplemented,
             rootEntryIdEqual=NotImplemented,
             rootEntryIdIn=NotImplemented,
             tagsNameMultiLikeOr=NotImplemented,
@@ -359,6 +366,9 @@ class KalturaExternalMediaEntryBaseFilter(KalturaMediaEntryFilter):
             isRoot=NotImplemented,
             categoriesFullNameIn=NotImplemented,
             categoryAncestorIdIn=NotImplemented,
+            redirectFromEntryId=NotImplemented,
+            lastPlayedAtGreaterThanOrEqual=NotImplemented,
+            lastPlayedAtLessThanOrEqual=NotImplemented,
             durationLessThan=NotImplemented,
             durationGreaterThan=NotImplemented,
             durationLessThanOrEqual=NotImplemented,
@@ -440,6 +450,7 @@ class KalturaExternalMediaEntryBaseFilter(KalturaMediaEntryFilter):
             replacementStatusIn,
             partnerSortValueGreaterThanOrEqual,
             partnerSortValueLessThanOrEqual,
+            redirectEntryIdEqual,
             rootEntryIdEqual,
             rootEntryIdIn,
             tagsNameMultiLikeOr,
@@ -452,6 +463,9 @@ class KalturaExternalMediaEntryBaseFilter(KalturaMediaEntryFilter):
             isRoot,
             categoriesFullNameIn,
             categoryAncestorIdIn,
+            redirectFromEntryId,
+            lastPlayedAtGreaterThanOrEqual,
+            lastPlayedAtLessThanOrEqual,
             durationLessThan,
             durationGreaterThan,
             durationLessThanOrEqual,
@@ -591,6 +605,7 @@ class KalturaExternalMediaEntryFilter(KalturaExternalMediaEntryBaseFilter):
             replacementStatusIn=NotImplemented,
             partnerSortValueGreaterThanOrEqual=NotImplemented,
             partnerSortValueLessThanOrEqual=NotImplemented,
+            redirectEntryIdEqual=NotImplemented,
             rootEntryIdEqual=NotImplemented,
             rootEntryIdIn=NotImplemented,
             tagsNameMultiLikeOr=NotImplemented,
@@ -603,6 +618,9 @@ class KalturaExternalMediaEntryFilter(KalturaExternalMediaEntryBaseFilter):
             isRoot=NotImplemented,
             categoriesFullNameIn=NotImplemented,
             categoryAncestorIdIn=NotImplemented,
+            redirectFromEntryId=NotImplemented,
+            lastPlayedAtGreaterThanOrEqual=NotImplemented,
+            lastPlayedAtLessThanOrEqual=NotImplemented,
             durationLessThan=NotImplemented,
             durationGreaterThan=NotImplemented,
             durationLessThanOrEqual=NotImplemented,
@@ -684,6 +702,7 @@ class KalturaExternalMediaEntryFilter(KalturaExternalMediaEntryBaseFilter):
             replacementStatusIn,
             partnerSortValueGreaterThanOrEqual,
             partnerSortValueLessThanOrEqual,
+            redirectEntryIdEqual,
             rootEntryIdEqual,
             rootEntryIdIn,
             tagsNameMultiLikeOr,
@@ -696,6 +715,9 @@ class KalturaExternalMediaEntryFilter(KalturaExternalMediaEntryBaseFilter):
             isRoot,
             categoriesFullNameIn,
             categoryAncestorIdIn,
+            redirectFromEntryId,
+            lastPlayedAtGreaterThanOrEqual,
+            lastPlayedAtLessThanOrEqual,
             durationLessThan,
             durationGreaterThan,
             durationLessThanOrEqual,
@@ -741,7 +763,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("entry", entry)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "add", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "add", KalturaExternalMediaEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -752,7 +774,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "get", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "get", KalturaExternalMediaEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -764,7 +786,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
         kparams.addObjectIfDefined("entry", entry)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "update", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "update", KalturaExternalMediaEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -775,7 +797,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "delete", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "delete", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -786,7 +808,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "list", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "list", KalturaExternalMediaEntryListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -797,7 +819,7 @@ class KalturaExternalMediaService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
-        self.client.queueServiceActionCall("externalmedia_externalmedia", "count", kparams)
+        self.client.queueServiceActionCall("externalmedia_externalmedia", "count", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
