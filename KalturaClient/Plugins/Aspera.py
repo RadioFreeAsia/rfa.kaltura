@@ -45,7 +45,7 @@ class KalturaAsperaService(KalturaServiceBase):
     def getFaspUrl(self, flavorAssetId):
         kparams = KalturaParams()
         kparams.addStringIfDefined("flavorAssetId", flavorAssetId)
-        self.client.queueServiceActionCall("aspera_aspera", "getFaspUrl", kparams)
+        self.client.queueServiceActionCall("aspera_aspera", "getFaspUrl", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

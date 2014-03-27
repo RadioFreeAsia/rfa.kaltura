@@ -34,7 +34,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaAdCuePointOrderBy:
+class KalturaAdCuePointOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DURATION_ASC = "+duration"
     END_TIME_ASC = "+endTime"
@@ -56,7 +56,7 @@ class KalturaAdCuePointOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAdProtocolType:
+class KalturaAdProtocolType(object):
     CUSTOM = "0"
     VAST = "1"
     VAST_2_0 = "2"
@@ -70,7 +70,7 @@ class KalturaAdProtocolType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaAdType:
+class KalturaAdType(object):
     VIDEO = "1"
     OVERLAY = "2"
 

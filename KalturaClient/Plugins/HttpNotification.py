@@ -34,7 +34,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationAuthenticationMethod:
+class KalturaHttpNotificationAuthenticationMethod(object):
     ANYSAFE = -18
     ANY = -17
     BASIC = 1
@@ -50,7 +50,7 @@ class KalturaHttpNotificationAuthenticationMethod:
 
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationMethod:
+class KalturaHttpNotificationMethod(object):
     GET = 1
     POST = 2
     PUT = 3
@@ -64,7 +64,7 @@ class KalturaHttpNotificationMethod:
 
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationSslVersion:
+class KalturaHttpNotificationSslVersion(object):
     V2 = 2
     V3 = 3
 
@@ -76,7 +76,7 @@ class KalturaHttpNotificationSslVersion:
 
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationCertificateType:
+class KalturaHttpNotificationCertificateType(object):
     DER = "DER"
     ENG = "ENG"
     PEM = "PEM"
@@ -89,7 +89,7 @@ class KalturaHttpNotificationCertificateType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationSslKeyType:
+class KalturaHttpNotificationSslKeyType(object):
     DER = "DER"
     ENG = "ENG"
     PEM = "PEM"
@@ -102,7 +102,7 @@ class KalturaHttpNotificationSslKeyType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaHttpNotificationTemplateOrderBy:
+class KalturaHttpNotificationTemplateOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"

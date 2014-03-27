@@ -410,7 +410,7 @@ class KalturaCaptionAssetItemService(KalturaServiceBase):
         kparams.addObjectIfDefined("entryFilter", entryFilter)
         kparams.addObjectIfDefined("captionAssetItemFilter", captionAssetItemFilter)
         kparams.addObjectIfDefined("captionAssetItemPager", captionAssetItemPager)
-        self.client.queueServiceActionCall("captionsearch_captionassetitem", "search", kparams)
+        self.client.queueServiceActionCall("captionsearch_captionassetitem", "search", KalturaCaptionAssetItemListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -423,7 +423,7 @@ class KalturaCaptionAssetItemService(KalturaServiceBase):
         kparams.addObjectIfDefined("entryFilter", entryFilter)
         kparams.addObjectIfDefined("captionAssetItemFilter", captionAssetItemFilter)
         kparams.addObjectIfDefined("captionAssetItemPager", captionAssetItemPager)
-        self.client.queueServiceActionCall("captionsearch_captionassetitem", "searchEntries", kparams)
+        self.client.queueServiceActionCall("captionsearch_captionassetitem", "searchEntries", KalturaBaseEntryListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

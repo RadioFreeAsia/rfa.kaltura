@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaCuePointStatus:
+class KalturaCuePointStatus(object):
     READY = 1
     DELETED = 2
 
@@ -45,7 +45,7 @@ class KalturaCuePointStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCuePointOrderBy:
+class KalturaCuePointOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     PARTNER_SORT_VALUE_ASC = "+partnerSortValue"
     START_TIME_ASC = "+startTime"
@@ -63,7 +63,7 @@ class KalturaCuePointOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaCuePointType:
+class KalturaCuePointType(object):
     AD = "adCuePoint.Ad"
     ANNOTATION = "annotation.Annotation"
     CODE = "codeCuePoint.Code"
@@ -721,7 +721,7 @@ class KalturaCuePointService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("cuePoint", cuePoint)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "add", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "add", KalturaCuePoint, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -733,7 +733,7 @@ class KalturaCuePointService(KalturaServiceBase):
         kparams = KalturaParams()
         kfiles = KalturaFiles()
         kfiles.put("fileData", fileData);
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "addFromBulk", kparams, kfiles)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "addFromBulk", KalturaCuePointListResponse, kparams, kfiles)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -745,7 +745,7 @@ class KalturaCuePointService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall('cuepoint_cuepoint', 'serveBulk', kparams)
+        self.client.queueServiceActionCall('cuepoint_cuepoint', 'serveBulk', None ,kparams)
         return self.client.getServeUrl()
 
     def get(self, id):
@@ -753,7 +753,7 @@ class KalturaCuePointService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "get", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "get", KalturaCuePoint, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -765,7 +765,7 @@ class KalturaCuePointService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "list", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "list", KalturaCuePointListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -776,7 +776,7 @@ class KalturaCuePointService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "count", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "count", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -788,7 +788,7 @@ class KalturaCuePointService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
         kparams.addObjectIfDefined("cuePoint", cuePoint)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "update", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "update", KalturaCuePoint, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -799,7 +799,7 @@ class KalturaCuePointService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("id", id)
-        self.client.queueServiceActionCall("cuepoint_cuepoint", "delete", kparams)
+        self.client.queueServiceActionCall("cuepoint_cuepoint", "delete", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
