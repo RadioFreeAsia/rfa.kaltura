@@ -53,7 +53,7 @@ except ImportError:
 # Register the streaming http handlers with urllib2
 register_openers()
 
-class MultiRequestSubResult:
+class MultiRequestSubResult(object):
     def __init__(self, value):
         self.value = value
     def __str__(self):
@@ -67,11 +67,11 @@ class MultiRequestSubResult:
     def __getitem__(self, key):
         return MultiRequestSubResult('%s:%s' % (self.value, key))
 
-class PluginServicesProxy:
+class PluginServicesProxy(object):
     def addService(self, serviceName, serviceClass):
         setattr(self, serviceName, serviceClass)
 
-class KalturaClient:
+class KalturaClient(object):
     METHOD_POST = 0
     METHOD_GET = 1
 
@@ -86,7 +86,7 @@ class KalturaClient:
         self.config = None
         self.ks = NotImplemented
         self.shouldLog = False
-        self.multiRequest = False
+        self.multiRequestReturnType = None
         self.callsQueue = []
 
         self.method = KalturaClient.METHOD_POST
@@ -162,20 +162,21 @@ class KalturaClient:
 
         # reset state
         self.callsQueue = []
-        self.multiRequest = False
 
         if params != None:
             result += '&' + urllib.urlencode(params.get())
         self.log("Returned url [%s]" % result)
         return result        
         
-    def queueServiceActionCall(self, service, action, params = KalturaParams(), files = KalturaFiles()):
+    def queueServiceActionCall(self, service, action, returnType, params = KalturaParams(), files = KalturaFiles()):
         # in start session partner id is optional (default -1). if partner id was not set, use the one in the config
         if not params.get().has_key("partnerId") or params.get()["partnerId"] == -1:
             if self.config.partnerId != None:
                 params.put("partnerId", self.config.partnerId)
         params.addStringIfDefined("ks", self.ks)
         call = KalturaServiceActionCall(service, action, params, files)
+        if(self.multiRequestReturnType != None):
+			self.multiRequestReturnType.append(returnType)
         self.callsQueue.append(call)
 
     def getRequestParams(self):
@@ -185,7 +186,7 @@ class KalturaClient:
         params.put("format", self.config.format)
         params.put("clientTag", self.config.clientTag)
         url = self.config.serviceUrl + "/api_v3/index.php?service="
-        if self.multiRequest:
+        if (self.multiRequestReturnType != None):
             url += "multirequest"
             i = 1
             for call in self.callsQueue:
@@ -298,7 +299,6 @@ class KalturaClient:
             self.executionTime = getXmlNodeFloat(execTime)
 
         self.throwExceptionIfError(resultNode)
-
         return resultNode        
         
     # Call all API services that are in queue
@@ -306,7 +306,7 @@ class KalturaClient:
         self.responseHeaders = None
         self.executionTime = None
         if len(self.callsQueue) == 0:
-            self.multiRequest = False
+            self.multiRequestReturnType = None
             return None
 
         if self.config.format != KALTURA_SERVICE_FORMAT_XML:
@@ -319,8 +319,7 @@ class KalturaClient:
             
         # reset state
         self.callsQueue = []
-        self.multiRequest = False
-
+        
         # issue the request        
         postResult = self.doHttpRequest(url, params, files)
 
@@ -376,27 +375,30 @@ class KalturaClient:
         raise exceptionObj
 
     def startMultiRequest(self):
-        self.multiRequest = True
+        self.multiRequestReturnType = []
         
     def doMultiRequest(self):
         resultXml = self.doQueue()
         if resultXml == None:
             return []
         result = []
+        i = 0
         for childNode in resultXml.childNodes:
             exceptionObj = self.getExceptionIfError(childNode)
             if exceptionObj != None:
                 result.append(exceptionObj)
             elif getChildNodeByXPath(childNode, 'objectType') != None:
-                result.append(KalturaObjectFactory.create(childNode, KalturaObjectBase))
+                result.append(KalturaObjectFactory.create(childNode, self.multiRequestReturnType[i]))
             elif getChildNodeByXPath(childNode, 'item/objectType') != None:
-                result.append(KalturaObjectFactory.createArray(childNode, KalturaObjectBase))
+                result.append(KalturaObjectFactory.createArray(childNode, self.multiRequestReturnType[i]))
             else:
                 result.append(getXmlNodeText(childNode))
+            i+=1
+        self.multiRequestReturnType = None
         return result
 
     def isMultiRequest(self):
-        return self.multiRequest
+        return (self.multiRequestReturnType != None)
         
     def getMultiRequestResult(self):
         return MultiRequestSubResult('%s:result' % len(self.callsQueue))
@@ -456,7 +458,7 @@ class KalturaClient:
         m.update(msg)
         return m.digest()
 
-class KalturaServiceActionCall:
+class KalturaServiceActionCall(object):
     def __init__(self, service, action, params = KalturaParams(), files = KalturaFiles()):
         self.service = service
         self.action = action

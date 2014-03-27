@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderContentFileHandlerMatchPolicy:
+class KalturaDropFolderContentFileHandlerMatchPolicy(object):
     ADD_AS_NEW = 1
     MATCH_EXISTING_OR_ADD_AS_NEW = 2
     MATCH_EXISTING_OR_KEEP_IN_FOLDER = 3
@@ -46,7 +46,7 @@ class KalturaDropFolderContentFileHandlerMatchPolicy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderFileDeletePolicy:
+class KalturaDropFolderFileDeletePolicy(object):
     MANUAL_DELETE = 1
     AUTO_DELETE = 2
 
@@ -58,7 +58,7 @@ class KalturaDropFolderFileDeletePolicy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderFileStatus:
+class KalturaDropFolderFileStatus(object):
     UPLOADING = 1
     PENDING = 2
     WAITING = 3
@@ -83,7 +83,7 @@ class KalturaDropFolderFileStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderStatus:
+class KalturaDropFolderStatus(object):
     DISABLED = 0
     ENABLED = 1
     DELETED = 2
@@ -97,7 +97,7 @@ class KalturaDropFolderStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderErrorCode:
+class KalturaDropFolderErrorCode(object):
     ERROR_CONNECT = "1"
     ERROR_AUTENTICATE = "2"
     ERROR_GET_PHISICAL_FILE_LIST = "3"
@@ -113,7 +113,7 @@ class KalturaDropFolderErrorCode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderFileErrorCode:
+class KalturaDropFolderFileErrorCode(object):
     ERROR_ADDING_BULK_UPLOAD = "dropFolderXmlBulkUpload.ERROR_ADDING_BULK_UPLOAD"
     ERROR_ADD_CONTENT_RESOURCE = "dropFolderXmlBulkUpload.ERROR_ADD_CONTENT_RESOURCE"
     ERROR_IN_BULK_UPLOAD = "dropFolderXmlBulkUpload.ERROR_IN_BULK_UPLOAD"
@@ -143,7 +143,7 @@ class KalturaDropFolderFileErrorCode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderFileHandlerType:
+class KalturaDropFolderFileHandlerType(object):
     XML = "dropFolderXmlBulkUpload.XML"
     CONTENT = "1"
 
@@ -155,7 +155,7 @@ class KalturaDropFolderFileHandlerType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderFileOrderBy:
+class KalturaDropFolderFileOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     FILE_NAME_ASC = "+fileName"
     FILE_SIZE_ASC = "+fileSize"
@@ -181,7 +181,7 @@ class KalturaDropFolderFileOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderOrderBy:
+class KalturaDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -199,7 +199,8 @@ class KalturaDropFolderOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDropFolderType:
+class KalturaDropFolderType(object):
+    WEBEX = "WebexDropFolder.WEBEX"
     LOCAL = "1"
     FTP = "2"
     SCP = "3"
@@ -214,7 +215,7 @@ class KalturaDropFolderType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaFtpDropFolderOrderBy:
+class KalturaFtpDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -232,7 +233,7 @@ class KalturaFtpDropFolderOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaRemoteDropFolderOrderBy:
+class KalturaRemoteDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -250,7 +251,7 @@ class KalturaRemoteDropFolderOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaScpDropFolderOrderBy:
+class KalturaScpDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -268,7 +269,7 @@ class KalturaScpDropFolderOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSftpDropFolderOrderBy:
+class KalturaSftpDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -286,7 +287,7 @@ class KalturaSftpDropFolderOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSshDropFolderOrderBy:
+class KalturaSshDropFolderOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     NAME_ASC = "+name"
@@ -357,7 +358,10 @@ class KalturaDropFolder(KalturaObjectBase):
             ignoreFileNamePatterns=NotImplemented,
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
-            lastAccessedAt=NotImplemented):
+            lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented):
         KalturaObjectBase.__init__(self)
 
         # @var int
@@ -431,6 +435,15 @@ class KalturaDropFolder(KalturaObjectBase):
         # @var int
         self.lastAccessedAt = lastAccessedAt
 
+        # @var bool
+        self.incremental = incremental
+
+        # @var int
+        self.lastFileTimestamp = lastFileTimestamp
+
+        # @var int
+        self.metadataProfileId = metadataProfileId
+
 
     PROPERTY_LOADERS = {
         'id': getXmlNodeInt, 
@@ -455,6 +468,9 @@ class KalturaDropFolder(KalturaObjectBase):
         'createdAt': getXmlNodeInt, 
         'updatedAt': getXmlNodeInt, 
         'lastAccessedAt': getXmlNodeInt, 
+        'incremental': getXmlNodeBool, 
+        'lastFileTimestamp': getXmlNodeInt, 
+        'metadataProfileId': getXmlNodeInt, 
     }
 
     def fromXml(self, node):
@@ -483,6 +499,9 @@ class KalturaDropFolder(KalturaObjectBase):
         kparams.addStringIfDefined("errorDescription", self.errorDescription)
         kparams.addStringIfDefined("ignoreFileNamePatterns", self.ignoreFileNamePatterns)
         kparams.addIntIfDefined("lastAccessedAt", self.lastAccessedAt)
+        kparams.addBoolIfDefined("incremental", self.incremental)
+        kparams.addIntIfDefined("lastFileTimestamp", self.lastFileTimestamp)
+        kparams.addIntIfDefined("metadataProfileId", self.metadataProfileId)
         return kparams
 
     def getId(self):
@@ -608,6 +627,24 @@ class KalturaDropFolder(KalturaObjectBase):
     def setLastAccessedAt(self, newLastAccessedAt):
         self.lastAccessedAt = newLastAccessedAt
 
+    def getIncremental(self):
+        return self.incremental
+
+    def setIncremental(self, newIncremental):
+        self.incremental = newIncremental
+
+    def getLastFileTimestamp(self):
+        return self.lastFileTimestamp
+
+    def setLastFileTimestamp(self, newLastFileTimestamp):
+        self.lastFileTimestamp = newLastFileTimestamp
+
+    def getMetadataProfileId(self):
+        return self.metadataProfileId
+
+    def setMetadataProfileId(self, newMetadataProfileId):
+        self.metadataProfileId = newMetadataProfileId
+
 
 # @package External
 # @subpackage Kaltura
@@ -620,6 +657,7 @@ class KalturaDropFolderFile(KalturaObjectBase):
             fileSize=NotImplemented,
             fileSizeLastSetAt=NotImplemented,
             status=NotImplemented,
+            type=NotImplemented,
             parsedSlug=NotImplemented,
             parsedFlavor=NotImplemented,
             leadDropFolderFileId=NotImplemented,
@@ -663,6 +701,10 @@ class KalturaDropFolderFile(KalturaObjectBase):
         # @var KalturaDropFolderFileStatus
         # @readonly
         self.status = status
+
+        # @var KalturaDropFolderType
+        # @readonly
+        self.type = type
 
         # @var string
         self.parsedSlug = parsedSlug
@@ -721,6 +763,7 @@ class KalturaDropFolderFile(KalturaObjectBase):
         'fileSize': getXmlNodeFloat, 
         'fileSizeLastSetAt': getXmlNodeInt, 
         'status': (KalturaEnumsFactory.createInt, "KalturaDropFolderFileStatus"), 
+        'type': (KalturaEnumsFactory.createString, "KalturaDropFolderType"), 
         'parsedSlug': getXmlNodeText, 
         'parsedFlavor': getXmlNodeText, 
         'leadDropFolderFileId': getXmlNodeInt, 
@@ -791,6 +834,9 @@ class KalturaDropFolderFile(KalturaObjectBase):
 
     def getStatus(self):
         return self.status
+
+    def getType(self):
+        return self.type
 
     def getParsedSlug(self):
         return self.parsedSlug
@@ -1457,6 +1503,7 @@ class KalturaDropFolderFileBaseFilter(KalturaFilter):
             fileNameLike=NotImplemented,
             statusEqual=NotImplemented,
             statusIn=NotImplemented,
+            statusNotIn=NotImplemented,
             parsedSlugEqual=NotImplemented,
             parsedSlugIn=NotImplemented,
             parsedSlugLike=NotImplemented,
@@ -1508,6 +1555,9 @@ class KalturaDropFolderFileBaseFilter(KalturaFilter):
 
         # @var string
         self.statusIn = statusIn
+
+        # @var string
+        self.statusNotIn = statusNotIn
 
         # @var string
         self.parsedSlugEqual = parsedSlugEqual
@@ -1567,6 +1617,7 @@ class KalturaDropFolderFileBaseFilter(KalturaFilter):
         'fileNameLike': getXmlNodeText, 
         'statusEqual': (KalturaEnumsFactory.createInt, "KalturaDropFolderFileStatus"), 
         'statusIn': getXmlNodeText, 
+        'statusNotIn': getXmlNodeText, 
         'parsedSlugEqual': getXmlNodeText, 
         'parsedSlugIn': getXmlNodeText, 
         'parsedSlugLike': getXmlNodeText, 
@@ -1602,6 +1653,7 @@ class KalturaDropFolderFileBaseFilter(KalturaFilter):
         kparams.addStringIfDefined("fileNameLike", self.fileNameLike)
         kparams.addIntEnumIfDefined("statusEqual", self.statusEqual)
         kparams.addStringIfDefined("statusIn", self.statusIn)
+        kparams.addStringIfDefined("statusNotIn", self.statusNotIn)
         kparams.addStringIfDefined("parsedSlugEqual", self.parsedSlugEqual)
         kparams.addStringIfDefined("parsedSlugIn", self.parsedSlugIn)
         kparams.addStringIfDefined("parsedSlugLike", self.parsedSlugLike)
@@ -1684,6 +1736,12 @@ class KalturaDropFolderFileBaseFilter(KalturaFilter):
 
     def setStatusIn(self, newStatusIn):
         self.statusIn = newStatusIn
+
+    def getStatusNotIn(self):
+        return self.statusNotIn
+
+    def setStatusNotIn(self, newStatusNotIn):
+        self.statusNotIn = newStatusNotIn
 
     def getParsedSlugEqual(self):
         return self.parsedSlugEqual
@@ -1801,7 +1859,10 @@ class KalturaRemoteDropFolder(KalturaDropFolder):
             ignoreFileNamePatterns=NotImplemented,
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
-            lastAccessedAt=NotImplemented):
+            lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented):
         KalturaDropFolder.__init__(self,
             id,
             partnerId,
@@ -1824,7 +1885,10 @@ class KalturaRemoteDropFolder(KalturaDropFolder):
             ignoreFileNamePatterns,
             createdAt,
             updatedAt,
-            lastAccessedAt)
+            lastAccessedAt,
+            incremental,
+            lastFileTimestamp,
+            metadataProfileId)
 
 
     PROPERTY_LOADERS = {
@@ -1857,6 +1921,7 @@ class KalturaDropFolderFileFilter(KalturaDropFolderFileBaseFilter):
             fileNameLike=NotImplemented,
             statusEqual=NotImplemented,
             statusIn=NotImplemented,
+            statusNotIn=NotImplemented,
             parsedSlugEqual=NotImplemented,
             parsedSlugIn=NotImplemented,
             parsedSlugLike=NotImplemented,
@@ -1886,6 +1951,7 @@ class KalturaDropFolderFileFilter(KalturaDropFolderFileBaseFilter):
             fileNameLike,
             statusEqual,
             statusIn,
+            statusNotIn,
             parsedSlugEqual,
             parsedSlugIn,
             parsedSlugLike,
@@ -2036,6 +2102,9 @@ class KalturaFtpDropFolder(KalturaRemoteDropFolder):
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
             lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented,
             host=NotImplemented,
             port=NotImplemented,
             username=NotImplemented,
@@ -2062,7 +2131,10 @@ class KalturaFtpDropFolder(KalturaRemoteDropFolder):
             ignoreFileNamePatterns,
             createdAt,
             updatedAt,
-            lastAccessedAt)
+            lastAccessedAt,
+            incremental,
+            lastFileTimestamp,
+            metadataProfileId)
 
         # @var string
         self.host = host
@@ -2148,6 +2220,9 @@ class KalturaSshDropFolder(KalturaRemoteDropFolder):
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
             lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented,
             host=NotImplemented,
             port=NotImplemented,
             username=NotImplemented,
@@ -2177,7 +2252,10 @@ class KalturaSshDropFolder(KalturaRemoteDropFolder):
             ignoreFileNamePatterns,
             createdAt,
             updatedAt,
-            lastAccessedAt)
+            lastAccessedAt,
+            incremental,
+            lastFileTimestamp,
+            metadataProfileId)
 
         # @var string
         self.host = host
@@ -2461,6 +2539,9 @@ class KalturaScpDropFolder(KalturaSshDropFolder):
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
             lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented,
             host=NotImplemented,
             port=NotImplemented,
             username=NotImplemented,
@@ -2491,6 +2572,9 @@ class KalturaScpDropFolder(KalturaSshDropFolder):
             createdAt,
             updatedAt,
             lastAccessedAt,
+            incremental,
+            lastFileTimestamp,
+            metadataProfileId,
             host,
             port,
             username,
@@ -2539,6 +2623,9 @@ class KalturaSftpDropFolder(KalturaSshDropFolder):
             createdAt=NotImplemented,
             updatedAt=NotImplemented,
             lastAccessedAt=NotImplemented,
+            incremental=NotImplemented,
+            lastFileTimestamp=NotImplemented,
+            metadataProfileId=NotImplemented,
             host=NotImplemented,
             port=NotImplemented,
             username=NotImplemented,
@@ -2569,6 +2656,9 @@ class KalturaSftpDropFolder(KalturaSshDropFolder):
             createdAt,
             updatedAt,
             lastAccessedAt,
+            incremental,
+            lastFileTimestamp,
+            metadataProfileId,
             host,
             port,
             username,
@@ -3362,7 +3452,7 @@ class KalturaDropFolderService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("dropFolder", dropFolder)
-        self.client.queueServiceActionCall("dropfolder_dropfolder", "add", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolder", "add", KalturaDropFolder, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3373,7 +3463,7 @@ class KalturaDropFolderService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderId", dropFolderId);
-        self.client.queueServiceActionCall("dropfolder_dropfolder", "get", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolder", "get", KalturaDropFolder, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3385,7 +3475,7 @@ class KalturaDropFolderService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderId", dropFolderId);
         kparams.addObjectIfDefined("dropFolder", dropFolder)
-        self.client.queueServiceActionCall("dropfolder_dropfolder", "update", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolder", "update", KalturaDropFolder, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3396,7 +3486,7 @@ class KalturaDropFolderService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderId", dropFolderId);
-        self.client.queueServiceActionCall("dropfolder_dropfolder", "delete", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolder", "delete", KalturaDropFolder, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3408,7 +3498,7 @@ class KalturaDropFolderService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("dropfolder_dropfolder", "list", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolder", "list", KalturaDropFolderListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3428,7 +3518,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("dropFolderFile", dropFolderFile)
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "add", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "add", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3439,7 +3529,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderFileId", dropFolderFileId);
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "get", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "get", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3451,7 +3541,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderFileId", dropFolderFileId);
         kparams.addObjectIfDefined("dropFolderFile", dropFolderFile)
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "update", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "update", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3463,7 +3553,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderFileId", dropFolderFileId);
         kparams.addIntIfDefined("status", status);
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "updateStatus", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "updateStatus", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3474,7 +3564,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderFileId", dropFolderFileId);
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "delete", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "delete", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3486,7 +3576,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "list", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "list", KalturaDropFolderFileListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -3497,7 +3587,7 @@ class KalturaDropFolderFileService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("dropFolderFileId", dropFolderFileId);
-        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "ignore", kparams)
+        self.client.queueServiceActionCall("dropfolder_dropfolderfile", "ignore", KalturaDropFolderFile, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

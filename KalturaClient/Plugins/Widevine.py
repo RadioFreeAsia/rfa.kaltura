@@ -28,12 +28,13 @@
 # @package External
 # @subpackage Kaltura
 from Core import *
+from Drm import *
 from ..Base import *
 
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaWidevineRepositorySyncMode:
+class KalturaWidevineRepositorySyncMode(object):
     MODIFY = 0
 
     def __init__(self, value):
@@ -44,7 +45,7 @@ class KalturaWidevineRepositorySyncMode:
 
 # @package External
 # @subpackage Kaltura
-class KalturaWidevineFlavorAssetOrderBy:
+class KalturaWidevineFlavorAssetOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     DELETED_AT_ASC = "+deletedAt"
     SIZE_ASC = "+size"
@@ -62,7 +63,7 @@ class KalturaWidevineFlavorAssetOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaWidevineFlavorParamsOrderBy:
+class KalturaWidevineFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -72,7 +73,21 @@ class KalturaWidevineFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaWidevineFlavorParamsOutputOrderBy:
+class KalturaWidevineFlavorParamsOutputOrderBy(object):
+
+    def __init__(self, value):
+        self.value = value
+
+    def getValue(self):
+        return self.value
+
+# @package External
+# @subpackage Kaltura
+class KalturaWidevineProfileOrderBy(object):
+    ID_ASC = "+id"
+    NAME_ASC = "+name"
+    ID_DESC = "-id"
+    NAME_DESC = "-name"
 
     def __init__(self, value):
         self.value = value
@@ -81,6 +96,118 @@ class KalturaWidevineFlavorParamsOutputOrderBy:
         return self.value
 
 ########## classes ##########
+# @package External
+# @subpackage Kaltura
+class KalturaWidevineProfile(KalturaDrmProfile):
+    def __init__(self,
+            id=NotImplemented,
+            partnerId=NotImplemented,
+            name=NotImplemented,
+            description=NotImplemented,
+            provider=NotImplemented,
+            status=NotImplemented,
+            licenseServerUrl=NotImplemented,
+            defaultPolicy=NotImplemented,
+            createdAt=NotImplemented,
+            updatedAt=NotImplemented,
+            key=NotImplemented,
+            iv=NotImplemented,
+            owner=NotImplemented,
+            portal=NotImplemented,
+            maxGop=NotImplemented,
+            regServerHost=NotImplemented):
+        KalturaDrmProfile.__init__(self,
+            id,
+            partnerId,
+            name,
+            description,
+            provider,
+            status,
+            licenseServerUrl,
+            defaultPolicy,
+            createdAt,
+            updatedAt)
+
+        # @var string
+        self.key = key
+
+        # @var string
+        self.iv = iv
+
+        # @var string
+        self.owner = owner
+
+        # @var string
+        self.portal = portal
+
+        # @var int
+        self.maxGop = maxGop
+
+        # @var string
+        self.regServerHost = regServerHost
+
+
+    PROPERTY_LOADERS = {
+        'key': getXmlNodeText, 
+        'iv': getXmlNodeText, 
+        'owner': getXmlNodeText, 
+        'portal': getXmlNodeText, 
+        'maxGop': getXmlNodeInt, 
+        'regServerHost': getXmlNodeText, 
+    }
+
+    def fromXml(self, node):
+        KalturaDrmProfile.fromXml(self, node)
+        self.fromXmlImpl(node, KalturaWidevineProfile.PROPERTY_LOADERS)
+
+    def toParams(self):
+        kparams = KalturaDrmProfile.toParams(self)
+        kparams.put("objectType", "KalturaWidevineProfile")
+        kparams.addStringIfDefined("key", self.key)
+        kparams.addStringIfDefined("iv", self.iv)
+        kparams.addStringIfDefined("owner", self.owner)
+        kparams.addStringIfDefined("portal", self.portal)
+        kparams.addIntIfDefined("maxGop", self.maxGop)
+        kparams.addStringIfDefined("regServerHost", self.regServerHost)
+        return kparams
+
+    def getKey(self):
+        return self.key
+
+    def setKey(self, newKey):
+        self.key = newKey
+
+    def getIv(self):
+        return self.iv
+
+    def setIv(self, newIv):
+        self.iv = newIv
+
+    def getOwner(self):
+        return self.owner
+
+    def setOwner(self, newOwner):
+        self.owner = newOwner
+
+    def getPortal(self):
+        return self.portal
+
+    def setPortal(self, newPortal):
+        self.portal = newPortal
+
+    def getMaxGop(self):
+        return self.maxGop
+
+    def setMaxGop(self, newMaxGop):
+        self.maxGop = newMaxGop
+
+    def getRegServerHost(self):
+        return self.regServerHost
+
+    def setRegServerHost(self, newRegServerHost):
+        self.regServerHost = newRegServerHost
+
+
 # @package External
 # @subpackage Kaltura
 class KalturaWidevineRepositorySyncJobData(KalturaJobData):
@@ -512,6 +639,90 @@ class KalturaWidevineFlavorParamsOutput(KalturaFlavorParamsOutput):
 
 # @package External
 # @subpackage Kaltura
+class KalturaWidevineProfileBaseFilter(KalturaDrmProfileFilter):
+    def __init__(self,
+            orderBy=NotImplemented,
+            advancedSearch=NotImplemented,
+            idEqual=NotImplemented,
+            idIn=NotImplemented,
+            partnerIdEqual=NotImplemented,
+            partnerIdIn=NotImplemented,
+            nameLike=NotImplemented,
+            providerEqual=NotImplemented,
+            providerIn=NotImplemented,
+            statusEqual=NotImplemented,
+            statusIn=NotImplemented):
+        KalturaDrmProfileFilter.__init__(self,
+            orderBy,
+            advancedSearch,
+            idEqual,
+            idIn,
+            partnerIdEqual,
+            partnerIdIn,
+            nameLike,
+            providerEqual,
+            providerIn,
+            statusEqual,
+            statusIn)
+
+
+    PROPERTY_LOADERS = {
+    }
+
+    def fromXml(self, node):
+        KalturaDrmProfileFilter.fromXml(self, node)
+        self.fromXmlImpl(node, KalturaWidevineProfileBaseFilter.PROPERTY_LOADERS)
+
+    def toParams(self):
+        kparams = KalturaDrmProfileFilter.toParams(self)
+        kparams.put("objectType", "KalturaWidevineProfileBaseFilter")
+        return kparams
+
+
+# @package External
+# @subpackage Kaltura
+class KalturaWidevineProfileFilter(KalturaWidevineProfileBaseFilter):
+    def __init__(self,
+            orderBy=NotImplemented,
+            advancedSearch=NotImplemented,
+            idEqual=NotImplemented,
+            idIn=NotImplemented,
+            partnerIdEqual=NotImplemented,
+            partnerIdIn=NotImplemented,
+            nameLike=NotImplemented,
+            providerEqual=NotImplemented,
+            providerIn=NotImplemented,
+            statusEqual=NotImplemented,
+            statusIn=NotImplemented):
+        KalturaWidevineProfileBaseFilter.__init__(self,
+            orderBy,
+            advancedSearch,
+            idEqual,
+            idIn,
+            partnerIdEqual,
+            partnerIdIn,
+            nameLike,
+            providerEqual,
+            providerIn,
+            statusEqual,
+            statusIn)
+
+
+    PROPERTY_LOADERS = {
+    }
+
+    def fromXml(self, node):
+        KalturaWidevineProfileBaseFilter.fromXml(self, node)
+        self.fromXmlImpl(node, KalturaWidevineProfileFilter.PROPERTY_LOADERS)
+
+    def toParams(self):
+        kparams = KalturaWidevineProfileBaseFilter.toParams(self)
+        kparams.put("objectType", "KalturaWidevineProfileFilter")
+        return kparams
+
+
+# @package External
+# @subpackage Kaltura
 class KalturaWidevineFlavorAssetBaseFilter(KalturaFlavorAssetFilter):
     def __init__(self,
             orderBy=NotImplemented,
@@ -814,7 +1025,7 @@ class KalturaWidevineDrmService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("flavorAssetId", flavorAssetId)
         kparams.addStringIfDefined("referrer", referrer)
-        self.client.queueServiceActionCall("widevine_widevinedrm", "getLicense", kparams)
+        self.client.queueServiceActionCall("widevine_widevinedrm", "getLicense", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -844,14 +1055,18 @@ class KalturaWidevineClientPlugin(KalturaClientPlugin):
             'KalturaWidevineFlavorAssetOrderBy': KalturaWidevineFlavorAssetOrderBy,
             'KalturaWidevineFlavorParamsOrderBy': KalturaWidevineFlavorParamsOrderBy,
             'KalturaWidevineFlavorParamsOutputOrderBy': KalturaWidevineFlavorParamsOutputOrderBy,
+            'KalturaWidevineProfileOrderBy': KalturaWidevineProfileOrderBy,
         }
 
     def getTypes(self):
         return {
+            'KalturaWidevineProfile': KalturaWidevineProfile,
             'KalturaWidevineRepositorySyncJobData': KalturaWidevineRepositorySyncJobData,
             'KalturaWidevineFlavorAsset': KalturaWidevineFlavorAsset,
             'KalturaWidevineFlavorParams': KalturaWidevineFlavorParams,
             'KalturaWidevineFlavorParamsOutput': KalturaWidevineFlavorParamsOutput,
+            'KalturaWidevineProfileBaseFilter': KalturaWidevineProfileBaseFilter,
+            'KalturaWidevineProfileFilter': KalturaWidevineProfileFilter,
             'KalturaWidevineFlavorAssetBaseFilter': KalturaWidevineFlavorAssetBaseFilter,
             'KalturaWidevineFlavorParamsBaseFilter': KalturaWidevineFlavorParamsBaseFilter,
             'KalturaWidevineFlavorAssetFilter': KalturaWidevineFlavorAssetFilter,

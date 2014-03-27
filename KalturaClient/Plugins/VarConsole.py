@@ -56,6 +56,7 @@ class KalturaVarPartnerUsageItem(KalturaObjectBase):
             peakStorage=NotImplemented,
             avgStorage=NotImplemented,
             combinedStorageBandwidth=NotImplemented,
+            transcodingUsage=NotImplemented,
             dateId=NotImplemented):
         KalturaObjectBase.__init__(self)
 
@@ -139,6 +140,10 @@ class KalturaVarPartnerUsageItem(KalturaObjectBase):
         # @var float
         self.combinedStorageBandwidth = combinedStorageBandwidth
 
+        # Amount of transcoding usage in MB
+        # @var float
+        self.transcodingUsage = transcodingUsage
+
         # TGhe date at which the report was taken - Unix Timestamp
         # @var string
         self.dateId = dateId
@@ -165,6 +170,7 @@ class KalturaVarPartnerUsageItem(KalturaObjectBase):
         'peakStorage': getXmlNodeFloat, 
         'avgStorage': getXmlNodeFloat, 
         'combinedStorageBandwidth': getXmlNodeFloat, 
+        'transcodingUsage': getXmlNodeFloat, 
         'dateId': getXmlNodeText, 
     }
 
@@ -195,6 +201,7 @@ class KalturaVarPartnerUsageItem(KalturaObjectBase):
         kparams.addFloatIfDefined("peakStorage", self.peakStorage)
         kparams.addFloatIfDefined("avgStorage", self.avgStorage)
         kparams.addFloatIfDefined("combinedStorageBandwidth", self.combinedStorageBandwidth)
+        kparams.addFloatIfDefined("transcodingUsage", self.transcodingUsage)
         kparams.addStringIfDefined("dateId", self.dateId)
         return kparams
 
@@ -318,6 +325,12 @@ class KalturaVarPartnerUsageItem(KalturaObjectBase):
     def setCombinedStorageBandwidth(self, newCombinedStorageBandwidth):
         self.combinedStorageBandwidth = newCombinedStorageBandwidth
 
+    def getTranscodingUsage(self):
+        return self.transcodingUsage
+
+    def setTranscodingUsage(self, newTranscodingUsage):
+        self.transcodingUsage = newTranscodingUsage
+
     def getDateId(self):
         return self.dateId
 
@@ -405,6 +418,7 @@ class KalturaVarPartnerUsageTotalItem(KalturaVarPartnerUsageItem):
             peakStorage=NotImplemented,
             avgStorage=NotImplemented,
             combinedStorageBandwidth=NotImplemented,
+            transcodingUsage=NotImplemented,
             dateId=NotImplemented):
         KalturaVarPartnerUsageItem.__init__(self,
             partnerId,
@@ -427,6 +441,7 @@ class KalturaVarPartnerUsageTotalItem(KalturaVarPartnerUsageItem):
             peakStorage,
             avgStorage,
             combinedStorageBandwidth,
+            transcodingUsage,
             dateId)
 
 
@@ -551,7 +566,7 @@ class KalturaVarConsoleService(KalturaServiceBase):
         kparams.addObjectIfDefined("partnerFilter", partnerFilter)
         kparams.addObjectIfDefined("usageFilter", usageFilter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("varconsole_varconsole", "getPartnerUsage", kparams)
+        self.client.queueServiceActionCall("varconsole_varconsole", "getPartnerUsage", KalturaPartnerUsageListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -563,7 +578,7 @@ class KalturaVarConsoleService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
         kparams.addIntIfDefined("status", status);
-        self.client.queueServiceActionCall("varconsole_varconsole", "updateStatus", kparams)
+        self.client.queueServiceActionCall("varconsole_varconsole", "updateStatus", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()

@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaEventNotificationTemplateStatus:
+class KalturaEventNotificationTemplateStatus(object):
     DISABLED = 1
     ACTIVE = 2
     DELETED = 3
@@ -46,9 +46,10 @@ class KalturaEventNotificationTemplateStatus:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEventNotificationEventObjectType:
+class KalturaEventNotificationEventObjectType(object):
     AD_CUE_POINT = "adCuePointEventNotifications.AdCuePoint"
     ANNOTATION = "annotationEventNotifications.Annotation"
+    CAPTION_ASSET = "captionAssetEventNotifications.CaptionAsset"
     CODE_CUE_POINT = "codeCuePointEventNotifications.CodeCuePoint"
     DISTRIBUTION_PROFILE = "contentDistributionEventNotifications.DistributionProfile"
     ENTRY_DISTRIBUTION = "contentDistributionEventNotifications.EntryDistribution"
@@ -96,7 +97,7 @@ class KalturaEventNotificationEventObjectType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEventNotificationEventType:
+class KalturaEventNotificationEventType(object):
     BATCH_JOB_STATUS = "1"
     OBJECT_ADDED = "2"
     OBJECT_CHANGED = "3"
@@ -118,7 +119,7 @@ class KalturaEventNotificationEventType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEventNotificationTemplateOrderBy:
+class KalturaEventNotificationTemplateOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     ID_ASC = "+id"
     UPDATED_AT_ASC = "+updatedAt"
@@ -134,7 +135,7 @@ class KalturaEventNotificationTemplateOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaEventNotificationTemplateType:
+class KalturaEventNotificationTemplateType(object):
     EMAIL = "emailNotification.Email"
     HTTP = "httpNotification.Http"
 
@@ -145,26 +146,6 @@ class KalturaEventNotificationTemplateType:
         return self.value
 
 ########## classes ##########
-# @package External
-# @subpackage Kaltura
-class KalturaEventCondition(KalturaObjectBase):
-    def __init__(self):
-        KalturaObjectBase.__init__(self)
-
-
-    PROPERTY_LOADERS = {
-    }
-
-    def fromXml(self, node):
-        KalturaObjectBase.fromXml(self, node)
-        self.fromXmlImpl(node, KalturaEventCondition.PROPERTY_LOADERS)
-
-    def toParams(self):
-        kparams = KalturaObjectBase.toParams(self)
-        kparams.put("objectType", "KalturaEventCondition")
-        return kparams
-
-
 # @package External
 # @subpackage Kaltura
 class KalturaEventNotificationParameter(KalturaObjectBase):
@@ -886,7 +867,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addObjectIfDefined("eventNotificationTemplate", eventNotificationTemplate)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "add", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "add", KalturaEventNotificationTemplate, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -898,7 +879,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
         kparams.addObjectIfDefined("eventNotificationTemplate", eventNotificationTemplate)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "clone", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "clone", KalturaEventNotificationTemplate, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -909,7 +890,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "get", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "get", KalturaEventNotificationTemplate, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -921,7 +902,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
         kparams.addObjectIfDefined("eventNotificationTemplate", eventNotificationTemplate)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "update", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "update", KalturaEventNotificationTemplate, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -933,7 +914,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
         kparams.addIntIfDefined("status", status);
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "updateStatus", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "updateStatus", KalturaEventNotificationTemplate, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -944,7 +925,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "delete", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "delete", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -955,7 +936,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "list", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "list", KalturaEventNotificationTemplateListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -965,7 +946,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "listByPartner", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "listByPartner", KalturaEventNotificationTemplateListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -977,7 +958,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addIntIfDefined("id", id);
         kparams.addObjectIfDefined("data", data)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "dispatch", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "dispatch", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -989,7 +970,7 @@ class KalturaEventNotificationTemplateService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "listTemplates", kparams)
+        self.client.queueServiceActionCall("eventnotification_eventnotificationtemplate", "listTemplates", KalturaEventNotificationTemplateListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -1024,7 +1005,6 @@ class KalturaEventNotificationClientPlugin(KalturaClientPlugin):
 
     def getTypes(self):
         return {
-            'KalturaEventCondition': KalturaEventCondition,
             'KalturaEventNotificationParameter': KalturaEventNotificationParameter,
             'KalturaEventNotificationTemplate': KalturaEventNotificationTemplate,
             'KalturaEventNotificationTemplateListResponse': KalturaEventNotificationTemplateListResponse,

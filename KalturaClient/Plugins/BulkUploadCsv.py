@@ -28,12 +28,13 @@
 # @package External
 # @subpackage Kaltura
 from Core import *
+from BulkUpload import *
 from ..Base import *
 
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaBulkUploadCsvVersion:
+class KalturaBulkUploadCsvVersion(object):
     V1 = 1
     V2 = 2
     V3 = 3

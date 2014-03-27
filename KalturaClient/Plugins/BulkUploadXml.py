@@ -28,6 +28,7 @@
 # @package External
 # @subpackage Kaltura
 from Core import *
+from BulkUpload import *
 from ..Base import *
 
 ########## enums ##########

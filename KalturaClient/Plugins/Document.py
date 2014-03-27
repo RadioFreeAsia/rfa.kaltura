@@ -33,7 +33,7 @@ from ..Base import *
 ########## enums ##########
 # @package External
 # @subpackage Kaltura
-class KalturaDocumentType:
+class KalturaDocumentType(object):
     DOCUMENT = 11
     SWF = 12
     PDF = 13
@@ -46,7 +46,7 @@ class KalturaDocumentType:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDocumentEntryOrderBy:
+class KalturaDocumentEntryOrderBy(object):
     CREATED_AT_ASC = "+createdAt"
     END_DATE_ASC = "+endDate"
     MODERATION_COUNT_ASC = "+moderationCount"
@@ -78,7 +78,7 @@ class KalturaDocumentEntryOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDocumentFlavorParamsOrderBy:
+class KalturaDocumentFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -88,7 +88,7 @@ class KalturaDocumentFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaDocumentFlavorParamsOutputOrderBy:
+class KalturaDocumentFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -98,7 +98,7 @@ class KalturaDocumentFlavorParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaImageFlavorParamsOrderBy:
+class KalturaImageFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -108,7 +108,7 @@ class KalturaImageFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaImageFlavorParamsOutputOrderBy:
+class KalturaImageFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -118,7 +118,7 @@ class KalturaImageFlavorParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPdfFlavorParamsOrderBy:
+class KalturaPdfFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -128,7 +128,7 @@ class KalturaPdfFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaPdfFlavorParamsOutputOrderBy:
+class KalturaPdfFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -138,7 +138,7 @@ class KalturaPdfFlavorParamsOutputOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSwfFlavorParamsOrderBy:
+class KalturaSwfFlavorParamsOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -148,7 +148,7 @@ class KalturaSwfFlavorParamsOrderBy:
 
 # @package External
 # @subpackage Kaltura
-class KalturaSwfFlavorParamsOutputOrderBy:
+class KalturaSwfFlavorParamsOutputOrderBy(object):
 
     def __init__(self, value):
         self.value = value
@@ -196,6 +196,7 @@ class KalturaDocumentEntry(KalturaBaseEntry):
             replacementStatus=NotImplemented,
             partnerSortValue=NotImplemented,
             conversionProfileId=NotImplemented,
+            redirectEntryId=NotImplemented,
             rootEntryId=NotImplemented,
             operationAttributes=NotImplemented,
             entitledUsersEdit=NotImplemented,
@@ -238,6 +239,7 @@ class KalturaDocumentEntry(KalturaBaseEntry):
             replacementStatus,
             partnerSortValue,
             conversionProfileId,
+            redirectEntryId,
             rootEntryId,
             operationAttributes,
             entitledUsersEdit,
@@ -914,6 +916,7 @@ class KalturaDocumentEntryBaseFilter(KalturaBaseEntryFilter):
             replacementStatusIn=NotImplemented,
             partnerSortValueGreaterThanOrEqual=NotImplemented,
             partnerSortValueLessThanOrEqual=NotImplemented,
+            redirectEntryIdEqual=NotImplemented,
             rootEntryIdEqual=NotImplemented,
             rootEntryIdIn=NotImplemented,
             tagsNameMultiLikeOr=NotImplemented,
@@ -926,6 +929,7 @@ class KalturaDocumentEntryBaseFilter(KalturaBaseEntryFilter):
             isRoot=NotImplemented,
             categoriesFullNameIn=NotImplemented,
             categoryAncestorIdIn=NotImplemented,
+            redirectFromEntryId=NotImplemented,
             documentTypeEqual=NotImplemented,
             documentTypeIn=NotImplemented,
             assetParamsIdsMatchOr=NotImplemented,
@@ -996,6 +1000,7 @@ class KalturaDocumentEntryBaseFilter(KalturaBaseEntryFilter):
             replacementStatusIn,
             partnerSortValueGreaterThanOrEqual,
             partnerSortValueLessThanOrEqual,
+            redirectEntryIdEqual,
             rootEntryIdEqual,
             rootEntryIdIn,
             tagsNameMultiLikeOr,
@@ -1007,7 +1012,8 @@ class KalturaDocumentEntryBaseFilter(KalturaBaseEntryFilter):
             freeText,
             isRoot,
             categoriesFullNameIn,
-            categoryAncestorIdIn)
+            categoryAncestorIdIn,
+            redirectFromEntryId)
 
         # @var KalturaDocumentType
         self.documentTypeEqual = documentTypeEqual
@@ -1712,6 +1718,7 @@ class KalturaDocumentEntryFilter(KalturaDocumentEntryBaseFilter):
             replacementStatusIn=NotImplemented,
             partnerSortValueGreaterThanOrEqual=NotImplemented,
             partnerSortValueLessThanOrEqual=NotImplemented,
+            redirectEntryIdEqual=NotImplemented,
             rootEntryIdEqual=NotImplemented,
             rootEntryIdIn=NotImplemented,
             tagsNameMultiLikeOr=NotImplemented,
@@ -1724,6 +1731,7 @@ class KalturaDocumentEntryFilter(KalturaDocumentEntryBaseFilter):
             isRoot=NotImplemented,
             categoriesFullNameIn=NotImplemented,
             categoryAncestorIdIn=NotImplemented,
+            redirectFromEntryId=NotImplemented,
             documentTypeEqual=NotImplemented,
             documentTypeIn=NotImplemented,
             assetParamsIdsMatchOr=NotImplemented,
@@ -1794,6 +1802,7 @@ class KalturaDocumentEntryFilter(KalturaDocumentEntryBaseFilter):
             replacementStatusIn,
             partnerSortValueGreaterThanOrEqual,
             partnerSortValueLessThanOrEqual,
+            redirectEntryIdEqual,
             rootEntryIdEqual,
             rootEntryIdIn,
             tagsNameMultiLikeOr,
@@ -1806,6 +1815,7 @@ class KalturaDocumentEntryFilter(KalturaDocumentEntryBaseFilter):
             isRoot,
             categoriesFullNameIn,
             categoryAncestorIdIn,
+            redirectFromEntryId,
             documentTypeEqual,
             documentTypeIn,
             assetParamsIdsMatchOr,
@@ -2449,7 +2459,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("documentEntry", documentEntry)
         kparams.addStringIfDefined("uploadTokenId", uploadTokenId)
-        self.client.queueServiceActionCall("document_documents", "addFromUploadedFile", kparams)
+        self.client.queueServiceActionCall("document_documents", "addFromUploadedFile", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2462,7 +2472,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams.addStringIfDefined("sourceEntryId", sourceEntryId)
         kparams.addObjectIfDefined("documentEntry", documentEntry)
         kparams.addIntIfDefined("sourceFlavorParamsId", sourceFlavorParamsId);
-        self.client.queueServiceActionCall("document_documents", "addFromEntry", kparams)
+        self.client.queueServiceActionCall("document_documents", "addFromEntry", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2474,7 +2484,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("sourceFlavorAssetId", sourceFlavorAssetId)
         kparams.addObjectIfDefined("documentEntry", documentEntry)
-        self.client.queueServiceActionCall("document_documents", "addFromFlavorAsset", kparams)
+        self.client.queueServiceActionCall("document_documents", "addFromFlavorAsset", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2487,7 +2497,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addIntIfDefined("conversionProfileId", conversionProfileId);
         kparams.addArrayIfDefined("dynamicConversionAttributes", dynamicConversionAttributes)
-        self.client.queueServiceActionCall("document_documents", "convert", kparams)
+        self.client.queueServiceActionCall("document_documents", "convert", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2499,7 +2509,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addIntIfDefined("version", version);
-        self.client.queueServiceActionCall("document_documents", "get", kparams)
+        self.client.queueServiceActionCall("document_documents", "get", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2511,7 +2521,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addObjectIfDefined("documentEntry", documentEntry)
-        self.client.queueServiceActionCall("document_documents", "update", kparams)
+        self.client.queueServiceActionCall("document_documents", "update", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2522,7 +2532,7 @@ class KalturaDocumentsService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
-        self.client.queueServiceActionCall("document_documents", "delete", kparams)
+        self.client.queueServiceActionCall("document_documents", "delete", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2533,7 +2543,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kparams.addObjectIfDefined("filter", filter)
         kparams.addObjectIfDefined("pager", pager)
-        self.client.queueServiceActionCall("document_documents", "list", kparams)
+        self.client.queueServiceActionCall("document_documents", "list", KalturaDocumentListResponse, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2545,7 +2555,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams = KalturaParams()
         kfiles = KalturaFiles()
         kfiles.put("fileData", fileData);
-        self.client.queueServiceActionCall("document_documents", "upload", kparams, kfiles)
+        self.client.queueServiceActionCall("document_documents", "upload", None, kparams, kfiles)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2557,7 +2567,7 @@ class KalturaDocumentsService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
-        self.client.queueServiceActionCall("document_documents", "convertPptToSwf", kparams)
+        self.client.queueServiceActionCall("document_documents", "convertPptToSwf", None, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2570,7 +2580,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addStringIfDefined("flavorAssetId", flavorAssetId)
         kparams.addBoolIfDefined("forceProxy", forceProxy);
-        self.client.queueServiceActionCall('document_documents', 'serve', kparams)
+        self.client.queueServiceActionCall('document_documents', 'serve', None ,kparams)
         return self.client.getServeUrl()
 
     def serveByFlavorParamsId(self, entryId, flavorParamsId = NotImplemented, forceProxy = False):
@@ -2580,7 +2590,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addStringIfDefined("flavorParamsId", flavorParamsId)
         kparams.addBoolIfDefined("forceProxy", forceProxy);
-        self.client.queueServiceActionCall('document_documents', 'serveByFlavorParamsId', kparams)
+        self.client.queueServiceActionCall('document_documents', 'serveByFlavorParamsId', None ,kparams)
         return self.client.getServeUrl()
 
     def updateContent(self, entryId, resource, conversionProfileId = NotImplemented):
@@ -2590,7 +2600,7 @@ class KalturaDocumentsService(KalturaServiceBase):
         kparams.addStringIfDefined("entryId", entryId)
         kparams.addObjectIfDefined("resource", resource)
         kparams.addIntIfDefined("conversionProfileId", conversionProfileId);
-        self.client.queueServiceActionCall("document_documents", "updateContent", kparams)
+        self.client.queueServiceActionCall("document_documents", "updateContent", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2601,7 +2611,7 @@ class KalturaDocumentsService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
-        self.client.queueServiceActionCall("document_documents", "approveReplace", kparams)
+        self.client.queueServiceActionCall("document_documents", "approveReplace", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
@@ -2612,7 +2622,7 @@ class KalturaDocumentsService(KalturaServiceBase):
 
         kparams = KalturaParams()
         kparams.addStringIfDefined("entryId", entryId)
-        self.client.queueServiceActionCall("document_documents", "cancelReplace", kparams)
+        self.client.queueServiceActionCall("document_documents", "cancelReplace", KalturaDocumentEntry, kparams)
         if self.client.isMultiRequest():
             return self.client.getMultiRequestResult()
         resultNode = self.client.doQueue()
