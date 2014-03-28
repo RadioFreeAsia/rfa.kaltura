@@ -8,7 +8,7 @@ from rfa.kaltura.kutils import kGetVideoPlayers
 from rfa.kaltura.interfaces import IKalturaVideo
 from rfa.kaltura.interfaces import IKalturaPlaylist
 
-def getTagVoculabulary():
+def getTagVocabulary():
     """Get Currently created tags on Kaltura server"""
     # Not implemented yet.
     pass

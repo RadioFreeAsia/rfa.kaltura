@@ -87,14 +87,18 @@ def getVideo(videoId):
 
 def getRecent(limit=10, partner_id=None):
     """Get the most recently uploaded videos"""    
-    
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
- 
     (client, session) = kconnect(partner_id)
-    
     result = client.media.list(filter=kfilter)
-    
+    return result.objects
+
+def getMostViewed(limit=10, partner_id=None):
+    """Get videos ranked by views"""
+    kfilter = KalturaMediaEntryFilter()
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.VIEWS_DESC)
+    (client, session) = kconnect(partner_id)
+    result = client.media.list(filter=kfilter)
     return result.objects
 
 def getRelated(kvideoObj, limit=10, partner_id=None):
