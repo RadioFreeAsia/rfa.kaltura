@@ -64,7 +64,7 @@ KalturaMetadataSchema = atapi.Schema(
                                                         description="Select video category(ies) this playlist will provide",
                                                         description_msgid="desc_kvideofile_categories",
                                                         i18n_domain="kaltura_video"),
-                          ),       
+                          ),
     
      atapi.LinesField('tags',
                       multiValued = True,
@@ -89,11 +89,13 @@ class KalturaContentMixin(object):
     security = ClassSecurityInfo()
     KalturaObject = None    
     categories = []
-    tags = []    
+    tags = []
+    _category_vocabulary = None
     
     def __init__(self, oid, **kwargs):
         super(KalturaContentMixin, self).__init__(oid, **kwargs)
         self.KalturaObject = None
+        self._categoryVocabulary = None #Cached vocabulary - should not be persistent.
 
     security.declarePrivate("setKalturaObject")
     def setKalturaObject(self, obj):
@@ -119,14 +121,32 @@ class KalturaContentMixin(object):
         self.tags = tags
         
     def getCategories(self):
+        """ Returns a list of the category id's for Kaltura Queries"""
+        return self.categories.keys()
+    
+    def getCategoriesDict(self):
         return self.categories
     
     def setCategories(self, categories):
-        self.categories = categories    
+        """Sets the selected categories for this object in plone
+          'categories' is internally stored as a dictionary:
+          keys are id's, values are names
+        """
+        vocabulary = dict(self.getCategoryVocabulary())
+        self.categories = {}
+        for catId in categories:
+            name = vocabulary.get(catId, None)
+            if name is not None:
+                self.categories[catId] = vocabulary[catId]
+            #else, sliently ignore that category id...
+            #I apologize, you found this comment after hours of digging around code.
 
     def getTagVocabulary(self):
-        return vocabularies.getTagVoculabulary()
+        return vocabularies.getTagVocabulary()
         
     def getCategoryVocabulary(self):
-        return vocabularies.getCategoryVocabulary()
+        """This gets the entire list of avaiable categories from the Kaltura server"""
+        if getattr(self, '_categoryVocabulary', None) is None:
+            self._categoryVocabulary = vocabularies.getCategoryVocabulary()
+        return self._categoryVocabulary
     
