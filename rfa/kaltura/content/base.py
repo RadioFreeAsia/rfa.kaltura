@@ -138,9 +138,11 @@ class KalturaContentMixin(object):
             name = vocabulary.get(catId, None)
             if name is not None:
                 self.categories[catId] = vocabulary[catId]
-            #else, sliently ignore that category id...
-            #I apologize, you found this comment after hours of digging around code.
-
+            else:
+                # Sliently ignore that category id, it doesn't have a matching category name.
+                # I apologize if you found this comment after hours of digging around code.                
+                pass 
+            
     def getTagVocabulary(self):
         return vocabularies.getTagVocabulary()
         

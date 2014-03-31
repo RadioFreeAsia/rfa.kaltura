@@ -106,12 +106,19 @@ def getRelated(kvideoObj, limit=10, partner_id=None):
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
     kfilter.setTagsLike(kvideoObj.getTags())
-    
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
-    
     return result.objects
-    
+
+def getCategoryVids(catId, limit=10, partner_id=None):
+    """ Get videos placed in the provided category id, or child categories"""
+    kfilter = KalturaMediaEntryFilter()
+    kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
+    kfilter.setCategoryAncestorIdIn(catId)
+    (client, session) = kconnect(partner_id)
+    result = client.media.list(filter=kfilter)
+    return result.objects
+
 def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
     #These were mined by reverse-engineering a playlist created on the KMC and inspecting the object
