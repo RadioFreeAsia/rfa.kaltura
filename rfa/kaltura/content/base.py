@@ -1,4 +1,5 @@
 """Base Schemas and classes for Kaltura AT Classes"""
+from collections import OrderedDict
 from Products.Archetypes import atapi
 
 from AccessControl import ClassSecurityInfo
@@ -133,7 +134,7 @@ class KalturaContentMixin(object):
           keys are id's, values are names
         """
         vocabulary = dict(self.getCategoryVocabulary())
-        self.categories = {}
+        self.categories = OrderedDict()
         for catId in categories:
             name = vocabulary.get(catId, None)
             if name is not None:
