@@ -40,7 +40,7 @@ class Utf8_tests(KalturaBaseTest):
     def test_utf8_name(self):
         test_unicode = u'\u03dd\xf5\xf6'  #an odd representation of the word 'FOO'
         mediaEntry = KalturaMediaEntry()
-        mediaEntry.setName(u'pytest.MediaTests.test_UTF8_tags'+test_unicode)
+        mediaEntry.setName(u'pytest.MediaTests.test_UTF8_name'+test_unicode)
         mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
         ulFile = getTestFile('DemoVideo.flv')
         uploadTokenId = self.client.media.upload(ulFile)
