@@ -1160,6 +1160,7 @@ class KalturaEmailNotificationClientPlugin(KalturaClientPlugin):
             'KalturaCategoryUserProviderFilter': KalturaCategoryUserProviderFilter,
             'KalturaEmailNotificationCategoryRecipientJobData': KalturaEmailNotificationCategoryRecipientJobData,
             'KalturaEmailNotificationCategoryRecipientProvider': KalturaEmailNotificationCategoryRecipientProvider,
+            'KalturaEmailNotificationParameter': KalturaEmailNotificationParameter,
             'KalturaEmailNotificationStaticRecipientJobData': KalturaEmailNotificationStaticRecipientJobData,
             'KalturaEmailNotificationStaticRecipientProvider': KalturaEmailNotificationStaticRecipientProvider,
             'KalturaEmailNotificationTemplate': KalturaEmailNotificationTemplate,

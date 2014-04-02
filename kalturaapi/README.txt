@@ -1,3 +1,11 @@
+NOTE: THIS IS NOT THE OFFICAL KALTURA PYTHON API!
+
+The official version can be obtained here: http://www.kaltura.com/api_v3/testme/client-libs.php
+
+The reason for this repository is so other github python projects can fork and pin a version of the API (at their own risk)
+
+=====================================================
+
 This source contains:
  - The Kaltura client library (KalturaClient.py & KalturaClientBase.py)
  - Auto generated core APIs (KalturaCoreClient.py)
