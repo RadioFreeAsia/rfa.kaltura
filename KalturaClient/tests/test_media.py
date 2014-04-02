@@ -35,7 +35,7 @@ class MediaTests(KalturaBaseTest):
         #cleanup
         self.client.media.delete(mediaEntry.id)
         
-    def test_UTF8_tags(self):
+    def test_set_UTF8_tags(self):
 
         test_unicode = u'\u03dd\xf5\xf6'  #an odd representation of the word 'FOO'
         mediaEntry = KalturaMediaEntry()
@@ -46,6 +46,7 @@ class MediaTests(KalturaBaseTest):
 
         mediaEntry.setTags(test_unicode)
         
+        #this will throw an exception if fail.
         mediaEntry = self.client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
             
         self.addCleanup(self.client.media.delete, mediaEntry.getId())
