@@ -1,8 +1,7 @@
-Products.Kaltura
+rfa.kaltura
 ================
-It's rfa.kaltura right now (company name).(package name)
 
-Version 0.3 - Alpha.
+Version 0.4
 
 
 CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
