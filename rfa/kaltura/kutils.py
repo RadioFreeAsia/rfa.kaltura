@@ -85,7 +85,7 @@ def getVideo(videoId):
     return result
 
 
-def getRecent(limit=10, partner_id=None):
+def getRecent(limit=10, partner_id=None, filt=None):
     """Get the most recently uploaded videos"""    
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
@@ -93,7 +93,7 @@ def getRecent(limit=10, partner_id=None):
     result = client.media.list(filter=kfilter)
     return result.objects
 
-def getMostViewed(limit=10, partner_id=None):
+def getMostViewed(limit=10, partner_id=None, filt=None):
     """Get videos ranked by views"""
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.VIEWS_DESC)
@@ -101,7 +101,7 @@ def getMostViewed(limit=10, partner_id=None):
     result = client.media.list(filter=kfilter)
     return result.objects
 
-def getRelated(kvideoObj, limit=10, partner_id=None):
+def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
     """ Get videos related to the provided video"""
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
@@ -110,7 +110,7 @@ def getRelated(kvideoObj, limit=10, partner_id=None):
     result = client.media.list(filter=kfilter)
     return result.objects
 
-def getCategoryVids(catId, limit=10, partner_id=None):
+def getCategoryVids(catId, limit=10, partner_id=None, filt=None):
     """ Get videos placed in the provided category id, or child categories"""
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
@@ -216,7 +216,7 @@ def kupload(FileObject, mediaEntry=None):
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     return mediaEntry
 
-def kGetCategories():
+def kGetCategories(parent=None):
     (client, session) = kconnect()
     
     result = client.category.list().objects
