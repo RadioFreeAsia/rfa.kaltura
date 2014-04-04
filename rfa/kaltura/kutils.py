@@ -115,7 +115,6 @@ def getMostViewed(limit=10, partner_id=None, filt=None):
     """Get videos ranked by views
        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
-    import pdb; pdb.set_trace()
     if filt is not None:
         kfilter = filt
     else:
