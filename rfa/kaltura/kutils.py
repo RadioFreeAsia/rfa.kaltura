@@ -3,8 +3,8 @@ import os
 import sys
 import logging
 
-from Acquisition import aq_parent
 
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 
 from rfa.kaltura import credentials
@@ -12,10 +12,8 @@ from rfa.kaltura.config import DEFAULT_DYNAMIC_PLAYLIST_SIZE
 from rfa.kaltura.interfaces import IKalturaRuleBasedPlaylist, IKalturaManualPlaylist
 
 from KalturaClient import *
-
 from KalturaClient.Base import IKalturaLogger
 from KalturaClient.Base import KalturaConfiguration
-
 from KalturaClient.Plugins.Core import KalturaSessionType
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
@@ -84,25 +82,58 @@ def getVideo(videoId):
     result = client.media.get(videoId)
     return result
 
+def makeFilter(catIds=None, tagIds=None, order=None):
+    """Helper function for creating KalturaMediaEntryFilters
+    """
+    kfilter = KalturaMediaEntryFilter()
+
+    if order is not None:
+        kfilter.setOrderBy(order)
+    
+    if catIds is not None:
+        if isinstance(catIds, list) or isinstance(catIds, tuple):
+            catIds = ','.join(catIds)   
+        kfilter.setCategoryAncestorIdIn(catIds)
+        
+    return kfilter
+    #if tagIds is not None....
 
 def getRecent(limit=10, partner_id=None, filt=None):
-    """Get the most recently uploaded videos"""    
-    kfilter = KalturaMediaEntryFilter()
+    """Get the most recently uploaded videos
+       provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+    """
+    if filt is not None:
+        kfilter = filt
+    else:
+        kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
     return result.objects
 
 def getMostViewed(limit=10, partner_id=None, filt=None):
-    """Get videos ranked by views"""
-    kfilter = KalturaMediaEntryFilter()
+    """Get videos ranked by views
+       provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+    """
+    import pdb; pdb.set_trace()
+    if filt is not None:
+        kfilter = filt
+    else:
+        kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.VIEWS_DESC)
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
     return result.objects
 
 def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
-    """ Get videos related to the provided video"""
+    """ Get videos related to the provided video
+        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+    """
+    if filt is not None:
+        kfilter = filt
+    else:
+        kfilter = KalturaMediaEntryFilter()
+        
     kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
     kfilter.setTagsLike(kvideoObj.getTags())
@@ -111,8 +142,13 @@ def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
     return result.objects
 
 def getCategoryVids(catId, limit=10, partner_id=None, filt=None):
-    """ Get videos placed in the provided category id, or child categories"""
-    kfilter = KalturaMediaEntryFilter()
+    """ Get videos placed in the provided category id, or child categories
+        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+    """
+    if filt is not None:
+        kfilter = filt
+    else:
+        kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
     kfilter.setCategoryAncestorIdIn(catId)
     (client, session) = kconnect(partner_id)
@@ -161,7 +197,9 @@ def kcreatePlaylist(context):
     return kplaylist
 
 def kcreateVideo(context):
-    
+    """given a plone content-type of kalturavideo,
+       create a video entry on Kaltura
+    """
     mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(context.Title())
     mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
@@ -216,11 +254,21 @@ def kupload(FileObject, mediaEntry=None):
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     return mediaEntry
 
+#XXX cacheme for a few mins
 def kGetCategories(parent=None):
     (client, session) = kconnect()
     
     result = client.category.list().objects
     return result
+
+def kGetCategoryId(categoryName):
+    """ provide a categoryName (string) and this will return it's Id on the kaltura server"""
+    categoryObjs = kGetCategories()
+    for cat in categoryObjs:
+        if cat.getName() == categoryName:
+            return cat.getId()
+        
+    return None
 
 def kconnect(partner_id=None):
     
