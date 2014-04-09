@@ -89,7 +89,7 @@ class KalturaContentMixin(object):
     
     security = ClassSecurityInfo()
     KalturaObject = None    
-    categories = []
+    categories = {}
     tags = []
     _category_vocabulary = None
     

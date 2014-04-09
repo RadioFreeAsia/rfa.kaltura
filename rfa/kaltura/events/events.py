@@ -9,7 +9,6 @@ def initVideo(context, event):
     """Fired when the object is first populated"""
 
     KMediaEntry = kcreateVideo(context)
-    
     datafile = context.REQUEST.form.get('file_file')
     if isinstance(datafile, FileUploadClass):
         KMediaEntry = kupload(context, KMediaEntry)    
