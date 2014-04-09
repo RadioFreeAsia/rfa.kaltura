@@ -107,7 +107,10 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
-    KalturaObject = None
+
+    def __init__(self, oid, **kwargs):
+        super(KalturaVideo, self).__init__(oid, **kwargs)
+        self.KalturaObject = None
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
@@ -124,24 +127,14 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     def getDefaultPlayerId(self):
         return "20100652"
 
-    ### These may get duplicated in base.py - we'll see ###        
+    ### These may get duplicated in base.py - we'll see ###
         
-    def setTitle(self, title):
-        super(KalturaVideo, self).setTitle(title)
-        self._updateRemote(Name=self.Title())
-        
-    def setDescription(self, description):
-        super(KalturaVideo, self).setDescription(description)
-        self._updateRemote(Description=self.Description())    
-        
-    def setCategories(self, categories):
-        self.categories = categories
-        categoryString = ','.join([c for c in self.categories if c])
+    def updateCategories(self, categories):
+        categoryString = ','.join([c for c in self.getCategories if c])
         self._updateRemote(CategoriesIds=categoryString)
             
-    def setTags(self, tags):
-        self.tags = tags    
-        tagsString = ','.join([t for t in self.tags if t])
+    def updateTags(self, tags):   
+        tagsString = ','.join([t for t in self.getTags() if t])
         self._updateRemote(Tags=tagsString)        
         
     ### end possible base class methods ###
