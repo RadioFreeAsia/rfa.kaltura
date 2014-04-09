@@ -62,11 +62,7 @@ def kGetPlaylistPlayers():
     (client, session) = kconnect()
     
     filt = KalturaUiConfFilter()
-    players = [KalturaUiConfObjType.HTML5_PLAYER, 
-               KalturaUiConfObjType.PLAYER_V3,
-               KalturaUiConfObjType.PLAYER,
-               KalturaUiConfObjType.PLAYER_SL,
-               ]
+    players = [KalturaUiConfObjType.PLAYER_V3,]
     tags = 'playlist'
         
     filt.setObjTypeIn(players)
