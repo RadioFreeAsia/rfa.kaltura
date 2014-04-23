@@ -194,11 +194,14 @@ def kcreatePlaylist(context):
 def kcreateVideo(context):
     """given a plone content-type of kalturavideo,
        create a video entry on Kaltura
+       The mediaEntry ReferenceId is set to the UID of the plone object to tie them together
     """
     mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(context.Title())
     mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
-    mediaEntry.searchProviderId = context.UID()
+    mediaEntry.searchProviderId = context.UID() #XXX Is this correct?  We assign this to the file UID stored in plone.
+    
+    #kaltura referenceId == plone UID
     mediaEntry.setReferenceId(context.UID())
     
     if len(context.getCategories()):
