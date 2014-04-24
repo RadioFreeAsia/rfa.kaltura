@@ -129,7 +129,6 @@ def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
     else:
         kfilter = KalturaMediaEntryFilter()
         
-    kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
     kfilter.setTagsLike(kvideoObj.getTags())
     (client, session) = kconnect(partner_id)
