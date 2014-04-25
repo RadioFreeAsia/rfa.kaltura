@@ -2,7 +2,7 @@ Products.Kaltura
 ================
 It's rfa.kaltura right now (company name).(package name)
 
-Version 0.2 - Alpha.
+Version 0.9 - Functional Beta
 
 
 Kaltura Video Integration with Plone
