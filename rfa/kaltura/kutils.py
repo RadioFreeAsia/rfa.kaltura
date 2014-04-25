@@ -29,6 +29,9 @@ logging.basicConfig(level = logging.DEBUG,
                     format = '%(asctime)s %(levelname)s %(message)s',
                     stream = sys.stdout)
 
+#editable for testing purposes
+getCredentials = credentials.getCredentials
+
 class KalturaLogger(IKalturaLogger):
     def log(self, msg):
         logging.info(msg)
@@ -130,7 +133,12 @@ def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
         kfilter = KalturaMediaEntryFilter()
         
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
-    kfilter.setTagsLike(kvideoObj.getTags())
+    
+    #take the whitespace delimited string tags from the object, 
+    #and turn it into a comma delimited string for the query
+    querytags = ','.join(kvideoObj.getTags().split())
+    
+    kfilter.setTagsMultiLikeOr(querytags)
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
     return result.objects
@@ -272,7 +280,7 @@ def kGetCategoryId(categoryName):
 
 def kconnect(partner_id=None):
     
-    creds = credentials.getCredentials()
+    creds = getCredentials()
     if partner_id is not None:
         creds['PARTNER_ID'] = partner_id
     
