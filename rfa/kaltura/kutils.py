@@ -29,6 +29,9 @@ logging.basicConfig(level = logging.DEBUG,
                     format = '%(asctime)s %(levelname)s %(message)s',
                     stream = sys.stdout)
 
+#editable for testing purposes
+getCredentials = credentials.getCredentials
+
 class KalturaLogger(IKalturaLogger):
     def log(self, msg):
         logging.info(msg)
@@ -129,9 +132,13 @@ def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
     else:
         kfilter = KalturaMediaEntryFilter()
         
-    kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
-    kfilter.setTagsLike(kvideoObj.getTags())
+    
+    #take the whitespace delimited string tags from the object, 
+    #and turn it into a comma delimited string for the query
+    querytags = ','.join(kvideoObj.getTags().split())
+    
+    kfilter.setTagsMultiLikeOr(querytags)
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
     return result.objects
@@ -194,11 +201,14 @@ def kcreatePlaylist(context):
 def kcreateVideo(context):
     """given a plone content-type of kalturavideo,
        create a video entry on Kaltura
+       The mediaEntry ReferenceId is set to the UID of the plone object to tie them together
     """
     mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(context.Title())
     mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
-    mediaEntry.searchProviderId = context.UID()
+    mediaEntry.searchProviderId = context.UID() #XXX Is this correct?  We assign this to the file UID stored in plone.
+    
+    #kaltura referenceId == plone UID
     mediaEntry.setReferenceId(context.UID())
     
     if len(context.getCategories()):
@@ -270,7 +280,7 @@ def kGetCategoryId(categoryName):
 
 def kconnect(partner_id=None):
     
-    creds = credentials.getCredentials()
+    creds = getCredentials()
     if partner_id is not None:
         creds['PARTNER_ID'] = partner_id
     
