@@ -13,11 +13,11 @@ def getTagVocabulary():
     # Not implemented yet.
     pass
 
-def getCategoryVocabulary():
+def getCategoryVocabulary(parent=None):
     """Get Currently created Categories on Kaltura server"""
     items = []
     
-    categoryObjs = kGetCategories()
+    categoryObjs = kGetCategories(parent)
     for cat in categoryObjs:
         items.append( (str(cat.getId()), cat.getName(),) )
         

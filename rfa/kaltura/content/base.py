@@ -147,9 +147,9 @@ class KalturaContentMixin(object):
     def getTagVocabulary(self):
         return vocabularies.getTagVocabulary()
         
-    def getCategoryVocabulary(self):
+    def getCategoryVocabulary(self, parent=None):
         """This gets the entire list of avaiable categories from the Kaltura server"""
         if getattr(self, '_categoryVocabulary', None) is None:
-            self._categoryVocabulary = vocabularies.getCategoryVocabulary()
+            self._categoryVocabulary = vocabularies.getCategoryVocabulary(parent)
         return self._categoryVocabulary
     

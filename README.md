@@ -1,21 +1,18 @@
 rfa.kaltura
 ================
 
-Version 0.4
-
-
-CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
-
-
 Kaltura Video Integration with Plone
-----
+Version 0.9 - Functional Beta
 
+CONTRIBUTORS:  PLEASE READ THE DEVELOPMENT SECTION BELOW!
+
+=======
 Create Videos in Plone, automatically uploaded to your Kaltura account.
 Create Playlists in Plone automatically synced with your Kaltura account.
 
 Customize your Kaltura view templates in skins
 
-Add Kaltura Videos (and soon, playlists) to a composite page layout.
+Add Kaltura Videos to a composite page layout.
 
 
 Installation:
