@@ -20,7 +20,9 @@ from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, KalturaUiConfFilter
 from KalturaClient.Plugins.Core import KalturaMediaEntryFilter, KalturaMediaEntryFilterForPlaylist
 from KalturaClient.Plugins.Core import KalturaMediaEntryOrderBy
+from KalturaClient.Plugins.Core import KalturaCategoryFilter
 from KalturaClient.Plugins.Core import KalturaSearchOperator
+
 
 logger = logging.getLogger("rfa.kaltura")
 logger.setLevel(logging.WARN)
@@ -266,7 +268,13 @@ def kupload(FileObject, mediaEntry=None):
 def kGetCategories(parent=None):
     (client, session) = kconnect()
     
-    result = client.category.list().objects
+    if parent is not None:
+        filt = KalturaCategoryFilter()
+        filt.setAncestorIdIn(parent)
+    else:
+        filt = None
+    
+    result = client.category.list(filter=filt).objects
     return result
 
 def kGetCategoryId(categoryName):
