@@ -1,11 +1,18 @@
 rfa.kaltura
 ================
-Kaltura Video Integration with Plone
 
+Kaltura Video Integration with Plone
 Version 0.9 - Functional Beta
 
+CONTRIBUTORS:  PLEASE READ THE DEVELOPMENT SECTION BELOW!
 
-CONTRIBUTORS!  PLEASE READ THE DEVELOPMENT SECTION BELOW!
+=======
+Create Videos in Plone, automatically uploaded to your Kaltura account.
+Create Playlists in Plone automatically synced with your Kaltura account.
+
+Customize your Kaltura view templates in skins
+
+Add Kaltura Videos to a composite page layout.
 
 
 Installation:
@@ -56,7 +63,6 @@ Install it.<br>
 Once it's installed
 --
 As the portal manager, visit the site config and configure the add-on. 
-
 
 
 To retrieve the Credentials for filling out the add-on configuration:
