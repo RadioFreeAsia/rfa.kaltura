@@ -2,7 +2,7 @@
 import os
 import sys
 import logging
-
+import copy
 
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
@@ -104,7 +104,7 @@ def getRecent(limit=10, partner_id=None, filt=None):
        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
     if filt is not None:
-        kfilter = filt
+        kfilter = copy.copy(filt)
     else:
         kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
@@ -117,7 +117,7 @@ def getMostViewed(limit=10, partner_id=None, filt=None):
        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
     if filt is not None:
-        kfilter = filt
+        kfilter = copy.copy(filt)
     else:
         kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.VIEWS_DESC)
@@ -130,7 +130,7 @@ def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
         provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
     if filt is not None:
-        kfilter = filt
+        kfilter = copy.copy(filt)
     else:
         kfilter = KalturaMediaEntryFilter()
         
@@ -150,7 +150,7 @@ def getCategoryVids(catId, limit=10, partner_id=None, filt=None):
         provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
     if filt is not None:
-        kfilter = filt
+        kfilter = copy.copy(filt)
     else:
         kfilter = KalturaMediaEntryFilter()
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
