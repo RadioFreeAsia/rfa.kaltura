@@ -125,25 +125,22 @@ def getMostViewed(limit=10, partner_id=None, filt=None):
     result = client.media.list(filter=kfilter)
     return result.objects
 
-def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
-    """ Get videos related to the provided video
-        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+def getTagVids(tags, limit=10, partner_id=None, filt=None):
+    """Get all videos that contain one or more querytags
+       provide a non-string iterable as tags parameter
+       provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
     if filt is not None:
         kfilter = copy.copy(filt)
     else:
-        kfilter = KalturaMediaEntryFilter()
-        
+        kfilter = KalturaMediaEntryFilter()    
+
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
+    querytags = ','.join(tags)
     
-    #take the whitespace delimited string tags from the object, 
-    #and turn it into a comma delimited string for the query
-    querytags = ','.join(kvideoObj.getTags().split())
-    
-    kfilter.setTagsMultiLikeOr(querytags)
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
-    return result.objects
+    return result.objects    
 
 def getCategoryVids(catId, limit=10, partner_id=None, filt=None):
     """ Get videos placed in the provided category id, or child categories
@@ -158,6 +155,13 @@ def getCategoryVids(catId, limit=10, partner_id=None, filt=None):
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
     return result.objects
+
+def getRelated(kvideoObj, limit=10, partner_id=None, filt=None):
+    """ Get videos related to the provided video
+        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
+    """
+    tags = kvideoObj.getTags().split()
+    return getTagVids(tags, limit, partner_id, filt)
 
 def kcreateEmptyFilterForPlaylist():
     """Create a Playlist Filter, filled in with default, required values"""
