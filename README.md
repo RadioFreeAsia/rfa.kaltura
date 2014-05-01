@@ -37,7 +37,7 @@ eggs =
 
 [sources]
 ...
-rfa.kaltura = git https://github.com/RadioFreeAsia/Products.Kaltura.git
+rfa.kaltura = git https://github.com/RadioFreeAsia/rfa.kaltura.git
 
 
 </code></pre>
@@ -102,10 +102,10 @@ This repository uses the subtree-merge method to manage external repositories se
 In a Nutshell, follow these rules of the road:
  - 1.  Never change and commit code under the kalturaapi directory, this code is maintained as a subtree.
  - - if you wish to change code in the api, see https://github.com/flipmcf/Kaltura_API_Python/
- - 2.  The 'best working state' will always be what's in Products.Kaltura - even if the kalturaapi directory is behind a few revisions.  Trust THIS repository implicitly
+ - 2.  The 'best working state' will always be what's in rfa.kaltura - even if the kalturaapi directory is behind a few revisions.  Trust THIS repository implicitly - it is in effect 'pinning' to a version of Kaltura_API_Python.
  - 3.  In the event changes from Kaltura_API_Python must be merged into Products.Kaltura follow this:
  - - checkout / pull a clean local copy of Products.Kaltura with no local changes
- - - git pull -s subtree kalturaapi 3.1.6-flip   (3.1.6-flip branch of Kaltura_API_Python is currently what we pull from.)
+ - - git pull -s subtree kalturaapi master
 
 
 
