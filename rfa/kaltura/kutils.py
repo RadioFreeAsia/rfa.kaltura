@@ -130,13 +130,22 @@ def getTagVids(tags, limit=10, partner_id=None, filt=None):
        provide a non-string iterable as tags parameter
        provide 'filt' parameter of an existing KalturaMediaEntryFilter to filter results
     """
+    if isinstance(tags, basestring):
+        raise TypeError, "tags must be a non-string iterable"
+    
     if filt is not None:
         kfilter = copy.copy(filt)
     else:
         kfilter = KalturaMediaEntryFilter()    
 
     kfilter.setOrderBy(KalturaMediaEntryOrderBy.CREATED_AT_DESC)
-    querytags = ','.join(tags)
+    
+    try:
+        querytags = ','.join(tags)
+    except TypeError:
+        raise TypeError, "tags must be a non-string iterable"
+    
+    kfilter.setTagsMultiLikeOr(querytags)
     
     (client, session) = kconnect(partner_id)
     result = client.media.list(filter=kfilter)
