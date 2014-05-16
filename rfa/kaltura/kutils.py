@@ -305,6 +305,14 @@ def kconnect(partner_id=None):
     if partner_id is not None:
         creds['PARTNER_ID'] = partner_id
     
+    privacyString = ''    
+
+    #may want to add 'disableentitlements' to the privacyString eventuall for users who want to
+    # disable all entitlement checking
+    if creds.get('PRIVACY_CONTEXT', '') != '':
+        privacyString = 'privacycontext:' + creds['PRIVACY_CONTEXT']
+        
+    
     config = KalturaConfiguration(creds['PARTNER_ID'])
     config.serviceUrl = creds['SERVICE_URL']
     config.setLogger(KalturaLoggerInstance)
@@ -316,8 +324,8 @@ def kconnect(partner_id=None):
                                 creds['USER_NAME'],
                                 KalturaSessionType.ADMIN, 
                                 creds['PARTNER_ID'],
-                                86400,   #XXX look up what this does...
-                                "")    
+                                86400,
+                                privacyString)
     client.setKs(ks)    
     
     return (client, ks)
