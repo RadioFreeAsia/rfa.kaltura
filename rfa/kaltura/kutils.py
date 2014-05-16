@@ -309,7 +309,7 @@ def kconnect(partner_id=None):
 
     #may want to add 'disableentitlements' to the privacyString eventuall for users who want to
     # disable all entitlement checking
-    if creds.get('PRIVACY_CONTEXT', '') != '':
+    if creds.get('PRIVACY_CONTEXT', '') not in ('', None):
         privacyString = 'privacycontext:' + creds['PRIVACY_CONTEXT']
         
     
