@@ -13,11 +13,13 @@ _ = MessageFactory('rfa.kaltura')
 
 class IRfaKalturaSettings(Interface):
     """ Define settings data structure 
-          PARTNER_ID = 54321
-          SECRET = "YOUR_USER_SECRET"
-          ADMIN_SECRET = "YOUR_ADMIN_SECRET"
-          SERVICE_URL = "http://www.kaltura.com"
-          USER_NAME = "testUser"
+        PARTNER_ID = 54321
+        SECRET = "YOUR_USER_SECRET"
+        ADMIN_SECRET = "YOUR_ADMIN_SECRET"
+        SERVICE_URL = "http://www.kaltura.com"
+        USER_NAME = "testUser"
+        
+        additonally, optionally, you may add a privacy context string
     """
 
     partnerId = schema.Int(title=u"Partner Id",
@@ -45,6 +47,11 @@ class IRfaKalturaSettings(Interface):
                                description=u"enter your username on Kaltura",
                                required=True,
                                default=u"PloneTestUser")
+    
+    privacyContextString = schema.TextLine(title=u"Privacy Context",
+                                           description=u"provide the privacy context if you are using entitlement settings\n Leave blank if unsure",
+                                           required=False,
+                                           default=u"")
     
 
 class SettingsEditForm(controlpanel.RegistryEditForm):

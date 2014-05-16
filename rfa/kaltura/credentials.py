@@ -15,6 +15,7 @@ def getCredentials():
     creds['ADMIN_SECRET'] = settings.adminSecret
     creds['SERVICE_URL'] = settings.serviceUrl
     creds['USER_NAME'] = settings.userName
+    creds['PRIVACY_CONTEXT'] = settings.privacyContextString
  
     return creds
 
