@@ -21,6 +21,7 @@ from KalturaClient.Plugins.Core import KalturaUiConf, KalturaUiConfObjType, Kalt
 from KalturaClient.Plugins.Core import KalturaMediaEntryFilter, KalturaMediaEntryFilterForPlaylist
 from KalturaClient.Plugins.Core import KalturaMediaEntryOrderBy
 from KalturaClient.Plugins.Core import KalturaCategoryFilter
+from KalturaClient.Plugins.Core import KalturaCategoryEntry
 from KalturaClient.Plugins.Core import KalturaSearchOperator
 
 
@@ -225,10 +226,8 @@ def kcreateVideo(context):
     
     #kaltura referenceId == plone UID
     mediaEntry.setReferenceId(context.UID())
-    
     if len(context.getCategories()):
-        mediaEntry.setCategoriesIds(','.join([c for c in context.getCategories() if c]))
-        
+        mediaEntry.setCategoriesIds(','.join([c for c in context.getCategories() if c]))    
     if len(context.getTags()):
         mediaEntry.setTags(','.join([t for t in context.getTags() if t]))
     
@@ -242,6 +241,7 @@ def kupload(FileObject, mediaEntry=None):
          this should change when other kaltura media types are implemented.
        If MediaEntry is provided, the File is 
     """
+    usingEntitlements = False
     
     #this check can be done better
     if not hasattr(FileObject, 'get_data'):
@@ -260,6 +260,10 @@ def kupload(FileObject, mediaEntry=None):
      
     (client, session) = kconnect()
     
+    creds = getCredentials()
+    if creds.get('PRIVACY_CONTEXT', '') not in ('', None):
+        usingEntitlements = True    
+    
     if mediaEntry is None:
         #create an entry
         mediaEntry = KalturaMediaEntry()
@@ -267,14 +271,23 @@ def kupload(FileObject, mediaEntry=None):
         mediaEntry.setMediaType(KalturaMediaType(KalturaMediaType.VIDEO))
         mediaEntry.searchProviderId = ProviderId
         mediaEntry.setReferenceId = ProviderId
-
     uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
     
-    #del the temp file
     os.remove('/tmp/tempfile')
+    if usingEntitlements:  #This might not be necessary, I think non-entitlement categories can also be set this way.
+        catIds = mediaEntry.getCategoriesIds().split(',')
+        mediaEntry.setCategoriesIds(NotImplemented) #prevents the "ENTRY_CATEGORY_FIELD_IS_DEPRECATED" error
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
+
+    if usingEntitlements: #then setup the category assignment now.
+        for catId in catIds:
+            newCatEntry = KalturaCategoryEntry()
+            newCatEntry.setCategoryId(catId)
+            newCatEntry.setEntryId(mediaEntry.getId())        
+        client.categoryEntry.add(newCatEntry)
+    
     return mediaEntry
 
 #XXX cacheme for a few mins
