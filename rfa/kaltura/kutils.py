@@ -275,13 +275,15 @@ def kupload(FileObject, mediaEntry=None):
     
     os.remove('/tmp/tempfile')
     if usingEntitlements:  #This might not be necessary, I think non-entitlement categories can also be set this way.
-        catIds = mediaEntry.getCategoriesIds().split(',')
-        mediaEntry.setCategoriesIds(NotImplemented) #prevents the "ENTRY_CATEGORY_FIELD_IS_DEPRECATED" error
+        catIds = mediaEntry.getCategoriesIds()
+        if catIds is not NotImplemented:
+            catIds = catIds.split(',')
+            mediaEntry.setCategoriesIds(NotImplemented) #prevents the "ENTRY_CATEGORY_FIELD_IS_DEPRECATED" error
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
 
-    if usingEntitlements: #then setup the category assignment now.
+    if usingEntitlements and catIds is not NotImplemented: #then setup the category assignment now.
         for catId in catIds:
             newCatEntry = KalturaCategoryEntry()
             newCatEntry.setCategoryId(catId)
