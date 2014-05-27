@@ -340,6 +340,9 @@ def kdiff(ploneObj, kalturaObj):
 
         if kval != pval:
             retval.append( (ploneField, kalturaField) )
+            
+    for (ploneField, kalturaField) in vectorFields:
+        pass #write me!
     
     return retval
             
