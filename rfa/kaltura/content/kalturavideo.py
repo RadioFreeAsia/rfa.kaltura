@@ -147,7 +147,9 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
            
            For example, to update the name of the kaltura video:
            self._updateRemote(name='NewName')
-        """        
+        """
+        #this is becoming quite a hastle.  Might need to re-think this idea.
+        #see 'events.py' modifyVideo to see my pain.
         (client, session) = kconnect()
         newVideo = API_KalturaMediaEntry()
         for (attr, value) in kwargs.iteritems():

@@ -314,6 +314,50 @@ def kGetCategoryId(categoryName):
         
     return None
 
+def kdiff(ploneObj, kalturaObj):
+    """do a property-to-property match between plone object and kaltura object
+       and return property name tuples of fields that differ
+       Useful to keep plone and kaltura in sync when edits occur.
+    """
+    retval = []
+    #supported scalar properties that sync (kalturaVideo, KalturaMediaEntry)
+    scalarFields = [ ('Title', 'getName'),
+                     ('Description', 'getDescription'),
+                     ('getPartnerId', 'getPartnerId')
+                   ]
+    #supported vector properties that sync:
+    vectorFields = [('getCategories', 'getCategories'),
+                    ('getTags', 'getTags'),
+                   ]    
+    
+    for (ploneField, kalturaField) in scalarFields:
+        pval = getattr(ploneObj, ploneField)
+        if callable(pval):
+            pval = pval()
+        kval = getattr(kalturaObj, kalturaField)
+        if callable(kval):
+            kval = kval()
+
+        if kval != pval:
+            retval.append( (ploneField, kalturaField) )
+            
+    for (ploneField, kalturaField) in vectorFields:
+        pass #write me!
+    
+    return retval
+            
+        
+            
+        
+            
+        
+               
+    
+    
+    
+    
+    
+
 def kconnect(partner_id=None):
     
     creds = getCredentials()

@@ -35,11 +35,11 @@ KalturaBaseSchema = atapi.Schema(
                                                     i18n_domain="kaltura_video"),
                       ),         
      
-     atapi.StringField('partnerId',
+     atapi.IntegerField('partnerId',
                        searchable=0,
                        mode='rw',
                        default_method="getDefaultPartnerId",
-                       widget=atapi.StringWidget(label="Partner Id",
+                       widget=atapi.IntegerWidget(label="Partner Id",
                                                  label_msgid="label_kpartnerid_msgid",
                                                  description="Kaltura Partner Id (use default if unsure)",
                                                  description_msgid="desc_kpartnerid_msgid",
