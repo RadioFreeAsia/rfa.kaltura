@@ -63,7 +63,7 @@ KalturaMetadataSchema = atapi.Schema(
                       widget=atapi.MultiSelectionWidget(label="Categories",
                                                         label_msgid="label_kvideofile_categories",
                                                         description="Select video category(ies) this playlist will provide",
-                                                        description_msgid="desc_kvideofile_categories",
+                                                        description_msgid="desc_kplaylist_categories",
                                                         i18n_domain="kaltura_video"),
                           ),
     
@@ -75,8 +75,8 @@ KalturaMetadataSchema = atapi.Schema(
                       mutator="setTags",
                       widget=atapi.LinesWidget(label="Tags",
                                                label_msgid="label_kvideofile_tags",
-                                               description="Add keyword tag(s) this playlist will provide (one per line)",
-                                               description_msgid="desc_kvideofile_title",
+                                               description="keyword tag(s) this playlist will provide (one per line)",
+                                               description_msgid="desc_kplaylist_tags",
                                                i18n_domain="kaltura_video"),
                       ),
      )

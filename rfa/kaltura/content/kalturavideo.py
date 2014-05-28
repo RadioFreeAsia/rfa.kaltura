@@ -24,6 +24,7 @@ from rfa.kaltura.content import base as KalturaBase
 from rfa.kaltura.kutils import kconnect
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
+from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
 
 KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy() + \
     atapi.Schema((
@@ -82,6 +83,11 @@ KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
 KalturaVideoSchema['title'].storage = atapi.AnnotationStorage()
 KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 
+KalturaVideoSchema['categories'].widget.description = "Select category(ies) this video will belong to"
+KalturaVideoSchema['categories'].widget.description_msgid="desc_kvideo_categories"
+KalturaVideoSchema['tags'].widget.description = "keyword tags to place on this video (one per line)"
+KalturaVideoSchema['tags'].widget.description_msgid="desc_kvideo_tags"
+
 schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
 ###TODO: Offer option NOT to store video as a blob in the ZODB
@@ -111,6 +117,9 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     def __init__(self, oid, **kwargs):
         super(KalturaVideo, self).__init__(oid, **kwargs)
         self.KalturaObject = None
+        
+        #holds local list of category entries for this video - matching what's on the KMC.
+        self.categoryEntries = []  
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     
@@ -125,13 +134,44 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
-        return "20100652"
+        return "20100652" #todo - add to config
 
     ### These may get duplicated in base.py - we'll see ###
         
     def updateCategories(self, categories):
-        categoryString = ','.join([c for c in self.getCategories if c])
-        self._updateRemote(CategoriesIds=categoryString)
+        newCatEntries = []
+        (client, session) = kconnect()
+        #refresh list of categories from server, and sync to plone object
+        filt = KalturaCategoryEntryFilter()
+        filt.setEntryIdEqual(self.KalturaObject.getId())
+        self.categoryEntries = client.categoryEntry.list(filt).objects
+
+        currentSet = set([catEntry.categoryId for catEntry in self.categoryEntries])
+        newSet = set([int(catId) for catId in categories])
+            
+        #determine what categories need to be added
+        addCats = newSet.difference(currentSet)
+        
+        #determine what categories need to be removed
+        delCats = currentSet.difference(newSet)
+       
+        #do adds
+        for catId in addCats:
+            newCatEntry = KalturaCategoryEntry()
+            newCatEntry.setCategoryId(catId)
+            newCatEntry.setEntryId(self.KalturaObject.getId())
+            try:
+                client.categoryEntry.add(newCatEntry)
+            except KalturaException, e:
+                if e.code == "CATEGORY_ENTRY_ALREADY_EXISTS":
+                    pass #should never happen, tho
+        
+        #do removes
+        for catId in delCats:
+            client.categoryEntry.delete(self.KalturaObject.getId(), catId)
+            
+        #sync the categories to plone object
+        self.categoryEntries = client.categoryEntry.list(filt).objects
             
     def updateTags(self, tags):   
         tagsString = ','.join([t for t in self.getTags() if t])
