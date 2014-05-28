@@ -14,6 +14,7 @@ from rfa.kaltura.interfaces import IKalturaRuleBasedPlaylist, IKalturaManualPlay
 from KalturaClient import *
 from KalturaClient.Base import IKalturaLogger
 from KalturaClient.Base import KalturaConfiguration
+from KalturaClient.Base import KalturaException
 from KalturaClient.Plugins.Core import KalturaSessionType
 from KalturaClient.Plugins.Core import KalturaPlaylist, KalturaPlaylistType
 from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
@@ -282,16 +283,6 @@ def kupload(FileObject, mediaEntry=None):
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     kAssignCats(catIds, mediaEntry)
     return mediaEntry
-
-def kAssignCategories(categoryIds, mediaEntry):
-    (client, session) = kconnect()
-    for catId in categoryIds:
-        newCatEntry = KalturaCategoryEntry()
-        newCatEntry.setCategoryId(catId)
-        newCatEntry.setEntryId(mediaEntry.getId())        
-    client.categoryEntry.add(newCatEntry)
-kAssignCats = kAssignCategories    
-    
     
 #XXX cacheme for a few mins
 def kGetCategories(parent=None):
@@ -337,20 +328,19 @@ def kdiff(ploneObj, kalturaObj):
                      ('Description', 'getDescription'),
                      ('getPartnerId', 'getPartnerId')
                    ]
+
+    for (ploneField, kalturaField) in scalarFields:
+        pval, kval = getvals(ploneField, kalturaField)
+        if kval != pval:
+            retval.append( (ploneField, kalturaField) )
+
     #supported vector properties that sync:
     vectorFields = [('getCategories', 'getCategories'),
                     ('getTags', 'getTags'),
-                   ]    
-    
-    for (ploneField, kalturaField) in scalarFields:
-        kval, pval = getvals(ploneField, kalturaField)
-        if kval != pval:
-            retval.append( (ploneField, kalturaField) )
-            
+                    ]    
+
     for (ploneField, kalturaField) in vectorFields:
-        kval, pval = getvals(ploneField, kalturaField)
-        import pdb; pdb.set_trace()
-        
+        pval, kval = getvals(ploneField, kalturaField)
         if kval != pval:
             retval.append( (ploneField, kalturaField))
     

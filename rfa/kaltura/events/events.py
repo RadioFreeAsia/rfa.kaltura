@@ -40,7 +40,13 @@ def modifyVideo(context, event):
                 else:
                     #it's simply the name of the attribute... do nothing
                     pass
-            kwargs[kfield] = val
+                
+            #scalars:
+            if kfield in ['Name', 'Description', 'PartnerId', 'Tags']:
+                kwargs[kfield] = val
+            elif kfield == 'Categories': #handle categories separately
+                context.updateCategories(val)
+                
         context._updateRemote(**kwargs)
             
         
