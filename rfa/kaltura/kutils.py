@@ -260,10 +260,6 @@ def kupload(FileObject, mediaEntry=None):
      
     (client, session) = kconnect()
     
-    creds = getCredentials()
-    if creds.get('PRIVACY_CONTEXT', '') not in ('', None):
-        usingEntitlements = True    
-    
     if mediaEntry is None:
         #create an entry
         mediaEntry = KalturaMediaEntry()
@@ -274,24 +270,29 @@ def kupload(FileObject, mediaEntry=None):
     uploadTokenId = client.media.upload(file('/tmp/tempfile', 'rb'))  
     
     os.remove('/tmp/tempfile')
-    if usingEntitlements:  #This might not be necessary, I think non-entitlement categories can also be set this way.
-        catIds = mediaEntry.getCategoriesIds()
-        if catIds is not NotImplemented:
-            catIds = catIds.split(',')
-            mediaEntry.setCategoriesIds(NotImplemented) #prevents the "ENTRY_CATEGORY_FIELD_IS_DEPRECATED" error
+    
+    catIds = mediaEntry.getCategoriesIds()
+    if catIds is not NotImplemented:
+        catIds = catIds.split(',')
+        mediaEntry.setCategoriesIds(NotImplemented)
+    else:
+        catIds = []
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
-
-    if usingEntitlements and catIds is not NotImplemented: #then setup the category assignment now.
-        for catId in catIds:
-            newCatEntry = KalturaCategoryEntry()
-            newCatEntry.setCategoryId(catId)
-            newCatEntry.setEntryId(mediaEntry.getId())        
-        client.categoryEntry.add(newCatEntry)
-    
+    kAssignCats(catIds, mediaEntry)
     return mediaEntry
 
+def kAssignCategories(categoryIds, mediaEntry):
+    (client, session) = kconnect()
+    for catId in categoryIds:
+        newCatEntry = KalturaCategoryEntry()
+        newCatEntry.setCategoryId(catId)
+        newCatEntry.setEntryId(mediaEntry.getId())        
+    client.categoryEntry.add(newCatEntry)
+kAssignCats = kAssignCategories    
+    
+    
 #XXX cacheme for a few mins
 def kGetCategories(parent=None):
     (client, session) = kconnect()
@@ -319,6 +320,17 @@ def kdiff(ploneObj, kalturaObj):
        and return property name tuples of fields that differ
        Useful to keep plone and kaltura in sync when edits occur.
     """
+    
+    def getvals(pFieldName, kFieldName):
+        pval = getattr(ploneObj, pFieldName)
+        if callable(pval):
+            pval = pval()
+        kval = getattr(kalturaObj, kFieldName)
+        if callable(kval):
+            kval = kval()
+            
+        return (pval, kval)
+        
     retval = []
     #supported scalar properties that sync (kalturaVideo, KalturaMediaEntry)
     scalarFields = [ ('Title', 'getName'),
@@ -331,18 +343,16 @@ def kdiff(ploneObj, kalturaObj):
                    ]    
     
     for (ploneField, kalturaField) in scalarFields:
-        pval = getattr(ploneObj, ploneField)
-        if callable(pval):
-            pval = pval()
-        kval = getattr(kalturaObj, kalturaField)
-        if callable(kval):
-            kval = kval()
-
+        kval, pval = getvals(ploneField, kalturaField)
         if kval != pval:
             retval.append( (ploneField, kalturaField) )
             
     for (ploneField, kalturaField) in vectorFields:
-        pass #write me!
+        kval, pval = getvals(ploneField, kalturaField)
+        import pdb; pdb.set_trace()
+        
+        if kval != pval:
+            retval.append( (ploneField, kalturaField))
     
     return retval
             

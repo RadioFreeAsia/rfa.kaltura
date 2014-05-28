@@ -22,6 +22,7 @@ from rfa.kaltura.config import PROJECTNAME
 
 from rfa.kaltura.content import base as KalturaBase
 from rfa.kaltura.kutils import kconnect
+from rfa.kaltura.kutils import kAssignCats
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 
@@ -82,6 +83,11 @@ KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
 KalturaVideoSchema['title'].storage = atapi.AnnotationStorage()
 KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 
+KalturaVideoSchema['categories'].widget.description = "Select category(ies) this video will belong to"
+KalturaVideoSchema['categories'].widget.description_msgid="desc_kvideo_categories"
+KalturaVideoSchema['tags'].widget.description = "keyword tags to place on this video (one per line)"
+KalturaVideoSchema['tags'].widget.description_msgid="desc_kvideo_tags"
+
 schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
 ###TODO: Offer option NOT to store video as a blob in the ZODB
@@ -130,8 +136,7 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     ### These may get duplicated in base.py - we'll see ###
         
     def updateCategories(self, categories):
-        categoryString = ','.join([c for c in self.getCategories if c])
-        self._updateRemote(CategoriesIds=categoryString)
+        kAssignCats(self.getCategories, self.KalturaObject)
             
     def updateTags(self, tags):   
         tagsString = ','.join([t for t in self.getTags() if t])
