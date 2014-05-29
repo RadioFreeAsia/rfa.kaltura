@@ -20,10 +20,9 @@ def modifyVideo(context, event):
     """Fired when the object is edited
        Any differences between plone object (context) and kaltura object
        are considered edits to the kaltura object, and are sent to kaltura
-    """    
+    """
     changed_fields = kdiff(context, context.KalturaObject)
     if changed_fields:
-        kwargs = {}
         for (pfield, kfield) in changed_fields:
             #get value from plone object
             val = getattr(context, pfield)
@@ -41,13 +40,19 @@ def modifyVideo(context, event):
                     #it's simply the name of the attribute... do nothing
                     pass
                 
-            #scalars:
-            if kfield in ['Name', 'Description', 'PartnerId', 'Tags']:
-                kwargs[kfield] = val
-            elif kfield == 'Categories': #handle categories separately
+            #can't use updateRemote() with these properties
+            if kfield == 'Categories': #handle categories separately
                 context.updateCategories(val)
-                
-        context._updateRemote(**kwargs)
+            if kfield == "Tags":
+                context.updateTags(val)            
+               
+            #these we can use updateRemote()
+            kwargs = {}
+            if kfield in ['Name', 'Description', 'PartnerId']:
+                kwargs[kfield] = val
+            
+        if kwargs:
+            context._updateRemote(**kwargs)
             
         
     #has video file changed?
