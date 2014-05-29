@@ -323,7 +323,7 @@ def kdiff(ploneObj, kalturaObj):
         return (pval, kval)
         
     retval = []
-    #supported scalar properties that sync (kalturaVideo, KalturaMediaEntry)
+    #supported scalar properties that sync (kalturaVideo(plone), KalturaMediaEntry(kmc))
     scalarFields = [ ('Title', 'getName'),
                      ('Description', 'getDescription'),
                      ('getPartnerId', 'getPartnerId')
@@ -334,16 +334,20 @@ def kdiff(ploneObj, kalturaObj):
         if kval != pval:
             retval.append( (ploneField, kalturaField) )
 
-    #supported vector properties that sync:
-    vectorFields = [('getCategories', 'getCategories'),
-                    ('getTags', 'getTags'),
-                    ]    
-
-    for (ploneField, kalturaField) in vectorFields:
-        pval, kval = getvals(ploneField, kalturaField)
-        if kval != pval:
-            retval.append( (ploneField, kalturaField))
+    #compare categories:
+    pval = set(ploneObj.getCategories())
+    kval = set(kalturaObj.getCategoriesIds().split(','))
     
+    if pval != kval:
+        retval.append( ('getCategories', 'getCategoriesIds'))
+
+    #compare tags:
+    pval = set(ploneObj.getTags())
+    kval = set(kalturaObj.getTags().split(','))
+    
+    if pval != kval:
+        retval.append(('getTags', 'getTags'))
+
     return retval
             
         
