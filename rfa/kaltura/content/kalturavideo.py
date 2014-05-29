@@ -173,7 +173,7 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         #sync the categories to plone object
         self.categoryEntries = client.categoryEntry.list(filt).objects
             
-    def updateTags(self, tags):   
+    def updateTags(self, tags):
         tagsString = ','.join([t for t in self.getTags() if t])
         self._updateRemote(Tags=tagsString)        
         
