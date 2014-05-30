@@ -19,7 +19,9 @@ class IRfaKalturaSettings(Interface):
         SERVICE_URL = "http://www.kaltura.com"
         USER_NAME = "testUser"
         
-        additonally, optionally, you may add a privacy context string
+        optionally:
+        TOP_LEVEL_CATEGORY
+        PRIVACY_CONTEXT
     """
 
     partnerId = schema.Int(title=u"Partner Id",
