@@ -281,7 +281,6 @@ def kupload(FileObject, mediaEntry=None):
     
     mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
-    kAssignCats(catIds, mediaEntry)
     return mediaEntry
     
 #XXX cacheme for a few mins
