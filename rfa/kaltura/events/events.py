@@ -15,6 +15,7 @@ def initVideo(context, event):
         KMediaEntry = kupload(context, KMediaEntry)    
         
     context.setKalturaObject(KMediaEntry)
+    context.updateCategories()
         
 def modifyVideo(context, event):
     """Fired when the object is edited
