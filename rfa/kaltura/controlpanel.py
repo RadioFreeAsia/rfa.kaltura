@@ -48,6 +48,16 @@ class IRfaKalturaSettings(Interface):
                                required=True,
                                default=u"PloneTestUser")
     
+    topLevelCategory = schema.TextLine(title=u"Top Level Category",
+                                       description=u"""Use this to limit this plone site to a single category on the KMC.
+                                                       Enter the FULL NAME of a category on the KMC to become the top level category
+                                                       for this plone site.  Only this category and sub-categories will be
+                                                       visible on edit pages, and all utilities will filter results
+                                                       by this category""",
+                                       required=False,
+                                       default=u""
+                                       )
+    
     privacyContextString = schema.TextLine(title=u"Privacy Context",
                                            description=u"provide the privacy context if you are using entitlement settings\n Leave blank if unsure",
                                            required=False,
