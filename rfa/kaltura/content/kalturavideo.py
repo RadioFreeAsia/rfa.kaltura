@@ -138,7 +138,9 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
 
     ### These may get duplicated in base.py - we'll see ###
         
-    def updateCategories(self, categories):
+    def updateCategories(self, categories=None):
+        if categories is None:
+            categories = self.getCategories()
         newCatEntries = []
         (client, session) = kconnect()
         #refresh list of categories from server, and sync to plone object
