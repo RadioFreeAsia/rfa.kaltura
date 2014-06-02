@@ -19,7 +19,9 @@ class IRfaKalturaSettings(Interface):
         SERVICE_URL = "http://www.kaltura.com"
         USER_NAME = "testUser"
         
-        additonally, optionally, you may add a privacy context string
+        optionally:
+        TOP_LEVEL_CATEGORY
+        PRIVACY_CONTEXT
     """
 
     partnerId = schema.Int(title=u"Partner Id",
@@ -47,6 +49,16 @@ class IRfaKalturaSettings(Interface):
                                description=u"enter your username on Kaltura",
                                required=True,
                                default=u"PloneTestUser")
+    
+    topLevelCategory = schema.TextLine(title=u"Top Level Category",
+                                       description=u"""Use this to limit this plone site to a single category on the KMC.
+                                                       Enter the FULL NAME of a category on the KMC to become the top level category
+                                                       for this plone site.  Only this category and sub-categories will be
+                                                       visible on edit pages, and all utilities will filter results
+                                                       by this category""",
+                                       required=False,
+                                       default=u""
+                                       )
     
     privacyContextString = schema.TextLine(title=u"Privacy Context",
                                            description=u"provide the privacy context if you are using entitlement settings\n Leave blank if unsure",
