@@ -30,8 +30,10 @@
                          PARTNER_ID partnerId | context/partnerId | nothing;
                          UICONF_ID playerId | context/playerId | nothing;
                          ENTRY_ID entryId | context/entryId | nothing;
+                         WIDTH width | string:400px;
+                         HEIGHT height | string:330px;
                         ">
-  <script type="text/javascript" tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}?entry_id=${ENTRY_ID}&playerId=${UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=400&height=333&"></script>
+  <script type="text/javascript" tal:attributes="src string://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}?entry_id=${ENTRY_ID}&playerId=${UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=${WIDTH}&height=${HEIGHT}&"></script>
 </metal:macro>
 
 <metal:macro metal:define-macro="dynamicEmbed"
@@ -41,11 +43,12 @@
                          ENTRY_ID entryId | context/entryId | nothing;
                          WIDTH width | string:400px;
                          HEIGHT height | string:330px;
-                        ">
+                         isHTTPS python:request.URL.upper().startswith('HTTPS');
+		         server python:'https://cdnapisec.kaltura.com/' if isHTTPS else 'http://cdnapi.kaltura.com/'">
+     
     
-    
-    <script src="http://cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}"
-            tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}"></script>
+    <script src="//cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}"
+            tal:attributes="src string:${server}/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}"></script>
     <div id="{UNIQUE_OBJ_ID}" style="width:400px;height:330px"
          tal:attributes="id UNIQUE_OBJ_ID;
                          style string:width ${WIDTH};;height ${HEIGHT};"></div> 
