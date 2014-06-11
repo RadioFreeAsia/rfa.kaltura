@@ -30,8 +30,8 @@
                          PARTNER_ID partnerId | context/partnerId | nothing;
                          UICONF_ID playerId | context/playerId | nothing;
                          ENTRY_ID entryId | context/entryId | nothing;
-                      ">
-  <script type="text/javascript" tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}?entry_id=${ENTRY_ID}&playerId=${UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=${WIDTH}&height=${HEIGHT}&"></script>
+                        ">
+  <script type="text/javascript" tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}?entry_id=${ENTRY_ID}&playerId=${UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=400&height=333&"></script>
 </metal:macro>
 
 <metal:macro metal:define-macro="dynamicEmbed"
