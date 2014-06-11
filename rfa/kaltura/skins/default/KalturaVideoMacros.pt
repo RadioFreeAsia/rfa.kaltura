@@ -41,11 +41,12 @@
                          ENTRY_ID entryId | context/entryId | nothing;
                          WIDTH width | string:400px;
                          HEIGHT height | string:330px;
-                        ">
+                         isHTTPS python:request.URL.upper().startswith('HTTPS');
+		         server python:'https://cdnapisec.kaltura.com/' if isHTTPS else 'http://cdnapi.kaltura.com/'">
+     
     
-    
-    <script src="http://cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}"
-            tal:attributes="src string:http://cdnapi.kaltura.com/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}"></script>
+    <script src="//cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}"
+            tal:attributes="src string:${server}/p/${PARTNER_ID}/sp/${PARTNER_ID}00/embedIframeJs/uiconf_id/${UICONF_ID}/partner_id/${PARTNER_ID}"></script>
     <div id="{UNIQUE_OBJ_ID}" style="width:400px;height:330px"
          tal:attributes="id UNIQUE_OBJ_ID;
                          style string:width ${WIDTH};;height ${HEIGHT};"></div> 
