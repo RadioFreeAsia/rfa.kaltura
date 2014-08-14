@@ -2,9 +2,12 @@
 """
 
 from zope.interface import implements
+from zope.interface import directlyProvides
+from ZODB.interfaces import IStorage
+
+from zope.component import getUtility
 
 from AccessControl import ClassSecurityInfo
-
 
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content import base
@@ -14,6 +17,8 @@ from Products.ATContentTypes.interface.file import IFileContent
 from plone.app.blob.content import ATBlob
 from plone.app.blob.interfaces import IATBlobFile
 
+from plone.registry.interfaces import IRegistry
+
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('kaltura_video')
 
@@ -22,6 +27,9 @@ from rfa.kaltura.config import PROJECTNAME
 
 from rfa.kaltura.content import base as KalturaBase
 from rfa.kaltura.kutils import kconnect
+from rfa.kaltura.controlpanel import IRfaKalturaSettings
+from rfa.kaltura.storage.storage import INoStorage
+from rfa.kaltura.storage.storage import NoStorage
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
@@ -90,7 +98,7 @@ KalturaVideoSchema['tags'].widget.description_msgid="desc_kvideo_tags"
 
 schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
-###TODO: Offer option NOT to store video as a blob in the ZODB
+
 class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     """Kaltura Video Content Type - stores the video file on your Kaltura account"""
     #ISA KalturaMediaEntry
@@ -113,13 +121,27 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     description = atapi.ATFieldProperty('description')
     
     security = ClassSecurityInfo()
+    
+    nostorage = NoStorage()
+    directlyProvides(nostorage, INoStorage)    
 
     def __init__(self, oid, **kwargs):
         super(KalturaVideo, self).__init__(oid, **kwargs)
         self.KalturaObject = None
         
         #holds local list of category entries for this video - matching what's on the KMC.
-        self.categoryEntries = []  
+        self.categoryEntries = []
+        
+        #set the storage type based on product configuration
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IRfaKalturaSettings)
+        
+        import pdb; pdb.set_trace()
+        if settings.storageMethod == u"No Local Storage":
+            
+            self.getField('file').setStorage(self, self.nostorage) #set storage object on file field
+        else:
+            pass #Video will be written to blobs
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
     

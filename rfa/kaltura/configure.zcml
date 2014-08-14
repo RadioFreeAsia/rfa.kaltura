@@ -14,6 +14,7 @@
   <include package=".content" />
   <include package=".portlets" />
   <include package=".events" />
+  <include package=".storage" />
   
   <include package="plone.app.registry" />
   <!-- Control panel -->
