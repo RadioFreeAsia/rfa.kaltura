@@ -122,9 +122,6 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     
     security = ClassSecurityInfo()
     
-    nostorage = NoStorage()
-    directlyProvides(nostorage, INoStorage)    
-
     def __init__(self, oid, **kwargs):
         super(KalturaVideo, self).__init__(oid, **kwargs)
         self.KalturaObject = None
@@ -136,10 +133,10 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
         
-        import pdb; pdb.set_trace()
         if settings.storageMethod == u"No Local Storage":
-            
-            self.getField('file').setStorage(self, self.nostorage) #set storage object on file field
+            nostorage = NoStorage()
+            import pdb; pdb.set_trace()
+            self.getField('file').setStorage(self, nostorage) #set storage object on file field
         else:
             pass #Video will be written to blobs
 

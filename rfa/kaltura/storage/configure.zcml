@@ -6,17 +6,5 @@
     xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="rfa.kaltura">
-    
-    <adapter
-       factory=".storage.NoStorage"
-       provides=".storage.INoStorage"
-       for="Products.Archetypes.interfaces.field.IObjectField"
-    />
-    
-    <adapter
-       factory=".storage.NoStorage"
-       provides=".storage.IStorage"
-       for="Products.Archetypes.interfaces.field.IObjectField"
-    />
-    
+
 </configure>
