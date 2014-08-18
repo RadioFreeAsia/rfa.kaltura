@@ -128,20 +128,15 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         
         #holds local list of category entries for this video - matching what's on the KMC.
         self.categoryEntries = []
-        
-        #set the storage type based on product configuration
+
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
         
-        if settings.storageMethod == u"No Local Storage":
-            nostorage = NoStorage()
-            import pdb; pdb.set_trace()
-            self.getField('file').setStorage(self, nostorage) #set storage object on file field
-        else:
-            pass #Video will be written to blobs
+        self.currentStorage = self.getField('file').getStorage(self)
+        if settings.storageMethod == u"No Local Storage" and \
+           self.currentStorage.__class__ != NoStorage:
+            self.getField('file').setStorage(self, NoStorage()) #set storage object on file field
 
-    # -*- Your ATSchema to Python Property Bridges Here ... -*-
-    
     security.declarePublic("getPlaybackUrl")
     def getPlaybackUrl(self):
         if self.KalturaObject is not None:
