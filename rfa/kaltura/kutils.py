@@ -217,8 +217,9 @@ def kcreatePlaylist(context):
 
 def kcreateVideo(context):
     """given a plone content-type of kalturavideo,
-       create a video entry on Kaltura
-       The mediaEntry ReferenceId is set to the UID of the plone object to tie them together
+       create a Kaltura MediaEntry object.
+       The mediaEntry ReferenceId is set to the UID of the plone object 
+       to tie them together
     """
     mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(context.Title())
