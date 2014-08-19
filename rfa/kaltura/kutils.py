@@ -234,13 +234,12 @@ def kcreateVideo(context):
     
     return mediaEntry
     
-    
 def kupload(FileObject, mediaEntry=None):
     """Provide an ATCTFileContent based object
        Upload attached contents to Kaltura
        Currently Treats all objects as 'videos' - 
          this should change when other kaltura media types are implemented.
-       If MediaEntry is provided, the File is 
+       If MediaEntry is provided, the uploaded video is associated with that media entry
     """
     usingEntitlements = False
     
@@ -348,18 +347,6 @@ def kdiff(ploneObj, kalturaObj):
         retval.append(('getTags', 'getTags'))
 
     return retval
-            
-        
-            
-        
-            
-        
-               
-    
-    
-    
-    
-    
 
 def kconnect(partner_id=None):
     
@@ -392,3 +379,7 @@ def kconnect(partner_id=None):
     
     return (client, ks)
 
+    
+    
+    
+    
