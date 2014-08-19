@@ -48,7 +48,6 @@ class KalturaStorage(AnnotationStorage):
         mediaEntry = instance.KalturaObject
         if mediaEntry is None:
             mediaEntry = kcreateVideo(instance)
-            instance.setKalturaObject(mediaEntry)                     
         
         #upload video content to Kaltura
         (client, ks) = kconnect()
@@ -57,6 +56,8 @@ class KalturaStorage(AnnotationStorage):
         fh.close()
         mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)   
         KalturaLoggerInstance.log("blob uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
+        
+        instance.setKalturaObject(mediaEntry)
         
         if self.storageMethod == u"No Local Storage":
             #create plain text file containing filename for the blob to consume
@@ -71,24 +72,7 @@ class KalturaStorage(AnnotationStorage):
         
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
         
-        kMakePickleable(instance.KalturaObject)
-        
     def unset(self, name, instance, **kwargs):
         AnnotationStorage.unset(self, name, instance, **kwargs)
 
 registerStorage(KalturaStorage)
-
-
-def kMakePickleable(kObj):
-    """Makes a kalturaObject pickleable.
-       EDITS IN PLACE!
-       NotImplemented types are not pickleable
-    """
-    import pdb; pdb.set_trace()
-    
-    attrlist = copy.copy(kObj.__dict__)
-    for attr, val in attrlist.iteritems():
-        if val is NotImplemented:
-            delattr(kObj, attr)
-        
-    return kObj
