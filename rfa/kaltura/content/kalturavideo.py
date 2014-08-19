@@ -28,8 +28,7 @@ from rfa.kaltura.config import PROJECTNAME
 from rfa.kaltura.content import base as KalturaBase
 from rfa.kaltura.kutils import kconnect
 from rfa.kaltura.controlpanel import IRfaKalturaSettings
-from rfa.kaltura.storage.storage import INoStorage
-from rfa.kaltura.storage.storage import NoStorage
+from rfa.kaltura.storage.storage import KalturaStorage
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
@@ -128,14 +127,10 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         
         #holds local list of category entries for this video - matching what's on the KMC.
         self.categoryEntries = []
-
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IRfaKalturaSettings)
-        
+       
         self.currentStorage = self.getField('file').getStorage(self)
-        if settings.storageMethod == u"No Local Storage" and \
-           self.currentStorage.__class__ != NoStorage:
-            self.getField('file').setStorage(self, NoStorage()) #set storage object on file field
+        if self.currentStorage.__class__ != KalturaStorage:
+            self.getField('file').setStorage(self, KalturaStorage()) #set storage object on file field
 
     security.declarePublic("getPlaybackUrl")
     def getPlaybackUrl(self):

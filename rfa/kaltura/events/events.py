@@ -8,13 +8,6 @@ from rfa.kaltura.kutils import kdiff
 
 def initVideo(context, event):
     """Fired when the object is first populated"""
-
-    KMediaEntry = kcreateVideo(context)
-    datafile = context.REQUEST.form.get('file_file')
-    if isinstance(datafile, FileUploadClass):
-        KMediaEntry = kupload(context, KMediaEntry)    
-        
-    context.setKalturaObject(KMediaEntry)
     context.updateCategories()
         
 def modifyVideo(context, event):
@@ -55,14 +48,7 @@ def modifyVideo(context, event):
         if kwargs:
             context._updateRemote(**kwargs)
             
-        
-    #has video file changed?
-    status = context.REQUEST.form.get('file_delete')
-    if status in ("nochange", None):
-        pass #not modified
-    else:
-        #File Modification Occured
-        context.setKalturaObject(kupload(context))
+        #file field storage (KalturaStorage) should handle changes to video file.
 
 def addVideo(context, event):
     """When a video is added to a container

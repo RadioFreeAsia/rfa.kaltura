@@ -8,4 +8,4 @@ or not saved to plone at all.
 All files are uploaded to Kaltura, regardless of the local storage method used.
 """
 
-from storage import NoStorage
+from storage import KalturaStorage
