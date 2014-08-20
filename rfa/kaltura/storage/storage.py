@@ -35,7 +35,8 @@ class KalturaStorage(AnnotationStorage):
         """XXX TODO Retrieve video from Kaltura, 
            wrap it in a blob wrapper, and return it
         """
-        return AnnotationStorage.get(self, name, instance, **kwargs)        
+        #import pdb; pdb.set_trace()
+        #return AnnotationStorage.get(self, name, instance, **kwargs)        
 
     def set(self, name, instance, value, **kwargs):
         """Store video on Kaltura, 
