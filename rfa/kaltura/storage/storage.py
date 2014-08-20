@@ -32,10 +32,10 @@ class KalturaStorage(AnnotationStorage):
         self.storageMethod = settings.storageMethod
         
     def get(self, name, instance, **kwargs):
-        """Retrieve video from Kaltura, 
+        """XXX TODO Retrieve video from Kaltura, 
            wrap it in a blob wrapper, and return it
         """
-        pass
+        return AnnotationStorage.get(self, name, instance, **kwargs)        
 
     def set(self, name, instance, value, **kwargs):
         """Store video on Kaltura, 
@@ -73,6 +73,9 @@ class KalturaStorage(AnnotationStorage):
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
         
     def unset(self, name, instance, **kwargs):
+        """### TODO:
+           Remove from Kaltura
+        """
         AnnotationStorage.unset(self, name, instance, **kwargs)
 
 registerStorage(KalturaStorage)
