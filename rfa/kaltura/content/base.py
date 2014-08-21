@@ -94,7 +94,7 @@ class KalturaContentMixin(object):
     _category_vocabulary = None
     
     def __init__(self, oid, **kwargs):
-        super(KalturaContentMixin, self).__init__(oid, **kwargs)
+        super(KalturaContentMixin, self).__init__(oid, **kwargs) #xxx go away
         self.KalturaObject = None
         self._categoryVocabulary = None #Cached vocabulary - should not be persistent.
 

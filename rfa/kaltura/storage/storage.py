@@ -16,6 +16,10 @@ from rfa.kaltura.kutils import kcreateVideo
 from rfa.kaltura.kutils import KalturaLoggerInstance
 from rfa.kaltura.controlpanel import IRfaKalturaSettings
 
+# annotation keys
+KALTURA_STORAGE = 'rfa.kaltura.storage.KalturaStorage'
+
+
 class IKalturaStorage(IStorage):
     pass
 
@@ -26,6 +30,8 @@ class KalturaStorage(AnnotationStorage):
     """
     implements(IKalturaStorage)
     
+    _key = KALTURA_STORAGE
+    
     def initializeInstance(self, instance):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
@@ -35,15 +41,23 @@ class KalturaStorage(AnnotationStorage):
         """XXX TODO Retrieve video from Kaltura, 
            wrap it in a blob wrapper, and return it
         """
-        #import pdb; pdb.set_trace()
-        #return AnnotationStorage.get(self, name, instance, **kwargs)        
+        value = AnnotationStorage.get(self, name, instance, **kwargs)        
+        #get video file from Kaltura and replace the file in the blob.
+        return value
 
     def set(self, name, instance, value, **kwargs):
         """Store video on Kaltura, 
            create media entry if required
         """        
         value = aq_base(value)
+        initializing = kwargs.get('_initializing_', False)
+        
+        if initializing:
+            AnnotationStorage.set(self, name, instance, value, **kwargs) 
+            return
+        
         if value.filename is None:
+            #AnnotationStorage.set(self, name, instance, value, **kwargs)
             return #only interested in running set when instance is ready to save.
         
         mediaEntry = instance.KalturaObject
@@ -70,7 +84,7 @@ class KalturaStorage(AnnotationStorage):
             
             #tell the blob this is really your file
             value.blob.consumeFile(dummyFile)
-        
+
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
         
     def unset(self, name, instance, **kwargs):
