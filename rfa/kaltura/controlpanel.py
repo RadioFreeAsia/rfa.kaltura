@@ -1,5 +1,6 @@
 from zope import schema
 from zope.interface import Interface
+from zope.schema.vocabulary import SimpleVocabulary
 
 from plone.app.registry.browser import controlpanel
 
@@ -64,6 +65,17 @@ class IRfaKalturaSettings(Interface):
                                            description=u"provide the privacy context if you are using entitlement settings\n Leave blank if unsure",
                                            required=False,
                                            default=u"")
+    
+    storageMethod = schema.Choice(title=u"Video Storage Method",
+                                  description=u"""Choose how Plone will handle local storage of uploaded video content.
+                                                 "Blob" (default) will store the file locally with ZODB Blob storage.
+                                                 "None" will not store the video file locally at all - the kaltura server will have the only copy known to plone.
+                                              """,
+                                  required=True,
+                                  default=u"Blob",
+                                  vocabulary=SimpleVocabulary.fromValues([(u'Blob'),
+                                                                          (u'No Local Storage')])
+                                  )
     
 
 class SettingsEditForm(controlpanel.RegistryEditForm):

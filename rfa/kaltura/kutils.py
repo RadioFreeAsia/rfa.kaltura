@@ -217,8 +217,9 @@ def kcreatePlaylist(context):
 
 def kcreateVideo(context):
     """given a plone content-type of kalturavideo,
-       create a video entry on Kaltura
-       The mediaEntry ReferenceId is set to the UID of the plone object to tie them together
+       create a Kaltura MediaEntry object.
+       The mediaEntry ReferenceId is set to the UID of the plone object 
+       to tie them together
     """
     mediaEntry = KalturaMediaEntry()
     mediaEntry.setName(context.Title())
@@ -234,13 +235,12 @@ def kcreateVideo(context):
     
     return mediaEntry
     
-    
 def kupload(FileObject, mediaEntry=None):
     """Provide an ATCTFileContent based object
        Upload attached contents to Kaltura
        Currently Treats all objects as 'videos' - 
          this should change when other kaltura media types are implemented.
-       If MediaEntry is provided, the File is 
+       If MediaEntry is provided, the uploaded video is associated with that media entry
     """
     usingEntitlements = False
     
@@ -348,18 +348,6 @@ def kdiff(ploneObj, kalturaObj):
         retval.append(('getTags', 'getTags'))
 
     return retval
-            
-        
-            
-        
-            
-        
-               
-    
-    
-    
-    
-    
 
 def kconnect(partner_id=None):
     
@@ -392,3 +380,7 @@ def kconnect(partner_id=None):
     
     return (client, ks)
 
+    
+    
+    
+    
