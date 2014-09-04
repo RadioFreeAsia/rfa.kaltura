@@ -10,12 +10,12 @@ from zope.component import getUtility
 from AccessControl import ClassSecurityInfo
 
 from Products.Archetypes import atapi
+from Products.ATContentTypes.atct import ATCTFileContent
 from Products.ATContentTypes.content import base
-from Products.ATContentTypes.content import schemata
-from Products.ATContentTypes.interface.file import IATFile
+from Products.ATContentTypes.content.schemata import ATContentTypeSchema
+from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.ATContentTypes.interface.file import IFileContent
-from plone.app.blob.content import ATBlob
-from plone.app.blob.interfaces import IATBlobFile
+from Products.validation import V_REQUIRED
 
 from plone.registry.interfaces import IRegistry
 
@@ -33,7 +33,7 @@ from rfa.kaltura.storage.storage import KalturaStorage
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
 
-KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy() + \
+KalturaVideoSchema = KalturaBase.KalturaBaseSchema.copy() + \
     atapi.Schema((
         atapi.StringField('title',
                           searchable=1,
@@ -58,7 +58,20 @@ KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy()
                                                     description_msgid="desc_kvideofile_title",
                                                     i18n_domain="kaltura_video"),
                           ),
-   
+        
+        atapi.FileField('file',
+                        required=True,
+                        primary=True,
+                        searchable=True,
+                        languageIndependent=True,
+                        storage = KalturaStorage(migrate=True),
+                        validators = (('isNonEmptyFile', V_REQUIRED),
+                                      ('checkFileMaxSize', V_REQUIRED)),
+                        widget = atapi.FileWidget(description = 'Video File',
+                                                  label=_(u'label_file', default=u'Video File'),
+                                                  show_content_type = False,)
+                        ),
+        
         atapi.ImageField('thumbnail',
                          searchable=0,
                          required=False,
@@ -80,9 +93,11 @@ KalturaVideoSchema = ATBlob.schema.copy() + KalturaBase.KalturaBaseSchema.copy()
                           ),
                            
         ),
+        marshall=atapi.PrimaryFieldMarshaller()
    )
 
 KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
+KalturaVideoSchema += ATContentTypeSchema.copy()
 
 # Set storage on fields copied from ATContentTypeSchema, making sure
 # they work well with the python bridge properties.
@@ -90,18 +105,17 @@ KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
 KalturaVideoSchema['title'].storage = atapi.AnnotationStorage()
 KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 
+
 KalturaVideoSchema['categories'].widget.description = "Select category(ies) this video will belong to"
 KalturaVideoSchema['categories'].widget.description_msgid="desc_kvideo_categories"
 KalturaVideoSchema['tags'].widget.description = "keyword tags to place on this video (one per line)"
 KalturaVideoSchema['tags'].widget.description_msgid="desc_kvideo_tags"
 
-schemata.finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
+finalizeATCTSchema(KalturaVideoSchema, moveDiscussion=False)
 
-
-class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
+class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
     """Kaltura Video Content Type - stores the video file on your Kaltura account"""
-    #ISA KalturaMediaEntry
-    implements(IKalturaVideo, IATBlobFile, IATFile, IFileContent)
+    implements(IKalturaVideo, IFileContent)
 
     # CMF FTI setup
     global_allow   = True
@@ -118,6 +132,8 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
 
     title = atapi.ATFieldProperty('title')
     description = atapi.ATFieldProperty('description')
+    KalturaObject = None
+    categoryEntries = None
     
     security = ClassSecurityInfo()
     
@@ -127,11 +143,7 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
         
         #holds local list of category entries for this video - matching what's on the KMC.
         self.categoryEntries = []
-       
-        self.currentStorage = self.getField('file').getStorage(self)
-        if self.currentStorage.__class__ != KalturaStorage:
-            self.getField('file').setStorage(self, KalturaStorage()) #set storage object on file field
-
+        
     security.declarePublic("getPlaybackUrl")
     def getPlaybackUrl(self):
         if self.KalturaObject is not None:

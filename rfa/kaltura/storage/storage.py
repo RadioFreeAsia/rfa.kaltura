@@ -29,13 +29,6 @@ class KalturaStorage(AnnotationStorage):
         get file from kaltura media center
     """
     implements(IKalturaStorage)
-    
-    _key = KALTURA_STORAGE
-    
-    def initializeInstance(self, instance):
-        registry = getUtility(IRegistry)
-        settings = registry.forInterface(IRfaKalturaSettings)
-        self.storageMethod = settings.storageMethod
         
     def get(self, name, instance, **kwargs):
         """XXX TODO Retrieve video from Kaltura, 
@@ -66,25 +59,27 @@ class KalturaStorage(AnnotationStorage):
         
         #upload video content to Kaltura
         (client, ks) = kconnect()
-        fh = value.getBlob().open()
-        uploadTokenId = client.media.upload(fh)
-        fh.close()
+        filename = '/tmp/'+value.filename
+        
+        #Find out a way to send client.media.upload a string instead of a filehandle
+        with open(filename,'w') as fh:
+            fh.write(str(value))
+            
+        with open(filename, 'r') as fh:
+            uploadTokenId = client.media.upload(fh)
+        
         mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)   
         KalturaLoggerInstance.log("blob uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
         
         instance.setKalturaObject(mediaEntry)
         
-        if self.storageMethod == u"No Local Storage":
-            #create plain text file containing filename for the blob to consume
-            dummyFile = '/tmp/dummy'        
-            fh = open(dummyFile, mode='w+')
-            fh.writelines([value.filename,
-                           "\nThis file is stored on kaltura only, and is not available via plone"])
-            fh.close()
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IRfaKalturaSettings)
+        
+        if settings.storageMethod == u"No Local Storage":
+            import pdb; pdb.set_trace()
+            value.update_data(data = value.filename+"\nThis file is stored on kaltura only, and is not available via plone")
             
-            #tell the blob this is really your file
-            value.blob.consumeFile(dummyFile)
-
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
         
     def unset(self, name, instance, **kwargs):
