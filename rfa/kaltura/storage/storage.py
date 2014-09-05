@@ -77,7 +77,6 @@ class KalturaStorage(AnnotationStorage):
         settings = registry.forInterface(IRfaKalturaSettings)
         
         if settings.storageMethod == u"No Local Storage":
-            import pdb; pdb.set_trace()
             value.update_data(data = value.filename+"\nThis file is stored on kaltura only, and is not available via plone")
             
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
