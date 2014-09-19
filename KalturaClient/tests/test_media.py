@@ -46,8 +46,6 @@ class MediaTests(KalturaBaseTest):
         self.addCleanup(self.client.media.delete, mediaEntry.getId())
         self.readyWait(mediaEntry.getId())
         
-        
-        import pdb; pdb.set_trace()
         #now, change the content on the mediaEntry to another video file
         token = KalturaUploadToken()
         token = self.client.uploadToken.add(token)
@@ -70,10 +68,7 @@ class MediaTests(KalturaBaseTest):
         self.assertEqual(mediaEntry.getId(), newMediaEntry.getId())
         self.assertEqual(mediaEntry.getName(), newMediaEntry.getName())
         
-        self.assertNotEqual(mediaEntry.getDuration, newMediaEntry.getDuration())
-        
-        
-        
+        self.assertNotEqual(mediaEntry.getDuration(), newMediaEntry.getDuration())
         
         
         
