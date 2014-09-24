@@ -6,7 +6,7 @@
   <property name="description"
     i18n:translate="">Kaltura Video Content Type - stores the video file on your Kaltura account</property>
   <property name="content_meta_type">KalturaVideo</property>
-  <property name="content_icon">document_icon.gif</property>
+  <property name="content_icon">video.png</property>
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
   <property name="add_view_expr"/>
