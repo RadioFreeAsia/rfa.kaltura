@@ -24,6 +24,7 @@ from KalturaClient.Plugins.Core import KalturaMediaEntryOrderBy
 from KalturaClient.Plugins.Core import KalturaCategoryFilter
 from KalturaClient.Plugins.Core import KalturaCategoryEntry
 from KalturaClient.Plugins.Core import KalturaSearchOperator
+from KalturaClient.Plugins.Core import KalturaUploadToken, KalturaUploadedFileTokenResource
 
 
 logger = logging.getLogger("rfa.kaltura")
