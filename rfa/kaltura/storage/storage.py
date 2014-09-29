@@ -55,8 +55,6 @@ class KalturaStorage(AnnotationStorage):
             #AnnotationStorage.set(self, name, instance, value, **kwargs)
             return #only interested in running set when instance is ready to save.
         
-        import pdb; pdb.set_trace()
-        
         #get a filehandle for the video content we are uploading to Kaltura Server
         # Do this by creating a temporary file to write the data to, then use that file to upload                
         #XXX Find out a way to send client.media.upload a string instead of a filehandle
@@ -64,7 +62,7 @@ class KalturaStorage(AnnotationStorage):
         with open(filename,'w') as fh:
             fh.write(str(value))
             
-        #re-open file in write mode
+        #re-open file in read mode
         fh = open(filename, 'r')
 
         #connect to Kaltura Server
@@ -80,8 +78,8 @@ class KalturaStorage(AnnotationStorage):
             
         else: #we are updating the content on an existing video
             token = KalturaUploadToken()
-            token = self.client.uploadToken.add(token)            
-            token = self.client.uploadToken.upload(token.getId(), fh)
+            token = client.uploadToken.add(token)            
+            token = client.uploadToken.upload(token.getId(), fh)
             
             #create a resource
             resource = KalturaUploadedFileTokenResource()
@@ -89,9 +87,9 @@ class KalturaStorage(AnnotationStorage):
             
             #update media entry
             client.media.updateContent(mediaEntry.getId(), resource)
-            newMediaEntry = self.client.media.approveReplace(MediaEntry.getId())
+            newMediaEntry = client.media.approveReplace(mediaEntry.getId())
             
-            KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" (mediaEntry.getId(), filename))
+            KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" % (mediaEntry.getId(), filename))
         
         #finalize plone instance.
         instance.setKalturaObject(mediaEntry)
