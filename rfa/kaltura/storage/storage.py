@@ -16,6 +16,8 @@ from rfa.kaltura.kutils import kcreateVideo
 from rfa.kaltura.kutils import KalturaLoggerInstance
 from rfa.kaltura.controlpanel import IRfaKalturaSettings
 
+from rfa.kaltura.kutils import KalturaUploadToken, KalturaUploadedFileTokenResource
+
 # annotation keys
 KALTURA_STORAGE = 'rfa.kaltura.storage.KalturaStorage'
 
@@ -53,26 +55,44 @@ class KalturaStorage(AnnotationStorage):
             #AnnotationStorage.set(self, name, instance, value, **kwargs)
             return #only interested in running set when instance is ready to save.
         
-        mediaEntry = instance.KalturaObject
-        if mediaEntry is None:
-            mediaEntry = kcreateVideo(instance)
-        
-        #upload video content to Kaltura
-        (client, ks) = kconnect()
+        #get a filehandle for the video content we are uploading to Kaltura Server
+        # Do this by creating a temporary file to write the data to, then use that file to upload                
+        #XXX Find out a way to send client.media.upload a string instead of a filehandle
         filename = '/tmp/'+value.filename
-        
-        #Find out a way to send client.media.upload a string instead of a filehandle
         with open(filename,'w') as fh:
             fh.write(str(value))
             
-        with open(filename, 'r') as fh:
+        #re-open file in read mode
+        fh = open(filename, 'r')
+
+        #connect to Kaltura Server
+        (client, ks) = kconnect()
+        #upload video content.           
+        
+        mediaEntry = instance.KalturaObject
+        if mediaEntry is None: #create new media entry - this is a new video in plone
             uploadTokenId = client.media.upload(fh)
+            mediaEntry = kcreateVideo(instance)                     
+            mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
+            KalturaLoggerInstance.log("created new MediaEntry %s" % (mediaEntry.__repr__()))
+            
+        else: #we are updating the content on an existing video
+            token = KalturaUploadToken()
+            token = client.uploadToken.add(token)            
+            token = client.uploadToken.upload(token.getId(), fh)
+            
+            #create a resource
+            resource = KalturaUploadedFileTokenResource()
+            resource.setToken(token.getId())
+            
+            #update media entry
+            client.media.updateContent(mediaEntry.getId(), resource)
+            newMediaEntry = client.media.approveReplace(mediaEntry.getId())
+            
+            KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" % (mediaEntry.getId(), filename))
         
-        mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)   
-        KalturaLoggerInstance.log("blob uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
-        
+        #finalize plone instance.
         instance.setKalturaObject(mediaEntry)
-        
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
         
