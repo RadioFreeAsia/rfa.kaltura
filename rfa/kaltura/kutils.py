@@ -38,12 +38,8 @@ logging.basicConfig(level = logging.DEBUG,
 getCredentials = credentials.getCredentials
 
 class KalturaLogger(IKalturaLogger):
-    def log(self, msg):
-        logging.info(msg)
-
-#class KalturaLogger(IKalturaLogger):
-#    def log(self, msg, summary='', level=logging.INFO):
-#        logger.log(level, '%s \n%s', summary, msg)
+    def log(self, msg, summary='', level=logging.DEBUG):
+        logger.log(level, '%s \n%s', summary, msg)
         
 KalturaLoggerInstance = KalturaLogger()
 
