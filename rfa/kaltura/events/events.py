@@ -35,7 +35,7 @@ def modifyVideo(context, event):
                     pass
                 
             #can't use updateRemote() with these properties
-            if kfield == 'Categories': #handle categories separately
+            if kfield == 'CategoriesIds': #handle categories separately
                 context.updateCategories(val)
             if kfield == "Tags":
                 context.updateTags(val)            
