@@ -2,8 +2,9 @@ from ZPublisher.HTTPRequest import FileUpload as FileUploadClass
 
 from rfa.kaltura.interfaces import IKalturaPlaylist
 
+from rfa.kaltura.kutils import kconnect
 from rfa.kaltura.kutils import KalturaLoggerInstance as logger
-from rfa.kaltura.kutils import kupload, kcreatePlaylist, kcreateVideo
+from rfa.kaltura.kutils import kupload, kcreatePlaylist, kcreateVideo, kremoveVideo
 from rfa.kaltura.kutils import kdiff
 
 def initVideo(context, event):
@@ -54,6 +55,9 @@ def addVideo(context, event):
     """When a video is added to a container
        zope.lifecycleevent.interfaces.IObjectAddedEvent"""
     pass
+    
+def deleteVideo(context, event):
+    kremoveVideo(context)
     
     
 ###Playlist Events###    
