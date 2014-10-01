@@ -280,6 +280,13 @@ def kupload(FileObject, mediaEntry=None):
     KalturaLoggerInstance.log("uploaded.  MediaEntry %s" % (mediaEntry.__repr__()))
     return mediaEntry
     
+def kremoveVideo(context):
+    (client, session) = kconnect()
+    try:
+        client.media.delete(context.KalturaObject.getId())
+    except: #XXX ENTRY_ID_NOT_FOUND exception, specifically
+        pass
+    
 #XXX cacheme for a few mins
 def kGetCategories(parent=None):
     (client, session) = kconnect()

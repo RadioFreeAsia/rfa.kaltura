@@ -102,9 +102,14 @@ class KalturaStorage(AnnotationStorage):
         AnnotationStorage.set(self, name, instance, value, **kwargs)        
         
     def unset(self, name, instance, **kwargs):
-        """### TODO:
-           Remove from Kaltura
-        """
+        
+        (client, ks) = kconnect()
+        mediaEntry = instance.KalturaObject
+        try:
+            client.media.delete(mediaEntry.getId)
+        except: #XXX ENTRY_ID_NOT_FOUND exception, specifically
+            pass
+        
         AnnotationStorage.unset(self, name, instance, **kwargs)
 
 registerStorage(KalturaStorage)

@@ -21,14 +21,11 @@
      handler=".events.modifyVideo"
    />
    
-   <!--
    <subscriber
      for="rfa.kaltura.interfaces.IKalturaVideo
-          zope.lifecycleevent.IObjectDeletedEvent"
+          zope.lifecycleevent.IObjectRemovedEvent"
      handler=".events.deleteVideo"
    />
-   -->
-   
    
    
    <subscriber
