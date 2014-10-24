@@ -285,8 +285,10 @@ class KalturaClient(object):
         else:
             self.log("result (xml): %s" % postResult)
 
-        try:        
-            resultXml = minidom.parseString(postResult)
+        try:
+            decoded = postResult.decode('utf-8', errors='ignore')
+            utf8SafeXML = decoded.encode('utf-8')
+            resultXml = minidom.parseString(utf8SafeXML)
         except ExpatError, e:
             raise KalturaClientException(e, KalturaClientException.ERROR_INVALID_XML)
 
