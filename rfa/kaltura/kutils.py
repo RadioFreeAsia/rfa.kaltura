@@ -25,6 +25,7 @@ from KalturaClient.Plugins.Core import KalturaCategoryFilter
 from KalturaClient.Plugins.Core import KalturaCategoryEntry
 from KalturaClient.Plugins.Core import KalturaSearchOperator
 from KalturaClient.Plugins.Core import KalturaUploadToken, KalturaUploadedFileTokenResource
+from KalturaClient.Plugins.Core import KalturaEntryModerationStatus
 
 
 logger = logging.getLogger("rfa.kaltura")
@@ -336,6 +337,8 @@ def kdiff(ploneObj, kalturaObj):
         pval, kval = getvals(ploneField, kalturaField)
         if kval != pval:
             retval.append( (ploneField, kalturaField) )
+            
+    #compare moderation status / workflow ###TODO
 
     #compare categories:
     pval = set(ploneObj.getCategories())
@@ -385,6 +388,27 @@ def kconnect(partner_id=None):
     return (client, ks)
 
     
+def kSetStatus(context, status, client=None):
+    """given a kaltura video object, set the status on the media entry
+       and update the server
+       PENDING_MODERATION = 1
+       APPROVED = 2
+       REJECTED = 3
+       FLAGGED_FOR_REVIEW = 5
+       AUTO_APPROVED = 6
+    """
+    
+    if client is None:
+        client, ks = kconnect()
+    
+    if status in (2,):
+        updateEntry = client.media.approve(context.entryId)
+    elif status in (3,1,5):
+        updateEntry = client.media.reject(context.entryId)
+        
+    #TODO: create moderationFlag object and flag entry.
+    
+    return updateEntry
     
     
     

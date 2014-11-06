@@ -17,6 +17,7 @@ from rfa.kaltura.kutils import KalturaLoggerInstance
 from rfa.kaltura.controlpanel import IRfaKalturaSettings
 
 from rfa.kaltura.kutils import KalturaUploadToken, KalturaUploadedFileTokenResource
+from rfa.kaltura.kutils import kSetStatus, KalturaEntryModerationStatus
 
 # annotation keys
 KALTURA_STORAGE = 'rfa.kaltura.storage.KalturaStorage'
@@ -76,6 +77,14 @@ class KalturaStorage(AnnotationStorage):
             mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
             KalturaLoggerInstance.log("created new MediaEntry %s" % (mediaEntry.__repr__()))
             
+            #finalize plone instance.
+            instance.setKalturaObject(mediaEntry)            
+            
+            #set the moderation status to 'Pending' 
+            #- can take this away if we can get auto-approve turned off.
+            #if 'auto approve (vaporconfig) is turned ON:
+            instance.setModerationStatus(KalturaEntryModerationStatus.PENDING_MODERATION)
+            
         else: #we are updating the content on an existing video
             token = KalturaUploadToken()
             token = client.uploadToken.add(token)            
@@ -87,12 +96,18 @@ class KalturaStorage(AnnotationStorage):
             
             #update media entry
             client.media.updateContent(mediaEntry.getId(), resource)
+            
+            #if 'auto approve (vaporconfig) is turned off:
             newMediaEntry = client.media.approveReplace(mediaEntry.getId())
             
+            #XXXXelse, set the plone status back to 'public draft' or 'private'
+            
             KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" % (mediaEntry.getId(), filename))
+            
+            #finalize plone instance.
+            instance.setKalturaObject(mediaEntry)            
         
-        #finalize plone instance.
-        instance.setKalturaObject(mediaEntry)
+        
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
         
