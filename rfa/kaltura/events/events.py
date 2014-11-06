@@ -6,6 +6,7 @@ from rfa.kaltura.kutils import kconnect
 from rfa.kaltura.kutils import KalturaLoggerInstance as logger
 from rfa.kaltura.kutils import kupload, kcreatePlaylist, kcreateVideo, kremoveVideo
 from rfa.kaltura.kutils import kdiff
+from rfa.kaltura.kutils import kSetStatus, KalturaEntryModerationStatus
 
 def initVideo(context, event):
     """Fired when the object is first populated"""
@@ -58,6 +59,21 @@ def addVideo(context, event):
     
 def deleteVideo(context, event):
     kremoveVideo(context)
+    
+    
+def workflowChange(context, event):
+    workflow = event.workflow
+    action = event.action
+    status = None
+    
+    if action == 'publish':
+        status = KalturaEntryModerationStatus.APPROVED
+    elif action in ('retract', 'reject'):
+        status = KalturaEntryModerationStatus.PENDING_MODERATION
+    
+    if status:
+        context.setModerationStatus(status)
+    
     
     
 ###Playlist Events###    

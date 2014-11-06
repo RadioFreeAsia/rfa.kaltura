@@ -6,6 +6,7 @@ from AccessControl import ClassSecurityInfo
 
 from rfa.kaltura.content import vocabularies
 from rfa.kaltura.credentials import getCredentials
+from rfa.kaltura.kutils import kSetStatus
 
 KalturaBaseSchema = atapi.Schema(
     (atapi.StringField('entryId',
@@ -152,3 +153,13 @@ class KalturaContentMixin(object):
         self._categoryVocabulary = vocabularies.getCategoryVocabulary(parent)
         return self._categoryVocabulary
     
+    def setModerationStatus(self, status):
+        """given a kaltura video object, set the status on the media entry
+           and update the server
+           See KalturaClient.Core.KalturaEntryModerationStatus for enum definitions
+        """
+        kSetStatus(self, status)
+        
+    def getModerationStatus(self):
+        status = self.KalturaObject.getModerationStatus()
+        return status['value']

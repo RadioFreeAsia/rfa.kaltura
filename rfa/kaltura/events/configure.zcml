@@ -28,6 +28,15 @@
    />
    
    
+   <!-- workflow -->
+   <subscriber
+      for="rfa.kaltura.interfaces.IKalturaVideo
+           Products.CMFCore.interfaces.IActionSucceededEvent"
+      handler=".events.workflowChange"
+   /> 
+      
+   
+   
    <subscriber
      for="rfa.kaltura.interfaces.IKalturaPlaylist
           Products.Archetypes.interfaces.IObjectInitializedEvent"
