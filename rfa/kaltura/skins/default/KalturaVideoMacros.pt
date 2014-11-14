@@ -14,7 +14,7 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="flashEmbed"
-             tal:define="UNIQUE_OBJ_ID objUniqId | context/uuid;
+             tal:define="UNIQUE_OBJ_ID objUniqId | python:context.UID()[:8];
                          PARTNER_ID partnerId | context/partnerId | nothing;
                          UICONF_ID playerId | context/playerId | nothing;
                          ENTRY_ID entryId | context/entryId | nothing;
@@ -26,7 +26,7 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="autoEmbed"
-             tal:define="UNIQUE_OBJ_ID objUniqId | context/uuid;
+             tal:define="UNIQUE_OBJ_ID objUniqId | python:context.UID()[:8];
                          PARTNER_ID partnerId | context/partnerId | nothing;
                          UICONF_ID playerId | context/playerId | nothing;
                          ENTRY_ID entryId | context/entryId | nothing;
@@ -35,7 +35,7 @@
 </metal:macro>
 
 <metal:macro metal:define-macro="dynamicEmbed"
-             tal:define="UNIQUE_OBJ_ID objUniqId | context/uuid;
+             tal:define="UNIQUE_OBJ_ID objUniqId | python:context.UID()[:8];
                          PARTNER_ID partnerId | context/partnerId | nothing;
                          UICONF_ID playerId | context/playerId | nothing;
                          ENTRY_ID entryId | context/entryId | nothing;
