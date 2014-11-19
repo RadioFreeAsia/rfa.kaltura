@@ -12,6 +12,10 @@ from KalturaClient.Plugins.Core import KalturaMediaEntry, KalturaMediaType
 #use some of the kalturaapi test utilities
 from KalturaClient.tests.utils import KalturaBaseTest
 from KalturaClient.tests.utils import getTestFile
+
+#These tests should not try to connect to a Kaltura Server
+#But when that design is violated:
+#make sure kalturaapi.KalturaClient.tests.secret_config.py is created
 from KalturaClient.tests.utils import PARTNER_ID, SERVICE_URL, SECRET, ADMIN_SECRET, USER_NAME
 
 def getTestCredentials():
@@ -25,7 +29,7 @@ def getTestCredentials():
  
     return creds
 
-#patch up the 'getCredentials' to use our test config.    
+#Monkey patch the 'getCredentials' to use our test config.    
 kutils.getCredentials = getTestCredentials
 
 class GetRelatedTests(KalturaBaseTest):
