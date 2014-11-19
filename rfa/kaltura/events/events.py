@@ -19,6 +19,7 @@ def modifyVideo(context, event):
     """
     changed_fields = kdiff(context, context.KalturaObject)
     if changed_fields:
+        updateRemoteArgs = {}
         for (pfield, kfield) in changed_fields:
             #get value from plone object
             val = getattr(context, pfield)
@@ -43,12 +44,11 @@ def modifyVideo(context, event):
                 context.updateTags(val)            
                
             #these we can use updateRemote()
-            kwargs = {}
             if kfield in ['Name', 'Description', 'PartnerId']:
-                kwargs[kfield] = val
+                updateRemoteArgs[kfield] = val
             
-        if kwargs:
-            context._updateRemote(**kwargs)
+        if updateRemoteArgs:
+            context._updateRemote(**updateRemoteArgs)
             
         #file field storage (KalturaStorage) should handle changes to video file.
 

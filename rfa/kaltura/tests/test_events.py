@@ -12,9 +12,12 @@ class ModifyVideoTests(TestCase):
         context = DummyContext()
         event = DummyEvent()
         
+        context._description = "New Description"
+        context.KalturaObject._description = "Old Description"
+        
         modifyVideo(context,event)
         
-        assertEqual(context.Description(), context.KalturaObject.getDescription())
+        self.assertEqual(context.Description(), context.KalturaObject.getDescription())
         
         
 
@@ -22,8 +25,8 @@ class ModifyVideoTests(TestCase):
 class DummyKalturaObject(object):
 
     def __init__(self):
-        self._name = "Dummy Title"
-        self._description = "Dummy Description"
+        self._name = ""
+        self._description = ""
         self._partnerId = None
         self._categoriesIds = ''
         self._tags = ''
@@ -47,8 +50,8 @@ class DummyContext(object):
     
     def __init__(self):
         self.KalturaObject = DummyKalturaObject()
-        self._title = "Dummy Title"
-        self._description = "Dummy Description"
+        self._title = ""
+        self._description = ""
         self._partnerId = None
         self._categories = []
         self._tags = []
@@ -68,10 +71,10 @@ class DummyContext(object):
     def getTags(self):
         return self._tags
     
-    def updateTags(self):
+    def updateTags(self, tags):
         pass
     
-    def updateCategories(self):
+    def updateCategories(self, categories=None):
         pass
     
     def _updateRemote(self, **kwargs):
