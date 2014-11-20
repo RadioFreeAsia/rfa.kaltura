@@ -97,10 +97,10 @@ class KalturaStorage(AnnotationStorage):
             #update media entry
             client.media.updateContent(mediaEntry.getId(), resource)
             
-            #if 'auto approve (vaporconfig) is turned off:
+            #XXX if 'auto approve' is turned on:
             newMediaEntry = client.media.approveReplace(mediaEntry.getId())
             
-            #XXXXelse, set the plone status back to 'public draft' or 'private'
+            #XXX else, set the plone status back to 'public draft' or 'private'
             
             KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" % (mediaEntry.getId(), filename))
             
