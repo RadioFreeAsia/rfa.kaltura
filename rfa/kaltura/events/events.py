@@ -10,52 +10,19 @@ from rfa.kaltura.kutils import kSetStatus, KalturaEntryModerationStatus
 
 def initVideo(context, event):
     """Fired when the object is first populated"""
-    context.updateCategories()
+    #context.syncCategories()
         
 def modifyVideo(context, event):
     """Fired when the object is edited
        Any differences between plone object (context) and kaltura object
        are considered edits to the kaltura object, and are sent to kaltura
     """
-    changed_fields = kdiff(context, context.KalturaObject)
-    if changed_fields:
-        updateRemoteArgs = {}
-        for (pfield, kfield) in changed_fields:
-            #get value from plone object
-            val = getattr(context, pfield)
-            if callable(val):
-                val = val()
-           
-            #make sure that kfield is an attribute name:
-            #not the name of the getter method
-            kfieldAttr = getattr(context.KalturaObject, kfield)
-            if callable(kfieldAttr):
-                #it's a setter or getter.
-                if kfield.startswith('get'):
-                    kfield = kfield[3:]
-                else:
-                    #it's simply the name of the attribute... do nothing
-                    pass
-                
-            #can't use updateRemote() with these properties
-            if kfield == 'CategoriesIds': #handle categories separately
-                context.updateCategories(val)
-            if kfield == "Tags":
-                context.updateTags(val)            
-               
-            #these we can use updateRemote()
-            if kfield in ['Name', 'Description', 'PartnerId']:
-                updateRemoteArgs[kfield] = val
-            
-        if updateRemoteArgs:
-            context._updateRemote(**updateRemoteArgs)
-            
-        #file field storage (KalturaStorage) should handle changes to video file.
+    #context.syncMetadata()
+    #file field storage (KalturaStorage) should handle changes to video file.
 
 def addVideo(context, event):
     """When a video is added to a container
        zope.lifecycleevent.interfaces.IObjectAddedEvent"""
-    pass
     
 def deleteVideo(context, event):
     kremoveVideo(context)

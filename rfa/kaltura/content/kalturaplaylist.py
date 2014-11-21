@@ -97,6 +97,7 @@ class BaseKalturaPlaylist(base.ATCTContent, KalturaBase.KalturaContentMixin):
     security.declarePrivate('getDefaultPlaylistPlayerId')
     def getDefaultPlayerId(self):
         return "19707592"    #Some playlist I found on kmc.kaltura.com  Nothing special.
+                             #XXX - get from configuration - fix me.
             
     security.declarePrivate('_updateRemote')
     def _updateRemote(self, **kwargs):
