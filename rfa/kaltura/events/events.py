@@ -10,15 +10,14 @@ from rfa.kaltura.kutils import kSetStatus, KalturaEntryModerationStatus
 
 def initVideo(context, event):
     """Fired when the object is first populated"""
-    #context.syncCategories()
+    pass
         
 def modifyVideo(context, event):
     """Fired when the object is edited
        Any differences between plone object (context) and kaltura object
        are considered edits to the kaltura object, and are sent to kaltura
     """
-    #context.syncMetadata()
-    #file field storage (KalturaStorage) should handle changes to video file.
+    pass
 
 def addVideo(context, event):
     """When a video is added to a container
