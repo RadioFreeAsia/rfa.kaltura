@@ -33,6 +33,8 @@ from rfa.kaltura.storage.storage import KalturaStorage
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
 from KalturaClient.Plugins.Core import KalturaMediaType
+from KalturaClient.Plugins.Core import KalturaUploadedFileTokenResource
+from KalturaClient.Base import KalturaException
 
 KalturaVideoSchema = KalturaBase.KalturaBaseSchema.copy() + \
     atapi.Schema((
@@ -236,16 +238,18 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
         """Tags are stored in the kalturaObject as a comma delimited string"""
         return ','.join([t for t in self.getTags() if t])
      
-    def syncMetadata(self):
-        """sync up remote Kaltura Server with data in plone"""
-        (client, session) = kconnect()
-        
+    def syncMetadata(self, client=None):
+        """sync up remote Kaltura Server with data in plone
+           Note that we construct an entire MediaEntry with all
+           metadata"""
         newMediaEntry = self._createKobj()
-                        
-        result = client.media.update(self.entryId, newMediaEntry)
-        self.setKalturaObject(result)
+        if client is None:
+            (client, session) = kconnect()                
+        mediaEntry = client.media.update(self.entryId, newMediaEntry)
+        self.setKalturaObject(mediaEntry)
         self.syncCategories(client)
         
+        #Makes method name 'syncMetadata' a misnomer, we sync the file too if changed.
         if self.fileChanged: #video exists on remote, but replace media content - File.
             self.replaceFileOnRemote(client)
             self.fileChanged = False        
@@ -259,23 +263,32 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
         mediaEntry = self._createKobj()
         if client is None:
             (client, session) = kconnect()
-        uploadTokenId = self.uploadToken.getId()
-        mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
+        mediaEntry = client.media.addFromUploadedFile(mediaEntry, self.uploadToken.getId())
         self.setKalturaObject(mediaEntry)
         self.fileChanged = False
+        self.syncCategories(client)
         
     at_post_create_script = createRemote
         
     def replaceFileOnRemote(self, client=None):
         resource = KalturaUploadedFileTokenResource()
         resource.setToken(self.uploadToken.getId())
-        client.media.updateContent(self.KalturaObject.getId(), resource)
+        try:
+            client.media.updateContent(self.entryId, resource)
+        except KalturaException as e:
+            if e.code == u'ENTRY_REPLACEMENT_ALREADY_EXISTS':
+                #auto-deny the half-cooked replacement and re-try
+                client.media.cancelReplace(self.entryId)
+                client.media.updateContent(self.entryId, resource)
                 
-
-        #adjust workflow:
-        #if 'auto approve (vaporconfig) is turned off:
-        newMediaEntry = client.media.approveReplace(mediaEntry.getId())
-        #else, flag that we have to run approveReplace on next workflow transition to "published"
+        #XXX adjust workflow:
+        #XXX if 'auto approve' is turned off in settings:
+        newMediaEntry = client.media.approveReplace(self.entryId)
+        
+        #else:
+        #  transition this instance's workflow to something 'not published'
+        #  Flag this instance as a replaced file, which will \
+        #  make the workflow transition to "published", call Kaltura 'approveReplace'
         
         
     security.declarePrivate('_createKobj')
@@ -286,7 +299,6 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
         """
         mediaEntry = API_KalturaMediaEntry()
         mediaEntry.setMediaType(self.KalturaMediaType)
-        mediaEntry.searchProviderId = self.UID() #XXX Is this correct?  We assign this to the file UID stored in plone.
         mediaEntry.setReferenceId(self.UID())
         for field_descr in self.fieldmap:
             
