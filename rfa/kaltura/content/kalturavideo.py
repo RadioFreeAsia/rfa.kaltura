@@ -32,6 +32,9 @@ from rfa.kaltura.storage.storage import KalturaStorage
 
 from KalturaClient.Plugins.Core import KalturaMediaEntry as API_KalturaMediaEntry
 from KalturaClient.Plugins.Core import KalturaCategoryEntry, KalturaCategoryEntryFilter
+from KalturaClient.Plugins.Core import KalturaMediaType
+from KalturaClient.Plugins.Core import KalturaUploadedFileTokenResource
+from KalturaClient.Base import KalturaException
 
 KalturaVideoSchema = KalturaBase.KalturaBaseSchema.copy() + \
     atapi.Schema((
@@ -137,12 +140,40 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
     
     security = ClassSecurityInfo()
     
+    #what this class represents in Kaltura's terms:
+    KalturaMediaType = KalturaMediaType(KalturaMediaType.VIDEO)
+    
+    fieldmap = ({'name': 'Title',
+                 'pgetter': 'Title',
+                 'psetter': 'setTitle',
+                 'kgetter': 'getName',
+                 'ksetter': 'setName'},
+                {'name': 'Description',
+                 'pgetter':'Description',
+                 'psetter': 'setDescription',
+                 'kgetter': 'getDescription',
+                 'ksetter': 'setDescription'},
+                {'name': 'tags',
+                 'pgetter': 'getKalturaTags',
+                 'psetter': 'setKalturaTags',
+                 'kgetter': 'getTags',
+                 'ksetter': 'setTags'},
+                #note that categories are not a property of a kalturaObject
+                #see self.updateCategories method
+                )
+                 
+    
     def __init__(self, oid, **kwargs):
         super(KalturaVideo, self).__init__(oid, **kwargs)
         self.KalturaObject = None
         
         #holds local list of category entries for this video - matching what's on the KMC.
         self.categoryEntries = []
+        
+        self.uploadToken = None
+        
+        #Storage on File field should set this sentry if it uploads a new file to remote.
+        self.fileChanged = False
         
     security.declarePublic("getPlaybackUrl")
     def getPlaybackUrl(self):
@@ -159,11 +190,18 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
 
     ### These may get duplicated in base.py - we'll see ###
         
-    def updateCategories(self, categories=None):
+    def syncCategories(self, client=None, categories=None):
+        """update the category entries on remote for this object's associated Media Entry
+           categories are stored remotely through the categoryEntry service
+           They are not a property of the Media Entry.
+        """
         if categories is None:
             categories = self.getCategories()
         newCatEntries = []
-        (client, session) = kconnect()
+        
+        if client is None:
+            (client, session) = kconnect()
+            
         #refresh list of categories from server, and sync to plone object
         filt = KalturaCategoryEntryFilter()
         filt.setEntryIdEqual(self.KalturaObject.getId())
@@ -195,31 +233,87 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
             
         #sync the categories to plone object
         self.categoryEntries = client.categoryEntry.list(filt).objects
+     
+    def getKalturaTags(self):
+        """Tags are stored in the kalturaObject as a comma delimited string"""
+        return ','.join([t for t in self.getTags() if t])
+     
+    def syncMetadata(self, client=None):
+        """sync up remote Kaltura Server with data in plone
+           Note that we construct an entire MediaEntry with all
+           metadata"""
+        newMediaEntry = self._createKobj()
+        if client is None:
+            (client, session) = kconnect()                
+        mediaEntry = client.media.update(self.entryId, newMediaEntry)
+        self.setKalturaObject(mediaEntry)
+        self.syncCategories(client)
+        
+        #Makes method name 'syncMetadata' a misnomer, we sync the file too if changed.
+        if self.fileChanged: #video exists on remote, but replace media content - File.
+            self.replaceFileOnRemote(client)
+            self.fileChanged = False        
+        
+    at_post_edit_script = syncMetadata
+
+    def createRemote(self, client=None):
+        """Create a new media entry on the remote server
+           return the mediaEntry returned from the server
+        """
+        mediaEntry = self._createKobj()
+        if client is None:
+            (client, session) = kconnect()
+        mediaEntry = client.media.addFromUploadedFile(mediaEntry, self.uploadToken.getId())
+        self.setKalturaObject(mediaEntry)
+        self.fileChanged = False
+        self.syncCategories(client)
+        
+    at_post_create_script = createRemote
+        
+    def replaceFileOnRemote(self, client=None):
+        resource = KalturaUploadedFileTokenResource()
+        resource.setToken(self.uploadToken.getId())
+        try:
+            client.media.updateContent(self.entryId, resource)
+        except KalturaException as e:
+            if e.code == u'ENTRY_REPLACEMENT_ALREADY_EXISTS':
+                #auto-deny the half-cooked replacement and re-try
+                client.media.cancelReplace(self.entryId)
+                client.media.updateContent(self.entryId, resource)
+                
+        #XXX adjust workflow:
+        #XXX if 'auto approve' is turned off in settings:
+        newMediaEntry = client.media.approveReplace(self.entryId)
+        
+        #else:
+        #  transition this instance's workflow to something 'not published'
+        #  Flag this instance as a replaced file, which will \
+        #  make the workflow transition to "published", call Kaltura 'approveReplace'
+        
+        
+    security.declarePrivate('_createKobj')
+    def _createKobj(self):
+        """Return kaltura media entry that represents this object in plone
+           This will not create the Media Entry on remote.
+           This can be compared to self.KalturaObject, which is the object we last saw from remote
+        """
+        mediaEntry = API_KalturaMediaEntry()
+        mediaEntry.setMediaType(self.KalturaMediaType)
+        mediaEntry.setReferenceId(self.UID())
+        for field_descr in self.fieldmap:
             
-    def updateTags(self, tags):
-        tagsString = ','.join([t for t in self.getTags() if t])
-        self._updateRemote(Tags=tagsString)        
+            #get value from plone object
+            getter = getattr(self, field_descr['pgetter'])
+            val = getter()
+            
+            #set value on Kaltura Object
+            setter = getattr(mediaEntry, field_descr['ksetter'])
+            setter(val)
+                            
+        return mediaEntry
+        
         
     ### end possible base class methods ###
-        
-    security.declarePrivate('_updateRemote')
-    def _updateRemote(self, **kwargs):
-        """will set the specified attribute on the matching object in Kaltura
-           Try not to modify self.KalturaObject directly -use this method instead
-           to keep things in sync with the remote server.
-           
-           For example, to update the name of the kaltura video:
-           self._updateRemote(name='NewName')
-        """
-        #this is becoming quite a hastle.  Might need to re-think this idea.
-        #see 'events.py' modifyVideo to see my pain.
-        (client, session) = kconnect()
-        newVideo = API_KalturaMediaEntry()
-        for (attr, value) in kwargs.iteritems():
-            setter = getattr(newVideo, 'set'+attr)
-            setter(value)
-        result = client.media.update(self.getEntryId(), newVideo)
-        self.setKalturaObject(result) 
         
 atapi.registerType(KalturaVideo, PROJECTNAME)
 

@@ -68,49 +68,20 @@ class KalturaStorage(AnnotationStorage):
 
         #connect to Kaltura Server
         (client, ks) = kconnect()
-        #upload video content.           
+        #upload video content.     
         
-        mediaEntry = instance.KalturaObject
-        if mediaEntry is None: #create new media entry - this is a new video in plone
-            uploadTokenId = client.media.upload(fh)
-            mediaEntry = kcreateVideo(instance)                     
-            mediaEntry = client.media.addFromUploadedFile(mediaEntry, uploadTokenId)
-            KalturaLoggerInstance.log("created new MediaEntry %s" % (mediaEntry.__repr__()))
-            
-            #finalize plone instance.
-            instance.setKalturaObject(mediaEntry)            
-            
-            #set the moderation status to 'Pending' 
-            #- can take this away if we can get auto-approve turned off.
-            #if 'auto approve (vaporconfig) is turned ON:
-            instance.setModerationStatus(KalturaEntryModerationStatus.PENDING_MODERATION)
-            
-        else: #we are updating the content on an existing video
-            token = KalturaUploadToken()
-            token = client.uploadToken.add(token)            
-            token = client.uploadToken.upload(token.getId(), fh)
-            
-            #create a resource
-            resource = KalturaUploadedFileTokenResource()
-            resource.setToken(token.getId())
-            
-            #update media entry
-            client.media.updateContent(mediaEntry.getId(), resource)
-            
-            #if 'auto approve (vaporconfig) is turned off:
-            newMediaEntry = client.media.approveReplace(mediaEntry.getId())
-            
-            #XXXXelse, set the plone status back to 'public draft' or 'private'
-            
-            KalturaLoggerInstance.log("updated MediaEntry %s with new content %s" % (mediaEntry.getId(), filename))
-            
-            #finalize plone instance.
-            instance.setKalturaObject(mediaEntry)            
+        token = KalturaUploadToken()
+        token = client.uploadToken.add(token)            
+        token = client.uploadToken.upload(token.getId(), fh)
         
+        instance.uploadToken = token
+        instance.fileChanged = True
+        #now, the instance should take over to do addFromUploadedFile or updateContent
+        #and associate this uploaded file with a media entry.
         
+        #check to see if local storage is set
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
-        
         if settings.storageMethod == u"No Local Storage":
             value.update_data(data = value.filename+"\nThis file is stored on kaltura only, and is not available via plone")
             

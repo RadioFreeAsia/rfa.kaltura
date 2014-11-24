@@ -14,7 +14,6 @@ class ModifyVideoTests(TestCase):
         
         context._description = "New Description"
         context.KalturaObject._description = "Old Description"
-        
         modifyVideo(context,event)
         
         self.assertEqual(context.Description(), context.KalturaObject.getDescription())
@@ -77,11 +76,13 @@ class DummyContext(object):
     def updateCategories(self, categories=None):
         pass
     
-    def _updateRemote(self, **kwargs):
+    def syncMetadata(self):
         #simulate communication between Plone and Kaltura Server
-        newDescription = kwargs.get('Description')
+        newDescription = self.Description()
         if newDescription is not None:
             self.KalturaObject._description = newDescription
+            
+        #map other fields as needed for tests
         
 
 class DummyEvent(object):
