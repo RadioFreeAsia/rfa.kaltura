@@ -16,6 +16,7 @@ from Products.ATContentTypes.content.schemata import ATContentTypeSchema
 from Products.ATContentTypes.content.schemata import finalizeATCTSchema
 from Products.ATContentTypes.interface.file import IFileContent
 from Products.validation import V_REQUIRED
+from Products.Archetypes.Marshall import RFC822Marshaller
 
 from plone.registry.interfaces import IRegistry
 
@@ -41,8 +42,8 @@ KalturaVideoSchema = KalturaBase.KalturaBaseSchema.copy() + \
         atapi.StringField('title',
                           searchable=1,
                           required=True,
-                          languageIndependent=1,
                           accessor="Title",
+                          mutator="setTitle",
                           widget=atapi.StringWidget(label="Title",
                                                     label_msgid="label_kvideofile_title",
                                                     description="The title of this video.",
@@ -96,7 +97,7 @@ KalturaVideoSchema = KalturaBase.KalturaBaseSchema.copy() + \
                           ),
                            
         ),
-        marshall=atapi.PrimaryFieldMarshaller()
+        marshall=RFC822Marshaller()
    )
 
 KalturaVideoSchema += KalturaBase.KalturaMetadataSchema.copy()
@@ -105,8 +106,6 @@ KalturaVideoSchema += ATContentTypeSchema.copy()
 # Set storage on fields copied from ATContentTypeSchema, making sure
 # they work well with the python bridge properties.
 
-KalturaVideoSchema['title'].storage = atapi.AnnotationStorage()
-KalturaVideoSchema['description'].storage = atapi.AnnotationStorage()
 
 
 KalturaVideoSchema['categories'].widget.description = "Select category(ies) this video will belong to"
@@ -133,8 +132,6 @@ class KalturaVideo(ATCTFileContent, KalturaBase.KalturaContentMixin):
     meta_type = "KalturaVideo"
     schema = KalturaVideoSchema
 
-    title = atapi.ATFieldProperty('title')
-    description = atapi.ATFieldProperty('description')
     KalturaObject = None
     categoryEntries = None
     
