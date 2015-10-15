@@ -17,6 +17,8 @@
   <include package=".storage" />
   
   <include package="plone.app.registry" />
+  <include package="plone.app.blob" />
+  
   <!-- Control panel -->
   <browser:page
       name="rfa-kaltura-settings"
@@ -35,5 +37,11 @@
       />
   
   <cmf:registerDirectory name="default"/>
+  
+  <!-- schema extender adapter - we will use a special file field for IKalturaVideo content types -->
+  <adapter
+    name="rfa.kaltura.file"
+    for="rfa.kaltura.interfaces.IKalturaVideo"
+    factory="rfa.kaltura.file.SchemaExtender" />
 
 </configure>
