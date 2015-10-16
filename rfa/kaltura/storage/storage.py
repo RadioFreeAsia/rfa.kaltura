@@ -1,7 +1,8 @@
-import copy
+import tempfile
+import os
 from Acquisition import aq_base
-from zope.interface import implements
-from zope.interface import Interface
+from zope.interface import implements, Interface
+
 from zope.component import getUtility
 
 from plone.registry.interfaces import IRegistry
@@ -9,6 +10,8 @@ from plone.registry.interfaces import IRegistry
 from Products.Archetypes.interfaces.storage import IStorage
 from Products.Archetypes.Storage.annotation import AnnotationStorage
 from Products.Archetypes.Registry import registerStorage
+
+from plone.app.blob.utils import openBlob
 
 from rfa.kaltura.kutils import kconnect
 from rfa.kaltura.kutils import kupload
@@ -27,9 +30,10 @@ class IKalturaStorage(IStorage):
     pass
 
 class KalturaStorage(AnnotationStorage):
-    """ TODO
-        Store file on kaltura media center
-        get file from kaltura media center
+    """ Designed specifically to work on the file field defined in kaltura.file
+        Works on BlobField instances from plone.app.blob
+        Connects and delivers blob binary data (videos, etc) to Kaltura as an uploaded file
+        Hands off the uploaded token to the Archetype instance to finalize creation of the KalturaEntry
     """
     implements(IKalturaStorage)
         
@@ -44,27 +48,22 @@ class KalturaStorage(AnnotationStorage):
     def set(self, name, instance, value, **kwargs):
         """Store video on Kaltura, 
            create media entry if required
-        """        
-        value = aq_base(value)
+        """
         initializing = kwargs.get('_initializing_', False)
         
         if initializing:
             AnnotationStorage.set(self, name, instance, value, **kwargs) 
             return
         
-        if value.filename is None:
-            #AnnotationStorage.set(self, name, instance, value, **kwargs)
+        self.value = aq_base(value)
+        if self.value.filename is None:
             return #only interested in running set when instance is ready to save.
         
         #get a filehandle for the video content we are uploading to Kaltura Server
-        # Do this by creating a temporary file to write the data to, then use that file to upload                
-        #XXX Find out a way to send client.media.upload a string instead of a filehandle
-        filename = '/tmp/'+value.filename
-        with open(filename,'w') as fh:
-            fh.write(str(value))
-            
-        #re-open file in read mode
-        fh = open(filename, 'r')
+        fh_blob = openBlob(self.value.blob, mode='r')
+        
+        #find the temp dir that ZODB is using.
+        tempdir = os.path.dirname(fh_blob.name)
 
         #connect to Kaltura Server
         (client, ks) = kconnect()
@@ -72,20 +71,31 @@ class KalturaStorage(AnnotationStorage):
         
         token = KalturaUploadToken()
         token = client.uploadToken.add(token)            
-        token = client.uploadToken.upload(token.getId(), fh)
+        token = client.uploadToken.upload(token.getId(), fh_blob)
         
+        fh_blob.close()
+        #instance needs to know the upload token to finalize the media entry
+        # typically, a call to Kaltura's addFromUploadedFile or updateContent services does this.
         instance.uploadToken = token
         instance.fileChanged = True
-        #now, the instance should take over to do addFromUploadedFile or updateContent
-        #and associate this uploaded file with a media entry.
         
-        #check to see if local storage is set
+        #if "no local storage" is set, we clobber the blob file.
         registry = getUtility(IRegistry)
         settings = registry.forInterface(IRfaKalturaSettings)
         if settings.storageMethod == u"No Local Storage":
-            value.update_data(data = value.filename+"\nThis file is stored on kaltura only, and is not available via plone")
-            
-        AnnotationStorage.set(self, name, instance, value, **kwargs)        
+            filename_aside = self.makeDummyData(dir=tempdir)
+            value.blob.consumeFile(filename_aside)
+
+        AnnotationStorage.set(self, name, instance, value, **kwargs)
+
+    def makeDummyData(self, dir=None):
+        if dir is None:
+            dir = tempfile.tempdir
+        fd, filename = tempfile.mkstemp(dir=dir)
+        fh = os.fdopen(fd, 'w+b')
+        fh.write(self.value.filename+"\n\nThis file is stored on kaltura only, and is not available via plone")
+        fh.close()
+        return filename
         
     def unset(self, name, instance, **kwargs):
         
