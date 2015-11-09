@@ -288,6 +288,13 @@ def kremoveVideo(context):
     except: #XXX ENTRY_ID_NOT_FOUND exception, specifically
         pass
     
+def krejectVideo(context):
+    (client, session) = kconnect()
+    try:
+        client.media.reject(context.KalturaObject.getId())
+    except: #XXX ENTRY_ID_NOT_FOUND exception, specifically
+        pass
+    
 #XXX cacheme for a few mins
 def kGetCategories(parent=None):
     (client, session) = kconnect()

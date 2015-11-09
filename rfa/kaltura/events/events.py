@@ -4,7 +4,7 @@ from rfa.kaltura.interfaces import IKalturaPlaylist
 
 from rfa.kaltura.kutils import kconnect
 from rfa.kaltura.kutils import KalturaLoggerInstance as logger
-from rfa.kaltura.kutils import kupload, kcreatePlaylist, kcreateVideo, kremoveVideo
+from rfa.kaltura.kutils import kupload, kcreatePlaylist, kcreateVideo, kremoveVideo, krejectVideo
 from rfa.kaltura.kutils import kdiff
 from rfa.kaltura.kutils import kSetStatus, KalturaEntryModerationStatus
 
@@ -24,8 +24,8 @@ def addVideo(context, event):
        zope.lifecycleevent.interfaces.IObjectAddedEvent"""
     
 def deleteVideo(context, event):
-    kremoveVideo(context)
-    
+    #kremoveVideo(context)  #TODO - configure option to delete or reject plone deleted content.
+    krejectVideo(context)
     
 def workflowChange(context, event):
     workflow = event.workflow
