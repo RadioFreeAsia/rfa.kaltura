@@ -24,8 +24,8 @@ def addVideo(context, event):
        zope.lifecycleevent.interfaces.IObjectAddedEvent"""
     
 def deleteVideo(context, event):
-    kremoveVideo(context)
-    
+    #kremoveVideo(context)  #TODO - configure option to delete or reject plone deleted content.
+    krejectVideo(context)
     
 def workflowChange(context, event):
     workflow = event.workflow
