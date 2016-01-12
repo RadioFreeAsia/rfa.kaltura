@@ -51,6 +51,16 @@ class IRfaKalturaSettings(Interface):
                                required=True,
                                default=u"PloneTestUser")
     
+    defaultVideoPlayer = schema.TextLine(title=u"Default Video Player ID",
+                                         description=u"enter the default Player ID you wish to use when creating Kaltura Videos",
+                                         required=False,
+                                         default=u'')
+    
+    #defaultPlaylistPlayer = schema.TextLine(title=u"Default Playlist Player ID",
+                                         #description=u"enter the default Player ID you wish to use when creating Kaltura Playlists"
+                                         #required=False,
+                                         #default='')
+    
     topLevelCategory = schema.TextLine(title=u"Top Level Category",
                                        description=u"""Use this to limit this plone site to a single category on the KMC.
                                                        Enter the FULL NAME of a category on the KMC to become the top level category
