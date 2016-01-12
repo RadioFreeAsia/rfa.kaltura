@@ -174,7 +174,10 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     
     security.declarePrivate('getDefaultPlayerId')
     def getDefaultPlayerId(self):
-        return "20100652" #todo - add to config
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IRfaKalturaSettings)
+        
+        return settings.defaultVideoPlayer
 
     ### These may get duplicated in base.py - we'll see ###
         
