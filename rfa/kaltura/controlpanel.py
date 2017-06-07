@@ -86,6 +86,11 @@ class IRfaKalturaSettings(Interface):
                                   vocabulary=SimpleVocabulary.fromValues([(u'Blob'),
                                                                           (u'No Local Storage')])
                                   )
+
+    kfileMaxSize = schema.Int(title=u"Kaltura File Max Size",
+                           description=u"Provide your maximum kaltura file size you want to set up.(unit: MB)",
+                           required=False,
+                           default=500)    
     
 
 class SettingsEditForm(controlpanel.RegistryEditForm):
