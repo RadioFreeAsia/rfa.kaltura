@@ -9,12 +9,6 @@ from archetypes.schemaextender.interfaces import ISchemaExtender
 
 from plone.app.blob.subtypes.file import ExtensionBlobField
 
-from Products.validation.config import validation
-from Products.validation.validators.SupplValidators import MaxSizeValidator
-
-validation.register(MaxSizeValidator('checkKalturaFileMaxSize', title='Kaltura Maximum video size', 
-                                     description='', maxsize=500))
-
 class SchemaExtender(object):
     implements(ISchemaExtender)
 
@@ -30,7 +24,7 @@ class SchemaExtender(object):
             storage = KalturaStorage(migrate=True),
             default_content_type = 'application/octet-stream',
             validators = (('isNonEmptyFile', V_REQUIRED),
-                          ('checkKalturaFileMaxSize', V_REQUIRED)),
+                          ('checkFileMaxSize', V_REQUIRED)),
             widget = FileWidget(label = _(u'label_file', default=u'Video File'),
                                 description=_(u'Video File'),
                                 show_content_type = False,)
