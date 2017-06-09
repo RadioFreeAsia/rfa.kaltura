@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    i18n_domain="rfa.kaltura">
+       
+    <gs:upgradeStep
+        title="Upgrade rfa.kaltura to 1001"
+        description="rfa.kaltura upgrade step"
+        source="*"
+        destination="1001"
+        handler=".upgrades.upgrade_to_1001"
+        profile="rfa.kaltura:default" />
+       
+</configure>
