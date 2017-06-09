@@ -15,4 +15,4 @@ def upgrade(upgrade_product,version):
 
 def upgrade_to_1001(context):
     print "Upgrading to 1001"
-    context.runImportStepFromProfile(default_profile, 'registry')
+    context.runImportStepFromProfile(default_profile, 'plone.app.registry')
