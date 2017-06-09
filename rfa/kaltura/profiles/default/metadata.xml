@@ -4,7 +4,7 @@
     Package version are different because they add sense like the status of the add-on: 
       is it stable, is it in development, in beta, which branch is it. 
     A profile version indicates only that you have to migrate data in the database. 
-  -->
+    -->
   <version>1001</version> 
   <dependencies>
     <dependency>profile-plone.app.registry:default</dependency>
