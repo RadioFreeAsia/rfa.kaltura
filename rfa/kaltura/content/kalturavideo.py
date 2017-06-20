@@ -303,8 +303,16 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
                             
         return mediaEntry
         
-        
     ### end possible base class methods ###
+    
+    def getMaxSizeFor(self, fieldsname):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IRfaKalturaSettings)       
+        if fieldsname == 'file':
+            kms = settings.kfileMaxSize
+            return kms
+        else:
+            return None
         
 atapi.registerType(KalturaVideo, PROJECTNAME)
 
