@@ -98,7 +98,8 @@ KalturaVideoSchema += ATContentTypeSchema.copy()
 # they work well with the python bridge properties.
 
 KalturaVideoSchema.get('title').storage = AnnotationStorage()
-
+KalturaVideoSchema['subject'].widget.visible['view'] = 'invisible'
+KalturaVideoSchema['subject'].widget.visible['edit'] = 'invisible'
 KalturaVideoSchema['categories'].widget.description = "Select category(ies) this video will belong to"
 KalturaVideoSchema['categories'].widget.description_msgid="desc_kvideo_categories"
 KalturaVideoSchema['tags'].widget.description = "keyword tags to place on this video (one per line)"
