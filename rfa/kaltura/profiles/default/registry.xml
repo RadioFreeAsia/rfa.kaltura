@@ -2,4 +2,17 @@
 <registry>
     <records interface="rfa.kaltura.controlpanel.IRfaKalturaSettings">
     </records>
+
+   <!--  Bundle defined, but not used.
+    <records prefix="plone.bundles/rfa.kaltura"
+             interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="enabled">True</value>
+    <value key="jscompilation">++resource++mycustom.js</value>
+    <value key="csscompilation">++resource++mycustom.css</value>
+
+    <value key="last_compilation">2019-11-26 00:00:00</value>
+    <value key="compile">False</value>
+    <value key="depends">plone</value>
+  </records>
+   -->
 </registry>
