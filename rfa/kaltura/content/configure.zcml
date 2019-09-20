@@ -11,13 +11,6 @@
         interface="..interfaces.IKalturaVideo"
         />
   </class>
-
-  <class class=".kalturaplaylist.ManualKalturaPlaylist">
-    <require
-        permission="zope2.View"
-        interface="..interfaces.IKalturaPlaylist"
-        />
-  </class>
   
   <class class=".kalturaplaylist.RuleBasedKalturaPlaylist">
     <require
