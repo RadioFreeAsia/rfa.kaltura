@@ -34,13 +34,5 @@
                         playbackUrl"
     />
 
- <!-- Ensure that the content actions dropdowns appear for all tabs
-       on objects, not just on the contents & preview tabs. -->
- <browser:viewlet
-        name="plone.contentactions"
-        for="rfa.kaltura.interfaces.content_interfaces.IKalturaVideo"
-        manager="plone.app.layout.viewlets.interfaces.IContentViews"
-        class="plone.app.layout.viewlets.common.ContentActionsViewlet"
-        permission="zope2.View"
-  />
+
 </configure>
