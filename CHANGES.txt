@@ -1,5 +1,13 @@
 Changelog
 =========
+2.0  (Unreleased)
+Plone 5 support.
+2.x branch will support Plone 5
+
+1.0  (2019-09-19)
+Official tag for Plone 4.2
+1.x will support Plone 4.
+
 0.3 (2013-09-26)
 Kaltura API updated to '3.1.6'  (Aug 20 2013)
 Added default template to display video

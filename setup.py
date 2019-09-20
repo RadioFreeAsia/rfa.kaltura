@@ -57,6 +57,7 @@ setup(name='rfa.kaltura',
       install_requires=['setuptools',
                         "plone.app.registry",
                         "Products.CMFPlone",
+                        "archetypes.referencebrowserwidget"
                         ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
