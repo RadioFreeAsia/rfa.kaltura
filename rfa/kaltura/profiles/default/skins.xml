@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<object name="portal_skins">
-    <object name="rfa.kaltura_default"
-         meta_type="Filesystem Directory View"
-         directory="rfa.kaltura:skins/default" />
-    <skin-path name="*">
-        <layer name="rfa.kaltura_default" insert-after="plone_3rdParty"/>
-    </skin-path>
-</object>
