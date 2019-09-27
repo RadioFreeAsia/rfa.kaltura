@@ -38,8 +38,6 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   
-  <cmf:registerDirectory name="default"/>
-  
   <!-- schema extender adapter - we will use a special file field for IKalturaVideo content types -->
   <adapter
     name="rfa.kaltura.file"

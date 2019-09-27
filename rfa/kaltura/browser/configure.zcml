@@ -27,13 +27,26 @@
     for="rfa.kaltura.interfaces.IKalturaVideo"
     class=".kaltura_video.VideoView"
     name="video_view"
-    layer="rfa.kaltura.interfaces.IRfaKalturaInstalled"
     permission="zope.Public"
     allowed_attributes="title
                         description
                         playbackUrl"
     template = "templates/kalturavideo_view.pt"
+    layer="rfa.kaltura.interfaces.IRfaKalturaInstalled"
     />
 
 
+   <!-- macros -->
+   <browser:page
+      for="rfa.kaltura.interfaces.IKalturaVideo"
+      name="KalturaVideoMacros"
+      template="macros/KalturaVideoMacros.pt"
+      permission="zope2.View"
+   />
+   <browser:page
+      for="rfa.kaltura.interfaces.IKalturaPlaylist"
+      name="KalturaPlaylistMacros"
+      template="macros/KalturaPlaylistMacros.pt"
+      permission="zope2.View"
+   />
 </configure>
