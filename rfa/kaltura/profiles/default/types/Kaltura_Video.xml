@@ -10,24 +10,24 @@
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
   <property name="add_view_expr"/>
-  <property name="link_target"/>
-  <property name="immediate_view">kalturavideo_view</property>
+  <property name="link_target">video_view</property>
+  <property name="immediate_view">video_view</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
   <property name="allowed_content_types"/>
   <property name="allow_discussion">True</property>
-  <property name="default_view">kalturavideo_view</property>
+  <property name="default_view">video_view</property>
   <property name="view_methods">
-    <element value="kalturavideo_view" />
+    <element value="video_view" />
   </property>
   <property name="default_view_fallback">False</property>
-  <alias from="(Default)" to="(dynamic view)" />
-  <alias from="edit" to="edit" />
+  <alias from="(Default)" to="video_view" />
+  <alias from="edit" to="base_edit" />
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
   <alias from="properties" to="base_metadata"/>
   <action title="View" action_id="view" category="object" condition_expr=""
-    url_expr="string:${object_url}" visible="True">
+    url_expr="string:${object_url}/video_view" visible="True">
     <permission value="View" />
   </action>
   <action title="Edit" action_id="edit" category="object" condition_expr=""
