@@ -10,7 +10,7 @@
   <property name="product">rfa.kaltura</property>
   <property name="factory">addKalturaVideo</property>
   <property name="add_view_expr"/>
-  <property name="link_target"/>
+  <property name="link_target">video_view</property>
   <property name="immediate_view">video_view</property>
   <property name="global_allow">True</property>
   <property name="filter_content_types">False</property>
@@ -21,7 +21,7 @@
     <element value="video_view" />
   </property>
   <property name="default_view_fallback">False</property>
-  <alias from="(Default)" to="(dynamic view)" />
+  <alias from="(Default)" to="video_view" />
   <alias from="edit" to="base_edit" />
   <alias from="sharing" to="@@sharing" />
   <alias from="view" to="(selected layout)" />
