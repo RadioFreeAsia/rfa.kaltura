@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<layers name="rfa.kaltura" meta_type="ComponentRegistry">
+   <layer remove="true"
+     name="rfa.kaltura"
+     interface="rfa.kaltura.interfaces.IRfaKalturaInstalled"/>
+</layers>
