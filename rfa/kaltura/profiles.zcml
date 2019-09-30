@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="rfa.kaltura">
+    
+
+  <genericsetup:registerProfile
+      name="default"
+      title="rfa.kaltura"
+      directory="profiles/default"
+      description="Kaltura Archetypes for Zope/Plone"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+      
+    <genericsetup:registerProfile
+      name="uninstall"
+      title="rfa.kaltura: uninstall"
+      directory="profiles/uninstall"
+      description="Uninstall Kaltura Archetypes for Zope/Plone"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+      
+</configure>
