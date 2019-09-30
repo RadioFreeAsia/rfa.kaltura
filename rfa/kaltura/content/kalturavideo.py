@@ -131,6 +131,8 @@ class KalturaVideo(ATBlob, KalturaBase.KalturaContentMixin):
     #what this class represents in Kaltura's terms:
     KalturaMediaType = KalturaMediaType(KalturaMediaType.VIDEO)
     
+    #pgetter - plone getter
+    #kgetter - kaltura getter
     fieldmap = ({'name': 'Title',
                  'pgetter': 'Title',
                  'psetter': 'setTitle',

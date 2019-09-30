@@ -8,7 +8,7 @@
   <metal:fill metal:fill-slot="content-core">
     <div tal:define="width nothing;
                      height nothing;
-                     url context/playbackUrl;">
+                     url view/playbackUrl;">
                      
         <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
         </metal:video>
