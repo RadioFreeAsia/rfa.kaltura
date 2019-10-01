@@ -4,14 +4,10 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone"
       >
-
+  
   <metal:fill metal:fill-slot="content-core">
-    <div tal:define="width nothing;
-                     height nothing;
-                     url view/playbackUrl;">
-                     
-        <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
-        </metal:video>
-    </div>
+  <style>.kWidgetIframeContainer { height: 520px; } </style>    
+   <metal:video metal:use-macro="context/KalturaVideoMacros/macros/dynamicEmbed">
+   </metal:video>
   </metal:fill>
 </html>
