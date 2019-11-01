@@ -1,6 +1,15 @@
 rfa.kaltura
 ================
 
+DEPRICATON WARNING: 
+Due to heavy ATContentTypes (archetypes) dependencies in this package, it will be re-written using Dexterity Content Types for Python3 compatability.
+For this, a new project has been created for the extensive rewrite: https://github.com/RadioFreeAsia/rfa.kaltura2
+
+Use this package only for Archetypes based installs and only if rfa.kaltura2 does not satisfy your needs.
+In which case, please open a bug against rfa.kaltura2 describing the functionality gaps.
+
+-------
+
 Kaltura Video Integration with Plone
 Version 0.9 - Functional Beta
 
