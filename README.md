@@ -1,7 +1,8 @@
 rfa.kaltura
 ================
 
-DEPRICATON WARNING: 
+**DEPRICATON WARNING:** 
+
 Due to heavy ATContentTypes (archetypes) dependencies in this package, it will be re-written using Dexterity Content Types for Python3 compatability.
 For this, a new project has been created for the extensive rewrite: https://github.com/RadioFreeAsia/rfa.kaltura2
 
